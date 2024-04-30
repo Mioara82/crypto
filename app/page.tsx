@@ -1,12 +1,11 @@
 "use client";
 import StoreProvider from "./StoreProvider";
+import MarketData from "./components/marketData/marketData";
 
 export default function Home() {
   return (
     <StoreProvider>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        Home
-      </main>
+      <MarketData />
     </StoreProvider>
   );
 }
