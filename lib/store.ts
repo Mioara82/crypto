@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import marketReducer from "../lib/features/marketSlice";
+import marketReducer from "./features/marketSlice";
 
 const reduxLogger = require("redux-logger");
 const logger  =reduxLogger.createLogger();
