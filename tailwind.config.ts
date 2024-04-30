@@ -23,6 +23,7 @@ const config: Config = {
           primaryTextColor:"#181825",
           tableTextColor:"#232336",
           secondaryTextColor:"#424286",
+          lightTextColor:"#D1D1D1"
         },
         dark:{
           primaryBg:"#13121A",
@@ -43,7 +44,12 @@ const config: Config = {
           "chart-900":"#F06142",
           "chart-910":"#5082CF"
         }
-      }
+      },
+      extend: {
+        fontFamily: {
+         PlayfairDisplay: ["Space Grotesk", "sans-serif"],
+        },
+      },
     },
   plugins: [],
 };
