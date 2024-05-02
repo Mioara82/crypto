@@ -5,7 +5,7 @@ import { fetchMarketData } from "../../../lib/features/marketSlice";
 import { RootState } from "@/lib/store";
 import CoinIcon from "@/app/icons/coinIcon";
 import ExchangeIcon from "@/app/icons/exchangeIcon";
-import CoolIcon from "@/app/icons/coolIcon";
+import ArrowIcon from "@/app/icons/arrowIcon";
 import BitcoinIcon from "@/app/icons/bitcoinIcon";
 import EthereumIcon from "@/app/icons/ethereumIcon";
 import ProgressBar from "../progressBar";
@@ -57,7 +57,7 @@ const MarketData = () => {
             </div>
             <div className="text-light-primary">{marketData.exchange}</div>
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
-              <CoolIcon />
+              <ArrowIcon />
               <div className="text-light-primary">
                 {marketData.totalMarketCap}
               </div>
