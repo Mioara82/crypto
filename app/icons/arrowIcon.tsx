@@ -1,6 +1,6 @@
 import React from "react";
 
-const CoolIcon = () => (
+const ArrowIcon = () => (
   <svg className="self-center"
     width="12"
     height="4"
@@ -15,4 +15,4 @@ const CoolIcon = () => (
   </svg>
 );
 
-export default CoolIcon;
+export default ArrowIcon;

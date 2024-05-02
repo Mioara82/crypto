@@ -30,7 +30,7 @@ const MarketData = () => {
   const getTotalMarketVolume = () =>{
     if(marketData && marketData.totalVolume){
       const totalMarketVolume = Object.values(marketData.totalVolume).reduce(
-      (a: any, b: any) => a + b,
+      (a, b) => a + b,
       0
     );
   return totalMarketVolume;
