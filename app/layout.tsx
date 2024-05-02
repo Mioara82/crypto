@@ -18,10 +18,10 @@ export default function RootLayout({
   return (
     <>
     <html lang="en">
-      <body className={spaceGrotesk.className}>
-        <Link href="/">Home</Link>
-        <Link href="/Converter">Converter</Link>
-        <Link href="/Portfolio">Portfolio</Link>
+      <body className={`${spaceGrotesk.className} m-0 max-w-1440 mx-auto`}>
+        <Link href="/"></Link>
+        <Link href="/Converter"></Link>
+        <Link href="/Portfolio"></Link>
         {children}
       </body>
     </html>

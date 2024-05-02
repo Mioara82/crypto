@@ -4,6 +4,12 @@ import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
 import { fetchMarketData } from "../../../lib/features/marketSlice";
 import { RootState } from "@/lib/store";
 import { formatMarketCap } from "../../utils/formatHelpers";
+import CoinIcon from "@/app/icons/coinIcon";
+import ExchangeIcon from "@/app/icons/exchangeIcon";
+import CoolIcon from "@/app/icons/coolIcon";
+import BitcoinIcon from "@/app/icons/bitcoinIcon";
+import EthereumIcon from "@/app/icons/ethereumIcon";
+import ProgressBar from "../progressBar";
 
 const MarketData = () => {
   const dispatch = useAppDispatch();
@@ -31,16 +37,38 @@ const MarketData = () => {
   const exchange = marketData.data.markets;
 
   return (
-    <nav className="flex justify-center my-2 bg-light-darkBg py-4 gap-8 rounded-t-md max-w-1440">
+    <nav className="flex justify-center my-2 m-0 bg-light-darkBg py-4 rounded-t-md max-w-1440">
       {loadingStatus === "fulfilled" && (
-        <ul className="inline-flex gap-2 font-SpaceGrotesk text-xs text-light-lightTextColor">
-          <li>Coins {coinData}</li>
-          <li>Exchange {exchange}</li>
-          <li>{btcMarketCapPercentage}</li>
-          <li>{ethMarketCapPercentage}</li>
-          <li>{totalMarketCap}</li>
-          <li>{totalVolume}</li>
-        </ul>
+        <div className="inline-flex gap-2 text-xs ">
+          <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
+            <CoinIcon />
+            Coins
+          </div>
+          <div className="text-light-primary">{coinData}</div>
+          <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
+            <ExchangeIcon />
+            Exchange
+          </div>
+          <div className="text-light-primary">{exchange}</div>
+          <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
+            <CoolIcon />
+            <div className="text-light-primary">{totalMarketCap}</div>
+          </div>
+          <div>
+            <div className="text-light-primary">${totalVolume}</div>
+            <ProgressBar value={totalVolume} />
+          </div>
+          <div className="inline-flex justify-items-center items-center gap-1 text-light-lightTextColor">
+            <BitcoinIcon />
+            <div>{btcMarketCapPercentage}%</div>
+            <ProgressBar value={btcMarketCapPercentage} orange />
+          </div>
+          <div className="inline-flex justify-items-center items-center gap-1 text-light-lightTextColor">
+            <EthereumIcon />
+            <div>{ethMarketCapPercentage}%</div>
+            <ProgressBar value={ethMarketCapPercentage} purple />
+          </div>
+        </div>
       )}
       {loadingStatus === "rejected" && <p>Error: {error}</p>}
     </nav>

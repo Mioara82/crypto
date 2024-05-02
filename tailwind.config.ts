@@ -12,6 +12,9 @@ const config: Config = {
           green:"#00B1A7",
           red:"#FE2264",
           linearGradient: "#6161D680",
+          purple:"#849DFF",
+          orange:"#F7931A",
+          light:"FFFFFF",
           "chart-graph-100":"rgba(231, 114, 255, 0.6)",
           "chart-graph-200": "rgba(116, 116, 250, 0.6)",
         },
@@ -49,6 +52,12 @@ const config: Config = {
         fontFamily: {
          PlayfairDisplay: ["Space Grotesk", "sans-serif"],
         },
+        borderRadius:{
+          "custom":"1.25rem"
+        },
+        maxWidth:{
+          "custom":"90rem"
+        }
       },
     },
   plugins: [],
