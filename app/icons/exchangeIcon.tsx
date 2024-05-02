@@ -1,7 +1,6 @@
 import React from "react";
 
 const ExchangeIcon = () => (
-  <>
     <svg
       width="16"
       height="16"
@@ -26,7 +25,6 @@ const ExchangeIcon = () => (
         fill="white"
       />
     </svg>
-  </>
 );
 
 export default ExchangeIcon;
