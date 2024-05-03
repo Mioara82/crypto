@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import Link from "next/link";
-import Providers from "./providers/ThemeProvider";
+import ThemeProvider from "./providers/ThemeProvider";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 
@@ -20,13 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={spaceGrotesk.className}>
-        <Providers>
+        <ThemeProvider>
           <Navbar />
           <Link href="/">Home</Link>
           <Link href="/Converter">Converter</Link>
           <Link href="/Portfolio">Portfolio</Link>
           {children}
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );
