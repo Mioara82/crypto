@@ -26,12 +26,14 @@ export const fetchMarketData = createAsyncThunk<MarketData>(
     }
 );
 
+type errorType = null | undefined | string;
+
 const marketSlice = createSlice({
     name: "market",
     initialState: {
-        data: {},
+        data: {}as MarketData,
         loading: "idle",
-        error: null,
+        error: null as errorType ,
     },
     reducers: {},
     extraReducers: (builder) => {
