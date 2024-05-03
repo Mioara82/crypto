@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { formatMarketCap } from "@/app/utils/formatHelpers";
+import {MarketData} from "../types";
 
-export const fetchMarketData = createAsyncThunk(
+export const fetchMarketData = createAsyncThunk<MarketData>(
     "market/fetchData",
     async () => {
-        try {
             const response = await fetch(
               "https://api.coingecko.com/api/v3/global/"
             );
@@ -11,17 +12,24 @@ export const fetchMarketData = createAsyncThunk(
               const err = await response.json();
               throw new Error(err.message);
             }
-            return await response.json();
-          } catch (error) {
-            return (error);
-          }
+            const responseData = await response.json();
+            const marketData: MarketData = {
+                coinData: responseData.data.active_cryptocurrencies,
+                btcMarketCapPercentage: responseData.data.market_cap_percentage.btc.toFixed(0),
+                ethMarketCapPercentage: responseData.data.market_cap_percentage.eth.toFixed(0),
+                totalMarketCap: formatMarketCap(responseData.data.total_market_cap.usd),
+                totalVolume: responseData.data.total_volume,
+                totalVolumePerCurrency:responseData.data.total_volume.usd,
+                exchange: responseData.data.markets
+            };
+            return marketData;
     }
 );
 
 const marketSlice = createSlice({
     name: "market",
     initialState: {
-        data: null,
+        data: {},
         loading: "idle",
         error: null,
     },
