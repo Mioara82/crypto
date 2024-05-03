@@ -1,7 +1,7 @@
 import ThemeSwitch from "./ThemeSwitch";
 
 const Navbar = () => {
-    return <ThemeSwitch/>;
+  return <ThemeSwitch />;
 };
 
 export default Navbar;
