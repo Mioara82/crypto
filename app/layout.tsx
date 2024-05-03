@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import Link from "next/link";
+import Providers from "./providers/ThemeProvider";
+import Navbar from "./components/Navbar";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
@@ -16,15 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-    <html lang="en">
-      <body className={`${spaceGrotesk.className} m-0 max-w-custom mx-auto rounded-custom`}>
-        <Link href="/"></Link>
-        <Link href="/Converter"></Link>
-        <Link href="/Portfolio"></Link>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={spaceGrotesk.className}>
+        <Providers>
+          <Navbar />
+          <Link href="/">Home</Link>
+          <Link href="/Converter">Converter</Link>
+          <Link href="/Portfolio">Portfolio</Link>
+          {children}
+        </Providers>
       </body>
     </html>
-    </>
   );
 }
