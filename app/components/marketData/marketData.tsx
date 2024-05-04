@@ -10,8 +10,11 @@ import BitcoinIcon from "@/app/icons/bitcoinIcon";
 import EthereumIcon from "@/app/icons/ethereumIcon";
 import ProgressBar from "../progressBar";
 import { formatMarketCap } from "@/app/utils/formatHelpers";
+import { useTheme } from "next-themes";
 
 const MarketData = () => {
+  const { theme } = useTheme();
+  
   const dispatch = useAppDispatch();
   const marketData = useAppSelector((state: RootState) => state.market.data);
   const loadingStatus = useAppSelector(
@@ -43,7 +46,11 @@ const MarketData = () => {
 
   return (
     marketData && (
-      <nav className="flex justify-around my-2 m-0 flex-nowrap bg-light-darkBg py-4 rounded-t-md max-w-1440">
+      <nav
+        className={`flex justify-around my-2 m-0 flex-nowrap ${
+          theme === "dark" ? "bg-dark-darkBg" : "bg-light-darkBg"
+        } py-4 rounded-t-md max-w-1440`}
+      >
         {loadingStatus === "fulfilled" && (
           <div className="flex gap-8 text-xs ">
             <div className="inline-flex justify-items-center gap-2">
