@@ -4,13 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html, 
-body{
-    margin:0;
-    padding:0;
-    line-height:15.31px;
-}
-
 * {
     box-sizing: border-box;
   }
