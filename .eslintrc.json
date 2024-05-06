@@ -15,9 +15,14 @@
     "no-extra-semi": "error", // Disallows unnecessary semicolons
     "react/no-array-index-key": "warn",
     "react/react-in-jsx-scope": "off",
-    "no-undef": "off"
+    "no-undef": "off",
+    "indent":["error", 2],
+    "@stylistic/indent": ["error", 2]
   },
-  "plugins": ["react"],
+  "plugins": [
+    "react",
+  "@stylistic"
+],
 
   "settings": {
     "react": {

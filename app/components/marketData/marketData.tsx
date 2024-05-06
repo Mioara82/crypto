@@ -30,6 +30,20 @@ const MarketData = () => {
     return <div>Loading data...</div>;
   }
 
+  const getTotalMarketVolume = () =>{
+    if(marketData && marketData?.totalVolume){
+      const totalMarketVolume = Object.values(marketData?.totalVolume).reduce(
+      (a, b) => a + b,
+      0
+    );
+  return totalMarketVolume;
+    }
+};
+  const currencyVolumeRatio = (
+    (marketData?.totalVolumePerCurrency / getTotalMarketVolume()) *
+    100
+  ).toFixed(3);
+
   return (
     marketData && (
       <nav
@@ -61,12 +75,9 @@ const MarketData = () => {
                 {marketData.totalMarketCap}
               </div>
             </div>
-
-            <div className="inline-flex justify-items-center items-center gap-[5px]">
-              <div className="text-light-primary">
-                ${formatMarketCap(marketData.totalVolumePerCurrency)}
-              </div>
-              <ProgressBar value={5} color="#ffffff" />
+            <div>
+              <div className="text-light-primary">${formatMarketCap(marketData.totalVolumePerCurrency)}</div>
+              <ProgressBar value={currencyVolumeRatio} />
             </div>
 
             <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
