@@ -9,7 +9,7 @@ import ArrowIcon from "@/app/icons/arrowIcon";
 import BitcoinIcon from "@/app/icons/bitcoinIcon";
 import EthereumIcon from "@/app/icons/ethereumIcon";
 import ProgressBar from "../progressBar";
- import { formatMarketCap } from "@/app/utils/formatHelpers";
+import { formatMarketCap } from "@/app/utils/formatHelpers";
 
 const MarketData = () => {
   const dispatch = useAppDispatch();
@@ -27,15 +27,15 @@ const MarketData = () => {
     return <div>Loading data...</div>;
   }
 
-  const getTotalMarketVolume = () =>{
-    if(marketData && marketData?.totalVolume){
+  const getTotalMarketVolume = () => {
+    if (marketData && marketData?.totalVolume) {
       const totalMarketVolume = Object.values(marketData?.totalVolume).reduce(
-      (a, b) => a + b,
-      0
-    );
-  return totalMarketVolume;
+        (a, b) => a + b,
+        0
+      );
+      return totalMarketVolume;
     }
-};
+  };
   const currencyVolumeRatio = (
     (marketData?.totalVolumePerCurrency / getTotalMarketVolume()) *
     100
@@ -63,7 +63,9 @@ const MarketData = () => {
               </div>
             </div>
             <div>
-              <div className="text-light-primary">${formatMarketCap(marketData.totalVolumePerCurrency)}</div>
+              <div className="text-light-primary">
+                ${formatMarketCap(marketData.totalVolumePerCurrency)}
+              </div>
               <ProgressBar value={currencyVolumeRatio} />
             </div>
             <div className="inline-flex justify-items-center items-center gap-1 text-light-lightTextColor">
@@ -88,7 +90,6 @@ const MarketData = () => {
       </nav>
     )
   );
-  
 };
 
 export default MarketData;
