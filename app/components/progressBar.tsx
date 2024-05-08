@@ -1,10 +1,13 @@
+import React from "react";
+
 const ProgressBar = (props: any) => {
   return (
-    <progress
-      className="w-[53px] h-[6px] sm:rounded-sm"
-      max="100"
-      value={props.value}
-    />
+    <div className="relative w-[53px] h-[6px] rounded-sm bg-[#FFFFFF66]">
+      <div
+        className="absolute top-0 left-0 h-[6px] rounded-sm bg-common-purple"
+        style={{ width: `${props.value}%`, background: props.color }}
+      ></div>
+    </div>
   );
 };
 
