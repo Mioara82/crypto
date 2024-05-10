@@ -14,7 +14,7 @@ import { useTheme } from "next-themes";
 
 const MarketData = () => {
   const { theme } = useTheme();
-  
+
   const dispatch = useAppDispatch();
   const marketData = useAppSelector((state: RootState) => state.market.data);
   const loadingStatus = useAppSelector(
@@ -30,15 +30,15 @@ const MarketData = () => {
     return <div>Loading data...</div>;
   }
 
-  const getTotalMarketVolume = () =>{
-    if(marketData && marketData?.totalVolume){
+  const getTotalMarketVolume = () => {
+    if (marketData && marketData?.totalVolume) {
       const totalMarketVolume = Object.values(marketData?.totalVolume).reduce(
-      (a, b) => a + b,
-      0
-    );
-  return totalMarketVolume;
+        (a, b) => a + b,
+        0
+      );
+      return totalMarketVolume;
     }
-};
+  };
   const currencyVolumeRatio = (
     (marketData?.totalVolumePerCurrency / getTotalMarketVolume()) *
     100
@@ -76,8 +76,10 @@ const MarketData = () => {
               </div>
             </div>
             <div>
-              <div className="text-light-primary">${formatMarketCap(marketData.totalVolumePerCurrency)}</div>
-              <ProgressBar value={currencyVolumeRatio} />
+              <div className="text-light-primary">
+                ${formatMarketCap(marketData.totalVolumePerCurrency)}
+              </div>
+              <ProgressBar value={currencyVolumeRatio} color="#ffffff" />
             </div>
 
             <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
