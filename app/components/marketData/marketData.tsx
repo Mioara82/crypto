@@ -75,7 +75,7 @@ const MarketData = () => {
                 {marketData.totalMarketCap}
               </div>
             </div>
-            <div>
+            <div className="inline-flex justify-items-center items-center gap-2">
               <div className="text-light-primary">
                 ${formatMarketCap(marketData.totalVolumePerCurrency)}
               </div>
