@@ -4,13 +4,18 @@ import type { TypedUseSelectorHook } from "react-redux";
 import type { RootState, AppDispatch, AppStore } from "./store";
 
 export function useLocalState(key: string, initialValue: string) {
-  const storedValue = window.localStorage.getItem(key);
+  const isClient = typeof window === "object";
+  const storedValue = isClient ? window.localStorage.getItem(key) : null;
   const item = storedValue ? JSON.parse(storedValue) : initialValue;
   const [value, setValue] = useState(item);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (isClient) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
   }, [value]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [value, setValue];
 }
