@@ -23,7 +23,7 @@ export const fetchMarketData = createAsyncThunk<MarketData>(
       exchange: responseData.data.markets,
     };
     return marketData;
-  }
+  },
 );
 
 type errorType = null | undefined | string;

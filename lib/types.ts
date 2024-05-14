@@ -10,5 +10,11 @@ export interface MarketData {
   exchange: number;
 }
 
+export interface CoinData {
+  coinId: string;
+  coinSymbol: string;
+  coinName: string;
+}
+
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];

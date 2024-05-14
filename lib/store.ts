@@ -7,7 +7,7 @@ const logger  =reduxLogger.createLogger();
 
 export const rootReducer = combineReducers({
   market: marketReducer,
-  currency:currencyReducer
+  currency:currencyReducer,
 });
 
 export const makeStore = () => {

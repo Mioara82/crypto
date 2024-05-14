@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import ThemeProvider from "./providers/ThemeProvider";
-import Navbar from "./components/Navbar";
+import GlobalNavbar from "./components/GlobalNavbar";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
@@ -19,9 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} rounded-[20px]`}>
+      <body className={`${spaceGrotesk.className} rounded-[20px] p-6`}>
         <ThemeProvider>
-          <Navbar />
+          <GlobalNavbar />
           <Link href="/">Home</Link>
           <Link href="/Converter">Converter</Link>
           <Link href="/Portfolio">Portfolio</Link>

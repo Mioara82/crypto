@@ -1,14 +1,14 @@
 "use-client";
 import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../lib/hooks";
-import { fetchMarketData } from "../../../../lib/features/marketSlice";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
+import { fetchMarketData } from "../../../lib/features/marketSlice";
 import { RootState } from "@/lib/store";
 import CoinIcon from "@/app/icons/coinIcon";
 import ExchangeIcon from "@/app/icons/exchangeIcon";
 import ArrowIcon from "@/app/icons/arrowIcon";
 import BitcoinIcon from "@/app/icons/bitcoinIcon";
 import EthereumIcon from "@/app/icons/ethereumIcon";
-import ProgressBar from "../../progressBar";
+import ProgressBar from "../progressBar";
 import { formatMarketCap } from "@/app/utils/formatHelpers";
 import { useTheme } from "next-themes";
 

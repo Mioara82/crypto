@@ -8,7 +8,7 @@ type CurrencyState = {
   symbol: JSX.Element;
 };
 
-const getCurrencySymbol = (currency: Currency): JSX.Element => {
+export const getCurrencySymbol = (currency: Currency): JSX.Element => {
   const symbols: Record<Currency, () => JSX.Element> = {
     USD: DollarSign,
     EUR: EuroSign,
