@@ -1,35 +1,27 @@
-import {
-  DollarSign,
-  EuroSign,
-  SterlingSign,
-  BitcoinSign,
-  EthereumSign,
-} from "../../icons/currencyIcons";
-
 export const currencyList = [
   {
     name: "USD",
-    symbol: <DollarSign />,
+    symbol: "﹩",
     id: `${Math.random()}-${Math.random()}`,
   },
   {
     name: "EUR",
-    symbol: <EuroSign />,
+    symbol: "€",
     id: `${Math.random()}-${Math.random()}`,
   },
   {
     name: "GBP",
-    symbol: <SterlingSign />,
+    symbol: "£",
     id: `${Math.random()}-${Math.random()}`,
   },
   {
-    name: "BTC",
-    symbol: <BitcoinSign />,
+    name: "YEN",
+    symbol:"¥",
     id: `${Math.random()}-${Math.random()}`,
   },
   {
-    name: "ETH",
-    symbol: <EthereumSign />,
+    name: "CHF",
+    symbol: "Fr",
     id: `${Math.random()}-${Math.random()}`,
   },
 ];
