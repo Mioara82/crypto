@@ -1,11 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {api} from "./api";
 import marketReducer from "./features/marketSlice";
 import currencyReducer from "./features/appSettingsSlice";
 
-const reduxLogger = require("redux-logger");
-const logger  =reduxLogger.createLogger();
+// const reduxLogger = require("redux-logger");
+// const logger  =reduxLogger.createLogger();
 
 export const rootReducer = combineReducers({
+  [api.reducerPath]:api.reducer,
   market: marketReducer,
   currency:currencyReducer,
 });
@@ -13,7 +15,7 @@ export const rootReducer = combineReducers({
 export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
   });
 };
 
