@@ -47,7 +47,7 @@ const MarketData = () => {
   return (
     marketData && (
       <nav
-        className={`flex justify-around my-2 m-0 flex-nowrap ${
+        className={`flex justify-around m-0 flex-nowrap ${
           theme === "dark" ? "bg-dark-darkBg" : "bg-light-darkBg"
         } py-4 rounded-t-md max-w-1440`}
       >

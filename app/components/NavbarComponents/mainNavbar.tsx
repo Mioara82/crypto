@@ -3,7 +3,7 @@ import ThemeSwitch from "../ThemeSwitch";
 import Logo from "./logo";
 import HomeButton from "./homeButton";
 import PortfolioButton from "./portfolioButton";
-import SearchInput from "./searchInput";
+import Search from "./search";
 import CurrencySelector from "./currencySelector";
 
 const Navbar = () => {
@@ -16,7 +16,7 @@ const Navbar = () => {
           <PortfolioButton />
         </div>
         <div className="flex gap-6 justify-stretch items-center">
-          <SearchInput />
+          <Search />
           <CurrencySelector />
           <ThemeSwitch />
         </div>

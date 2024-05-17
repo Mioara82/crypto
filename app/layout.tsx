@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} rounded-[20px] p-6`}>
+      <body className={`${spaceGrotesk.className} rounded-[20px]`}>
         <ThemeProvider>
           <GlobalNavbar />
           <Link href="/">Home</Link>

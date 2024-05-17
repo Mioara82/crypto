@@ -1,22 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DollarSign, EuroSign, SterlingSign, BitcoinSign, EthereumSign } from "@/app/icons/currencyIcons";
 
-type Currency = "USD" | "EUR" | "GBP" | "BTC" | "ETH";
+type Currency = "USD" | "EUR" | "GBP" | "YEN" | "CHF";
 
 type CurrencyState = {
   currency: Currency;
-  symbol: JSX.Element;
+  symbol: string;
 };
 
-export const getCurrencySymbol = (currency: Currency): JSX.Element => {
-  const symbols: Record<Currency, () => JSX.Element> = {
-    USD: DollarSign,
-    EUR: EuroSign,
-    GBP: SterlingSign,
-    BTC: BitcoinSign,
-    ETH: EthereumSign,
+export const getCurrencySymbol = (currency: Currency): string => {
+  const symbols: Record<Currency, string> = {
+    USD: "﹩",
+    EUR: "€",
+    GBP: "£",
+    YEN: "¥",
+    CHF: "Fr",
   };
-  return symbols[currency]();
+  return symbols[currency];
 };
 
 const initialState: CurrencyState = {
@@ -36,4 +35,5 @@ const currencySlice = createSlice({
 });
 
 export const { setCurrency } = currencySlice.actions;
+export const  selectCurrency = (state:any) =>state.currency;
 export default currencySlice.reducer;

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { formatMarketCap } from "@/app/utils/formatHelpers";
-import { MarketData } from "../types";
+import { MarketData } from "../types/types";
 
 export const fetchMarketData = createAsyncThunk<MarketData>(
   "market/fetchData",
