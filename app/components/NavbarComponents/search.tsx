@@ -1,16 +1,20 @@
 import { ChangeEvent, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useGetSearchDataQuery } from "@/lib/api";
-import { useClickOutside, useLocalState } from "@/lib/hooks";
+import { useAppSelector, useClickOutside } from "@/lib/hooks";
 import Input from "../input";
 import { CoinSearch } from "@/lib/types/apiInterfaces";
+import {
+  selectCurrency,
+  selectCurrencySymbol,
+} from "@/lib/features/appSettingsSlice";
 
 const variants = {
   open: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.3,
+      duration: 0.5,
       ease: "easeInOut",
     },
   },
@@ -18,7 +22,7 @@ const variants = {
     opacity: 0,
     y: "-100%",
     transition: {
-      duration: 0.3,
+      duration: 0.5,
       ease: "easeInOut",
     },
   },
@@ -26,12 +30,13 @@ const variants = {
 
 const Search = () => {
   const ref = useRef(null);
-  const [currency] = useLocalState("currency", "usd");
+  const currency = useAppSelector(selectCurrency);
+  const currencySymbol = useAppSelector(selectCurrencySymbol);
 
   const [searchValue, setSearchValue] = useState("");
   const [show, setShow] = useState(false);
-  const { currentData, isLoading } = useGetSearchDataQuery(currency);
-  const coinsList = currentData?.slice(0, 30);
+  const { currentData, isLoading, isError } = useGetSearchDataQuery(currency);
+  const coinsList = currentData?.slice(0, 20);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -75,6 +80,8 @@ const Search = () => {
           show ? "opacity-100" : "opacity-0"
         }`}
       >
+        {isError && <div>An error occurred, please wait...</div>}
+        {isLoading && <div>Loading data</div>}
         {show &&
           filteredCoinsList &&
           filteredCoinsList.map((coin: CoinSearch) => (
@@ -88,11 +95,12 @@ const Search = () => {
               <p className="basis-1/2 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor">
                 {coin.name}
               </p>
-              <p className="basis-1/6 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor">
+              <p className="basis-1/6 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor text-end mr-1">
+                <span>{currencySymbol}</span>
                 {Math.round(coin.ath)}
               </p>
               <p
-                className={`basis-1/6 justify-self-end ${
+                className={`basis-1/6 text-end ${
                   coin.price_change_percentage_24h < 0
                     ? "text-common-red"
                     : "text-common-green"

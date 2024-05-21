@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Currency = "USD" | "EUR" | "GBP" | "YEN" | "CHF";
+export type Currency = "USD" | "EUR" | "GBP" | "AUD" | "CHF";
 
 type CurrencyState = {
   currency: Currency;
@@ -12,7 +12,7 @@ export const getCurrencySymbol = (currency: Currency): string => {
     USD: "﹩",
     EUR: "€",
     GBP: "£",
-    YEN: "¥",
+    AUD:"﹩",
     CHF: "Fr",
   };
   return symbols[currency];
@@ -35,5 +35,6 @@ const currencySlice = createSlice({
 });
 
 export const { setCurrency } = currencySlice.actions;
-export const  selectCurrency = (state:any) =>state.currency;
+export const  selectCurrency = (state:any) => state.currency.currency;
+export const selectCurrencySymbol = (state:any) => state.currency.symbol;
 export default currencySlice.reducer;

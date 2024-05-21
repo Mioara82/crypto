@@ -1,10 +1,10 @@
 "use-client";
-import { useState, useRef } from "react";
+import { useState, useRef} from "react";
 import { motion } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
-import { useLocalState, useClickOutside } from "@/lib/hooks";
+import { useClickOutside, useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { currencyList } from "./currencyList";
-import { getCurrencySymbol } from "@/lib/features/appSettingsSlice";
+import { setCurrency, selectCurrency, getCurrencySymbol, Currency} from "@/lib/features/appSettingsSlice";
 
 const variants = {
   open: {
@@ -27,7 +27,8 @@ const variants = {
 
 const CurrencySelector = () => {
   const [show, setShow] = useState(false);
-  const [currency, setCurrency] = useLocalState("currency", "usd");
+  const currency = useAppSelector(selectCurrency);
+  const dispatch = useAppDispatch();
   const ref = useRef(null);
 
   const handleDropdownDisplay = () => {
@@ -38,8 +39,8 @@ const CurrencySelector = () => {
     setShow(false);
   };
 
-  const onCurrencyChange = (value: string) => {
-    setCurrency(value);
+  const onCurrencyChange = (value: Currency) => {
+    dispatch(setCurrency(value));
   };
 
   useClickOutside(ref, closeDropdown);
@@ -82,7 +83,7 @@ const CurrencySelector = () => {
               <li
                 className="flex items-center m-0 gap-2 px-4 py-2 bg-light-lightBg dark:bg-dark-191 last:rounded-b-xl"
                 key={el.id}
-                onClick={() => onCurrencyChange(el.name)}
+                onClick={() => onCurrencyChange(el.name as Currency)}
               >
                 <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 flex items-center justify-center p-1 rounded-full">
                   <span className="mx-auto text-light-lightBg dark:text-dark-textDark">

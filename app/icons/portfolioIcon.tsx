@@ -9,8 +9,8 @@ const PortfolioIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
+      className="stroke-light-darkBg dark:stroke-dark-text"
       d="M21 12L12 18L3 12M21 16L12 22L3 16M21 8L12 14L3 8L12 2L21 8Z"
-      stroke="white"
       strokeOpacity="0.5"
       strokeWidth="2"
       strokeLinecap="round"
