@@ -1,23 +1,21 @@
-import { useState, useEffect } from "react";
+import { useEffect, RefObject } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 import type { RootState, AppDispatch, AppStore } from "./store";
 
-export function useLocalState(key: string, initialValue: string) {
-  const isClient = typeof window === "object";
-  const storedValue = isClient ? window.localStorage.getItem(key) : null;
-  const item = storedValue ? JSON.parse(storedValue) : initialValue;
-  const [value, setValue] = useState(item);
-
-  /* eslint-disable react-hooks/exhaustive-deps */
+export function useClickOutside(
+  ref: RefObject<HTMLDivElement>,
+  callback: () => void
+) {
   useEffect(() => {
-    if (isClient) {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    }
-  }, [value]);
-  /* eslint-enable react-hooks/exhaustive-deps */
-
-  return [value, setValue];
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current?.contains(e.target as Node)) {
+        callback();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [ref, callback]);
 }
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

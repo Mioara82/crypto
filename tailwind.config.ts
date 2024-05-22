@@ -53,12 +53,16 @@ const config: Config = {
       extend: {
         fontFamily: {
          PlayfairDisplay: ["Space Grotesk", "sans-serif"],
+         Inter:["Inter", "sans-serif"]
         },
         borderRadius:{
           "custom":"1.25rem"
         },
         maxWidth:{
           "custom":"90rem"
+        },
+        width:{
+          "w86":"356px"
         }
       },
     },

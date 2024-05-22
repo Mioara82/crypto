@@ -1,4 +1,4 @@
-import { AppStore } from "./store";
+import { AppStore } from "../store";
 
 export interface MarketData {
   coinData: number;
@@ -8,6 +8,12 @@ export interface MarketData {
   totalVolume: number;
   totalVolumePerCurrency: number;
   exchange: number;
+}
+
+export interface CoinData {
+  id: string;
+  symbol: string;
+  name: string;
 }
 
 export type RootState = ReturnType<AppStore["getState"]>;
