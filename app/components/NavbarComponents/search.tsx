@@ -1,7 +1,7 @@
 import { ChangeEvent, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useGetSearchDataQuery } from "@/lib/api";
-import { useAppSelector, useClickOutside } from "@/lib/hooks";
+import { useAppSelector, useClickOutside, useDebounce } from "@/lib/hooks";
 import Input from "../input";
 import { CoinSearch } from "@/lib/types/apiInterfaces";
 import {
@@ -35,6 +35,7 @@ const Search = () => {
 
   const [searchValue, setSearchValue] = useState("");
   const [show, setShow] = useState(false);
+  const debouncedSearchValue = useDebounce(searchValue, 700);
   const { currentData, isLoading, isError } = useGetSearchDataQuery(currency);
   const coinsList = currentData?.slice(0, 20);
 
@@ -58,7 +59,7 @@ const Search = () => {
   if (!currentData || isLoading) return;
 
   const filteredCoinsList = coinsList.filter((coin: CoinSearch) =>
-    coin.name.toLowerCase().startsWith(searchValue.toLowerCase())
+    coin.name.toLowerCase().startsWith(debouncedSearchValue.toLowerCase())
   );
 
   return (
