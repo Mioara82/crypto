@@ -1,5 +1,5 @@
 "use client";
-import ThemeSwitch from "../ThemeSwitch";
+import ThemeSwitch from "../../ThemeSwitch";
 import Logo from "./logo";
 import HomeButton from "./homeButton";
 import PortfolioButton from "./portfolioButton";
