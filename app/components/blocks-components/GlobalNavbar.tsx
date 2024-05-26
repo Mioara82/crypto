@@ -1,8 +1,8 @@
 "use client";
 
 import StoreProvider from "../../providers/StoreProvider";
-import MarketData from "./NavbarComponents/TopNavbar/globalData/marketData";
-import Navbar from "./NavbarComponents/mainNavbar";
+import MarketData from "./marketData";
+import Navbar from "./mainNavbar";
 
 const GlobalNavbar = () => {
   return (

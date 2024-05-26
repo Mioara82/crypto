@@ -11,7 +11,7 @@ import ExchangeIcon from "@/app/icons/exchangeIcon";
 import ArrowIcon from "@/app/icons/arrowIcon";
 import BitcoinIcon from "@/app/icons/bitcoinIcon";
 import EthereumIcon from "@/app/icons/ethereumIcon";
-import ProgressBar from "@/app/components/reusable components/progressBar";
+import ProgressBar from "@/app/components/UI-components/progressBar";
 import { formatMarketCap, roundNumber } from "@/app/utils/formatHelpers";
 import { useTheme } from "next-themes";
 

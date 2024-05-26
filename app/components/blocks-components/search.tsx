@@ -2,7 +2,7 @@ import { ChangeEvent, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useGetSearchDataQuery } from "@/lib/api";
 import { useAppSelector, useClickOutside, useDebounce } from "@/lib/hooks";
-import Input from "../../reusable components/input";
+import Input from "../UI-components/input";
 import { CoinSearch } from "@/lib/types/apiInterfaces";
 import {
   selectCurrency,
