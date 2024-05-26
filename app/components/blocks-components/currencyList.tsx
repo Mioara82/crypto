@@ -15,7 +15,7 @@ export const currencyList = [
     id: `${Math.random()}-${Math.random()}`,
   },
   {
-    name: "YEN",
+    name: "JPY",
     symbol:"¥",
     id: `${Math.random()}-${Math.random()}`,
   },

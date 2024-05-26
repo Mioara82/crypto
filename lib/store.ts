@@ -2,7 +2,6 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { api } from "./api";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
-import marketReducer from "./features/marketSlice";
 import currencyReducer from "./features/appSettingsSlice";
 
 const reduxLogger = require("redux-logger");
@@ -18,7 +17,6 @@ const persistedReducer = persistReducer(persistConfig, currencyReducer);
 
 export const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
-  market: marketReducer,
   currency: persistedReducer,
 });
 

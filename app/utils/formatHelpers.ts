@@ -13,3 +13,7 @@ export function formatMarketCap(marketCap: any) {
     return marketCap;
   }
 }
+
+export function roundNumber(number:number){
+  return Math.round(number);
+}
