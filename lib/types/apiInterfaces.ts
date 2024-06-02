@@ -10,6 +10,6 @@ export interface CoinSearch {
   id: string;
   symbol: string;
   name: string;
-  ath: number;
+  current_price: number;
   price_change_percentage_24h: number;
 }

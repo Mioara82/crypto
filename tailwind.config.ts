@@ -35,6 +35,7 @@ const config: Config = {
           text:"#FFFFFF",
           textDark:"#000000",
           textFocus:"#E4E4F0",
+          hover:"#232336",
           chartTextColor:"#D1D1D1",
           chartDateColor:"#B9B9BA",
           "191":"#191925",
