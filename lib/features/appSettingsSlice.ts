@@ -20,10 +20,18 @@ export const getCurrencySymbol = (currency: Currency): string => {
   return symbols[currency];
 };
 
-const initialState: CurrencyState = {
-  currency: "USD",
-  symbol: getCurrencySymbol("USD"),
+const loadStateFromLocalStorage =():CurrencyState => {
+  const savedState = window.localStorage.getItem("currencyState");
+  if(savedState){
+    return JSON.parse(savedState);
+  }
+  return {
+    currency: "USD",
+    symbol: getCurrencySymbol("USD"),
+  };
 };
+
+const initialState: CurrencyState = loadStateFromLocalStorage();
 
 const currencySlice = createSlice({
   name: "currency",
@@ -32,6 +40,7 @@ const currencySlice = createSlice({
     setCurrency(state, action: PayloadAction<Currency>) {
       state.currency = action.payload;
       state.symbol = getCurrencySymbol(action.payload);
+      window.localStorage.setItem("currencyState", JSON.stringify(state));
     },
   },
 });

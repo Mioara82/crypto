@@ -1,23 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { api } from "./api";
-import storage from "redux-persist/lib/storage";
-import { persistReducer, persistStore } from "redux-persist";
 import currencyReducer from "./features/appSettingsSlice";
 
 const reduxLogger = require("redux-logger");
 const logger = reduxLogger.createLogger();
 
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["currency"],
-};
-
-const persistedReducer = persistReducer(persistConfig, currencyReducer);
-
 export const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
-  currency: persistedReducer,
+  currency: currencyReducer,
 });
 
 export const makeStore = () => {
@@ -33,7 +23,7 @@ export const makeStore = () => {
 };
 
 const store = makeStore();
-export const persistor = persistStore(store);
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
+export default store;
