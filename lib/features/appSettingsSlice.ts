@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type Currency = "USD" | "EUR" | "GBP" | "JPY" | "CHF";
+export type Currency = "USD" | "EUR" | "GBP" | "JPY" | "CHF" | "BTC" | "ETH";
 
 type CurrencyState = {
   currency: Currency;
@@ -14,6 +14,8 @@ export const getCurrencySymbol = (currency: Currency): string => {
     GBP: "£",
     JPY: "¥",
     CHF: "Fr",
+    BTC: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
+    ETH: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
   };
   return symbols[currency];
 };

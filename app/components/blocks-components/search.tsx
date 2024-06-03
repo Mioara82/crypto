@@ -1,8 +1,11 @@
 import { ChangeEvent, useState, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useGetSearchDataQuery } from "@/lib/api";
 import { useAppSelector, useClickOutside, useDebounce } from "@/lib/hooks";
 import Input from "../UI-components/input";
+import Spinner from "../UI-components/Spinner";
 import { CoinSearch } from "@/lib/types/apiInterfaces";
 import {
   selectCurrency,
@@ -37,7 +40,7 @@ const Search = () => {
   const [show, setShow] = useState(false);
   const debouncedSearchValue = useDebounce(searchValue, 700);
   const { currentData, isLoading, isError } = useGetSearchDataQuery(currency);
-  const coinsList = currentData?.slice(0, 20);
+  const coinsList = currentData?.slice(0, 30);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -47,6 +50,9 @@ const Search = () => {
 
   const handleOnBlur = () => {
     setSearchValue("");
+  };
+
+  const hideDropdown = () => {
     setShow(false);
   };
 
@@ -56,23 +62,25 @@ const Search = () => {
 
   useClickOutside(ref, handleDropdownDisplay);
 
-  if (!currentData || isLoading) return;
-
-  const filteredCoinsList = coinsList.filter((coin: CoinSearch) =>
+  const filteredCoinsList = coinsList?.filter((coin: CoinSearch) =>
     coin.name.toLowerCase().startsWith(debouncedSearchValue.toLowerCase())
   );
 
   return (
     <div className="relative flex items-center justify-center gap-3 font-[Inter] font-normal">
-      <Input
-        value={searchValue}
-        onInputChange={handleChange}
-        onInputBlur={handleOnBlur}
-        show={show}
-        name="searchInput"
-        type="text"
-        placeholder="Search..."
-      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Input
+          value={searchValue}
+          onInputChange={handleChange}
+          onInputBlur={handleOnBlur}
+          show={show}
+          name="searchInput"
+          type="text"
+          placeholder="Search..."
+        />
+      )}
       <motion.ul
         animate={show ? "open" : "closed"}
         variants={variants}
@@ -82,13 +90,20 @@ const Search = () => {
         }`}
       >
         {isError && <div>An error occurred, please wait...</div>}
-        {isLoading && <div>Loading data</div>}
+        {isLoading && (
+          <div>
+            <Spinner />
+            <p>Loading data, please wait...</p>
+          </div>
+        )}
         {show &&
           filteredCoinsList &&
           filteredCoinsList.map((coin: CoinSearch) => (
-            <li
+            <Link
+              href={`/Coin/${coin.id}`}
+              onClick={hideDropdown}
               key={coin.id}
-              className="flex justify-stretch mb-0.5 text-sm font-Inter"
+              className="flex justify-stretch p-2 mb-0.5 text-sm font-Inter hover:cursor-pointer hover:bg-[#CCCCFA] hover:dark:bg-dark-hover hover:shadow-gray-400 hover:opacity-50 hover:rounded-md transition-all dura"
             >
               <p className="basis-1/6 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor">
                 {coin.symbol}
@@ -97,8 +112,18 @@ const Search = () => {
                 {coin.name}
               </p>
               <p className="basis-1/6 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor text-end mr-1">
-                <span>{currencySymbol}</span>
-                {Math.round(coin.ath)}
+                {currencySymbol.startsWith("https://") ? (
+                  <Image
+                    width={20}
+                    height={20}
+                    src={currencySymbol}
+                    alt="icon of the currency"
+                    style={{ display: "inline-flex" }}
+                  />
+                ) : (
+                  <span>{currencySymbol}</span>
+                )}
+                {Math.round(coin.current_price)}
               </p>
               <p
                 className={`basis-1/6 text-end ${
@@ -109,7 +134,7 @@ const Search = () => {
               >
                 {coin.price_change_percentage_24h.toFixed(2)}%
               </p>
-            </li>
+            </Link>
           ))}
       </motion.ul>
     </div>

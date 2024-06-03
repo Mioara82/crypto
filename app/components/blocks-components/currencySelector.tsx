@@ -1,10 +1,16 @@
 "use-client";
-import { useState, useRef} from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
 import { useClickOutside, useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { currencyList } from "./currencyList";
-import { setCurrency, selectCurrency, getCurrencySymbol, Currency} from "@/lib/features/appSettingsSlice";
+import {
+  setCurrency,
+  selectCurrency,
+  selectCurrencySymbol,
+  Currency,
+} from "@/lib/features/appSettingsSlice";
 
 const variants = {
   open: {
@@ -28,6 +34,7 @@ const variants = {
 const CurrencySelector = () => {
   const [show, setShow] = useState(false);
   const currency = useAppSelector(selectCurrency);
+  const currencySymbol = useAppSelector(selectCurrencySymbol);
   const dispatch = useAppDispatch();
   const ref = useRef(null);
 
@@ -62,9 +69,18 @@ const CurrencySelector = () => {
           } px-4 py-2 bg-light-lightBg dark:bg-dark-191`}
         >
           <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 m-0 flex items-center justify-center p-1 rounded-full">
-            <span className="mx-auto text-light-lightBg dark:text-dark-textDark m-0">
-              {getCurrencySymbol(currency)}
-            </span>
+            {currencySymbol.startsWith("https://") ? (
+              <Image
+                width={24}
+                height={24}
+                src={currencySymbol}
+                alt={currency}
+              />
+            ) : (
+              <span className="mx-auto text-light-lightBg dark:text-dark-textDark m-0">
+                {currencySymbol}
+              </span>
+            )}
           </span>
           <span className="text-sm text-light-secondaryTextColor dark:text-dark-text/[80] m-0">
             {currency}
@@ -86,9 +102,18 @@ const CurrencySelector = () => {
                 onClick={() => onCurrencyChange(el.name as Currency)}
               >
                 <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 flex items-center justify-center p-1 rounded-full">
-                  <span className="mx-auto text-light-lightBg dark:text-dark-textDark">
-                    {el.symbol}
-                  </span>
+                  {el.symbol.startsWith("https://") ? (
+                    <Image
+                      width={20}
+                      height={20}
+                      src={el.symbol}
+                      alt={el.name}
+                    />
+                  ) : (
+                    <span className="mx-auto text-light-lightBg dark:text-dark-textDark m-0">
+                      {el.symbol}
+                    </span>
+                  )}
                 </span>
                 <span className="text-sm text-light-secondaryTextColor dark:text-dark-text/[80]">
                   {el.name}

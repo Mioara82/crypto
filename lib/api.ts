@@ -8,6 +8,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: url,
+    mode: "cors",
     credentials: "same-origin",
     prepareHeaders(headers) {
       headers.set("x-cg-demo-api-key", apiKey);
@@ -15,7 +16,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["MarketDataApi", "CoinSearch"],
+  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails"],
   endpoints: (builder) => ({
     getSearchData: builder.query({
       query: (currency) => `/coins/markets/?vs_currency=${currency}`,

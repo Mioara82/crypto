@@ -28,12 +28,12 @@ export const makeStore = () => {
         serializableCheck: {
           ignoredActions: ["persist/PERSIST"],
         },
-      }).concat(api.middleware, logger),
+      }).concat(api.middleware,logger),
   });
 };
 
 const store = makeStore();
+export const persistor = persistStore(store);
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
-export const persistor = persistStore(store);
