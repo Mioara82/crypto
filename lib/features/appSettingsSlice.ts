@@ -15,14 +15,16 @@ export const getCurrencySymbol = (currency: Currency): string => {
     JPY: "¥",
     CHF: "Fr",
     BTC: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
-    ETH: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
+    ETH: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
   };
   return symbols[currency];
 };
-
-const loadStateFromLocalStorage =():CurrencyState => {
-  const savedState = window.localStorage.getItem("currencyState");
-  if(savedState){
+const loadStateFromLocalStorage = (): CurrencyState => {
+  let savedState;
+  if (typeof localStorage !== undefined) {
+    savedState = localStorage.getItem("currencyState");
+  }
+  if (savedState) {
     return JSON.parse(savedState);
   }
   return {
@@ -40,7 +42,7 @@ const currencySlice = createSlice({
     setCurrency(state, action: PayloadAction<Currency>) {
       state.currency = action.payload;
       state.symbol = getCurrencySymbol(action.payload);
-      window.localStorage.setItem("currencyState", JSON.stringify(state));
+      localStorage.setItem("currencyState", JSON.stringify(state));
     },
   },
 });
