@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type Currency = "USD" | "EUR" | "GBP" | "JPY" | "CHF" | "BTC" | "ETH";
 
 type CurrencyState = {
-  currency: Currency;
+  currencyName: Currency;
   symbol: string;
 };
 
@@ -19,35 +19,22 @@ export const getCurrencySymbol = (currency: Currency): string => {
   };
   return symbols[currency];
 };
-const loadStateFromLocalStorage = (): CurrencyState => {
-  let savedState;
-  if (typeof localStorage !== undefined) {
-    savedState = localStorage.getItem("currencyState");
-  }
-  if (savedState) {
-    return JSON.parse(savedState);
-  }
-  return {
-    currency: "USD",
-    symbol: getCurrencySymbol("USD"),
-  };
-};
 
-const initialState: CurrencyState = loadStateFromLocalStorage();
+const initialState: CurrencyState = {
+  currencyName: "GBP",
+  symbol: getCurrencySymbol("GBP"),
+};
 
 const currencySlice = createSlice({
   name: "currency",
   initialState,
   reducers: {
     setCurrency(state, action: PayloadAction<Currency>) {
-      state.currency = action.payload;
+      state.currencyName = action.payload;
       state.symbol = getCurrencySymbol(action.payload);
-      localStorage.setItem("currencyState", JSON.stringify(state));
     },
   },
 });
 
 export const { setCurrency } = currencySlice.actions;
-export const selectCurrency = (state: any) => state.currency.currency;
-export const selectCurrencySymbol = (state: any) => state.currency.symbol;
 export default currencySlice.reducer;

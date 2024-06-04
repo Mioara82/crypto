@@ -1,29 +1,59 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  combineReducers,
+  ThunkAction,
+  Action,
+} from "@reduxjs/toolkit";
 import { api } from "./api";
+import storage from "redux-persist/lib/storage";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+} from "redux-persist";
 import currencyReducer from "./features/appSettingsSlice";
 
 const reduxLogger = require("redux-logger");
 const logger = reduxLogger.createLogger();
 
-export const rootReducer = combineReducers({
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1,
+};
+
+export const rootReducer: any = combineReducers({
   [api.reducerPath]: api.reducer,
   currency: currencyReducer,
 });
 
 export const makeStore = () => {
-  return configureStore({
-    reducer: rootReducer,
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const store: any = configureStore({
+    reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: ["persist/PERSIST"],
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat(api.middleware,logger),
+      }).concat(api.middleware, logger),
   });
+  store.persistor = persistStore(store);
+  return store;
 };
 
-const store = makeStore();
+export const persistor = persistStore(makeStore());
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
-export default store;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppStore,
+  unknown,
+  Action<string>
+>;
