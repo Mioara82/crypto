@@ -2,11 +2,10 @@ import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
-type onCurrencyChange = (currency:Currency) => void;
-
 interface FilteredCurrencyListProps {
   list: CurrencyProps[];
-  onCurrencyChange:onCurrencyChange;
+  //type any as I have an error in deployment "type defined but never used"
+  onCurrencyChange:any;
 }
 
 export interface CurrencyProps {
