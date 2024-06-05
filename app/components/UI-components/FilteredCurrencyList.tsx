@@ -2,12 +2,14 @@ import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
+type onCurrencyChange = (currency:Currency) => void;
+
 interface FilteredCurrencyListProps {
   list: CurrencyProps[];
-  onCurrencyChange: () => void;
+  onCurrencyChange:onCurrencyChange;
 }
 
-interface CurrencyProps {
+export interface CurrencyProps {
   id: string;
   name: string;
   symbol: string;
@@ -21,7 +23,7 @@ const FilteredCurrencyList: React.FC<FilteredCurrencyListProps> = ({
     <li
       className="flex items-center m-0 gap-2 px-4 py-2 bg-light-lightBg dark:bg-dark-191 last:rounded-b-xl"
       key={item.id}
-      onClick={() => onCurrencyChange(item.name as Currency)}
+      onClick={() => {onCurrencyChange(item.name as Currency);}}
     >
       <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 flex items-center justify-center p-1 rounded-full">
         {item.symbol.startsWith("https://") ? (
