@@ -1,16 +1,13 @@
 "use-client";
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { FiChevronDown } from "react-icons/fi";
-import { useClickOutside, useAppSelector, useAppDispatch } from "@/lib/hooks";
-import { currencyList } from "./currencyList";
-import {
-  setCurrency,
-  selectCurrency,
-  selectCurrencySymbol,
-  Currency,
-} from "@/lib/features/appSettingsSlice";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
+import { RootState } from "@/lib/store";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import { currencyList } from "../UI-components/currencyList";
+import { setCurrency, Currency } from "@/lib/features/appSettingsSlice";
+import CurrencyDetails from "../UI-components/CurrencyDetails";
+import FilteredCurrencyList from "../UI-components/FilteredCurrencyList";
 
 const variants = {
   open: {
@@ -33,8 +30,12 @@ const variants = {
 
 const CurrencySelector = () => {
   const [show, setShow] = useState(false);
-  const currency = useAppSelector(selectCurrency);
-  const currencySymbol = useAppSelector(selectCurrencySymbol);
+  const currency = useAppSelector(
+    (state: RootState) => state.currency.currencyName
+  );
+  const currencySymbol = useAppSelector(
+    (state: RootState) => state.currency.symbol
+  );
   const dispatch = useAppDispatch();
   const ref = useRef(null);
 
@@ -48,6 +49,7 @@ const CurrencySelector = () => {
 
   const onCurrencyChange = (value: Currency) => {
     dispatch(setCurrency(value));
+    closeDropdown();
   };
 
   useClickOutside(ref, closeDropdown);
@@ -63,65 +65,23 @@ const CurrencySelector = () => {
       onClick={handleDropdownDisplay}
     >
       {currencyList && (
-        <div
-          className={`flex items-center gap-2 border-1 border-white/[.05] ${
-            show ? "rounded-t-xl" : "rounded-xl"
-          } px-4 py-2 bg-light-lightBg dark:bg-dark-191`}
-        >
-          <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 m-0 flex items-center justify-center p-1 rounded-full">
-            {currencySymbol.startsWith("https://") ? (
-              <Image
-                width={24}
-                height={24}
-                src={currencySymbol}
-                alt={currency}
-              />
-            ) : (
-              <span className="mx-auto text-light-lightBg dark:text-dark-textDark m-0">
-                {currencySymbol}
-              </span>
-            )}
-          </span>
-          <span className="text-sm text-light-secondaryTextColor dark:text-dark-text/[80] m-0">
-            {currency}
-          </span>
-          <FiChevronDown />
-        </div>
+        <CurrencyDetails
+          show={show}
+          currency={currency}
+          currencySymbol={currencySymbol}
+        />
       )}
       <motion.ul
         animate={show ? "open" : "closed"}
         variants={variants}
         className="absolute top-[40px] w-[108px]"
       >
-        {show &&
-          filteredCurrencyList.map((el) => {
-            return (
-              <li
-                className="flex items-center m-0 gap-2 px-4 py-2 bg-light-lightBg dark:bg-dark-191 last:rounded-b-xl"
-                key={el.id}
-                onClick={() => onCurrencyChange(el.name as Currency)}
-              >
-                <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 flex items-center justify-center p-1 rounded-full">
-                  {el.symbol.startsWith("https://") ? (
-                    <Image
-                      width={20}
-                      height={20}
-                      src={el.symbol}
-                      alt={el.name}
-                    />
-                  ) : (
-                    <span className="mx-auto text-light-lightBg dark:text-dark-textDark m-0">
-                      {el.symbol}
-                    </span>
-                  )}
-                </span>
-                <span className="text-sm text-light-secondaryTextColor dark:text-dark-text/[80]">
-                  {el.name}
-                </span>
-                <FiChevronDown />
-              </li>
-            );
-          })}
+        {show && (
+          <FilteredCurrencyList
+            list={filteredCurrencyList}
+            onCurrencyChange={onCurrencyChange}
+          />
+        )}
       </motion.ul>
     </div>
   );

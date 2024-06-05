@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type Currency = "USD" | "EUR" | "GBP" | "JPY" | "CHF" | "BTC" | "ETH";
 
 type CurrencyState = {
-  currency: Currency;
+  currencyName: Currency;
   symbol: string;
 };
 
@@ -15,14 +15,14 @@ export const getCurrencySymbol = (currency: Currency): string => {
     JPY: "¥",
     CHF: "Fr",
     BTC: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
-    ETH: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
+    ETH: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
   };
   return symbols[currency];
 };
 
 const initialState: CurrencyState = {
-  currency: "USD",
-  symbol: getCurrencySymbol("USD"),
+  currencyName: "GBP",
+  symbol: getCurrencySymbol("GBP"),
 };
 
 const currencySlice = createSlice({
@@ -30,13 +30,11 @@ const currencySlice = createSlice({
   initialState,
   reducers: {
     setCurrency(state, action: PayloadAction<Currency>) {
-      state.currency = action.payload;
+      state.currencyName = action.payload;
       state.symbol = getCurrencySymbol(action.payload);
     },
   },
 });
 
 export const { setCurrency } = currencySlice.actions;
-export const selectCurrency = (state: any) => state.currency.currency;
-export const selectCurrencySymbol = (state: any) => state.currency.symbol;
 export default currencySlice.reducer;
