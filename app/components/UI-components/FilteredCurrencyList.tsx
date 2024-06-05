@@ -4,10 +4,11 @@ import { Currency } from "@/lib/features/appSettingsSlice";
 
 interface FilteredCurrencyListProps {
   list: CurrencyProps[];
-  onCurrencyChange: () => void;
+  //type any as I have an error in deployment "type defined but never used"
+  onCurrencyChange:any;
 }
 
-interface CurrencyProps {
+export interface CurrencyProps {
   id: string;
   name: string;
   symbol: string;
@@ -21,7 +22,7 @@ const FilteredCurrencyList: React.FC<FilteredCurrencyListProps> = ({
     <li
       className="flex items-center m-0 gap-2 px-4 py-2 bg-light-lightBg dark:bg-dark-191 last:rounded-b-xl"
       key={item.id}
-      onClick={() => onCurrencyChange(item.name as Currency)}
+      onClick={() => {onCurrencyChange(item.name as Currency);}}
     >
       <span className="bg-light-secondaryTextColor dark:bg-dark-text w-6 h-6 flex items-center justify-center p-1 rounded-full">
         {item.symbol.startsWith("https://") ? (

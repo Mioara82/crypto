@@ -47,8 +47,8 @@ const CurrencySelector = () => {
     setShow(false);
   };
 
-  const onCurrencyChange = (value: Currency) => {
-    dispatch(setCurrency(value));
+  const handleCurrencyChange = (currency: Currency) => {
+    dispatch(setCurrency(currency));
     closeDropdown();
   };
 
@@ -79,7 +79,7 @@ const CurrencySelector = () => {
         {show && (
           <FilteredCurrencyList
             list={filteredCurrencyList}
-            onCurrencyChange={onCurrencyChange}
+            onCurrencyChange={handleCurrencyChange}
           />
         )}
       </motion.ul>
