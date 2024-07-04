@@ -100,9 +100,18 @@ const BarChart = ({
   let volumes: number[] = [];
 
   if (isSuccess && data) {
-    labels = data?.totalVolumes.map((volume: number[]) => volume[0]);
-    volumes = data?.totalVolumes.map((volume: number[]) => volume[1]);
+    const result = data?.totalVolumes.reduce(
+      (acc:{ labels: number[]; volumes: number[] }, [label, volume]) => ({
+        labels: [...acc.labels, label],
+        volumes: [...acc.volumes, volume],
+      }),
+      { labels: [], volumes: [] }
+    );
+
+    labels = result.labels;
+    volumes = result.volumes;
   }
+  
   const chartData: ChartData<"bar"> = {
     labels,
     datasets: [

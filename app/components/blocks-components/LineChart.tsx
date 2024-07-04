@@ -67,7 +67,7 @@ const options: ChartOptions<"line"> = {
       },
       grid: {
         display: false,
-        color:"rgba(0,0,0,0)"
+        color: "rgba(0,0,0,0)",
       },
       ticks: {
         autoSkip: true,
@@ -104,8 +104,16 @@ const LineChart = ({
   let prices: number[] = [];
 
   if (isSuccess && data) {
-    labels = data?.prices.map((price: number[]) => price[0]);
-    prices = data?.prices.map((price: number[]) => price[1]);
+    const result = data?.prices.reduce(
+      (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
+        labels: [...acc.labels, label],
+        prices: [...acc.prices, price],
+      }),
+      { labels: [], prices: [] }
+    );
+
+    labels = result.labels;
+    prices = result.prices;
   }
 
   const chartData: ChartData<"line"> = {
@@ -128,7 +136,7 @@ const LineChart = ({
             0,
             chartArea.top
           );
-          
+
           gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
           gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
           return gradient;
