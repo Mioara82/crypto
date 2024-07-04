@@ -39,7 +39,7 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
       <div className="flex-col w-5/6">
         <div
           className={`flex gap-2 ${
-            isActive ? "text-light-primary" : " dark:text-dark-darkText"
+            isActive ? ("text-light-primary dark:text-dark-text") :("text-light-primaryTextColor dark:text-dark-text")
           }`}
         >
           {coin.name.length > 6

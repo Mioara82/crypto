@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <>
       <input
-        className={`border-1 z-10 rounded-md pl-9 pr-4 py-2 bg-light-lightBg dark:bg-dark-191 focus:outline-none text-sm w-[356px] text-light-secondaryTextColor/80  dark:text-dark-chartTextColor 
+        className={`border-1 z-50 rounded-md pl-9 pr-4 py-2 bg-light-lightBg dark:bg-dark-191 focus:outline-none text-sm w-[356px] text-light-secondaryTextColor/80  dark:text-dark-chartTextColor 
         ${show ? "rounded-b-none" : "rounded-xl"}`}
         value={value}
         onChange={onInputChange}

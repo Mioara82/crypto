@@ -83,7 +83,7 @@ const Search = () => {
         animate={show ? "open" : "closed"}
         variants={variants}
         ref={ref}
-        className={`h-96 w-[100%] pl-9 pr-4 py-2 absolute top-[36px] overflow-auto bg-light-lightBg dark:bg-dark-191 rounded-b-xl ${
+        className={`h-96 w-[100%] pl-9 pr-4 py-2 z-20 absolute top-[36px] overflow-auto bg-[#ccccfa] dark:bg-dark-191 rounded-b-xl ${
           show ? "opacity-100" : "opacity-0"
         }`}
       >
