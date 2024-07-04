@@ -14,7 +14,16 @@ export function formatMarketCap(marketCap: any) {
   }
 }
 
-export function roundNumber(number:number){
+export function roundNumber(number: number) {
   return Math.round(number).toFixed(2);
 }
- 
+
+export function formatLabelDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.toLocaleString("default", { month: "long" });
+  const day = date.getDay();
+  const currentDate = `${month} ${day}, ${year}`;
+  return currentDate;
+}
+

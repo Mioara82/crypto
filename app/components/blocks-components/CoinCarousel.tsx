@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import CoinDetail from "../UI-components/CoinDetailsCarousel";
 import { CoinProps } from "../UI-components/CoinDetailsCarousel";
 import { Currency } from "@/lib/features/appSettingsSlice";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -38,26 +37,23 @@ const Arrow: React.FC<ArrowProps> = (props) => {
   );
 };
 
-const SampleNextArrow = (props:any) => (
-  <Arrow {...props}>
-  </Arrow>
-);
+const SampleNextArrow = (props: any) => <Arrow {...props}></Arrow>;
 
-const SamplePrevArrow = (props:any) => (
-  <Arrow {...props}>
-  </Arrow>
-);
+const SamplePrevArrow = (props: any) => <Arrow {...props}></Arrow>;
 
 interface CoinCarouselProps {
   list: CoinProps[];
   currency: Currency;
   isActive: number | null;
+  //type any as I have an error in deployment "type defined but never used"
+  onSelectCoin:any;
 }
 
 const CoinCarousel: React.FC<CoinCarouselProps> = ({
   list,
   currency,
   isActive,
+  onSelectCoin
 }) => {
   const settings = {
     dots: false,
@@ -102,6 +98,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({
           return (
             <CoinDetail
               key={coin.id}
+              onSelectCoin={()=>onSelectCoin(coin.id)}
               coin={coin}
               currency={currency}
               isActive={isActive === index}

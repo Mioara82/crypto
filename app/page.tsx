@@ -1,14 +1,19 @@
 "use client";
+import { useState } from "react";
 import { Suspense } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useIsActive } from "@/lib/hooks/useIsActive";
 import { useGetSearchDataQuery } from "@/lib/api";
+import { RootState } from "@/lib/store";
+import { CoinProps } from "./components/UI-components/CoinDetailsCarousel";
 import Button from "./components/UI-components/Button";
 import CoinCarousel from "./components/blocks-components/CoinCarousel";
-import { RootState } from "@/lib/store";
+import LineChart from "./components/blocks-components/LineChart";
+import BarChart from "./components/blocks-components/BarChart";
 
 export default function Home() {
   const [isActive, setIsActive] = useIsActive(0);
+  const [selectedCoinId, setSelectedCoinId] = useState<string | null>(null);
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
@@ -44,11 +49,50 @@ export default function Home() {
             {isSuccess ? (
               <CoinCarousel
                 list={coinList}
-                isActive={isActive}
+                isActive={coinList.findIndex(
+                  (coin: CoinProps) => coin.id === selectedCoinId
+                )}
                 currency={currency}
+                onSelectCoin={(id: string) => setSelectedCoinId(id)}
               />
             ) : null}
           </div>
+          {isSuccess && coinList.length > 0 ? (
+            selectedCoinId ? (
+              <div className="flex justify-center w-maxWidth gap-10 p-4">
+                <div className="w-1/2 h-[404px] p-6 rounded-xl relative">
+                  <LineChart
+                    params={{ id: selectedCoinId }}
+                    coin={coinList.find(
+                      (coin: CoinProps) => coin.id === selectedCoinId
+                    )}
+                    currency={currency}
+                  />
+                </div>
+                <div className="w-1/2 h-[404px] p-6 rounded-xl relative">
+                  <BarChart
+                    params={{ id: selectedCoinId }}
+                    currency={currency}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-center w-maxWidth gap-10 p-4">
+                <div className="flex-1">
+                  <LineChart
+                    params={{ id: "bitcoin" }}
+                    coin={coinList[0]}
+                    currency={currency}
+                  />
+                </div>
+                <div className="flex-1">
+                  <BarChart params={{ id: "bitcoin" }} currency={currency} />
+                </div>
+              </div>
+            )
+          ) : (
+            <p>Error loading data</p>
+          )}
         </Suspense>
       </main>
     </>
