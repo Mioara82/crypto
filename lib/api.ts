@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { MarketDataApi } from "./types/apiInterfaces";
+import {
+  MarketDataApi,
+  CoinDetails,
+  ChartDetails,
+} from "./types/apiInterfaces";
 
 const apiKey: string = process.env.COINGECKO_API_KEY || "";
 const url = "https://api.coingecko.com/api/v3";
@@ -34,7 +38,51 @@ export const api = createApi({
         };
       },
     }),
+    getCoinData: builder.query({
+      query: (id) =>
+        `/coins/${id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`,
+      transformResponse: (response: CoinDetails) => {
+        return {
+          id: response.id,
+          symbol: response.symbol,
+          name: response.name,
+          description: response.description,
+          links: response.links.homepage[0],
+          image: response.image,
+          currentPrice: response.market_data.current_price,
+          ath: response.market_data.ath,
+          atl: response.market_data.atl,
+          marketCap: response.market_data.market_cap,
+          fullyDilutedValuation: response.market_data.fully_diluted_valuation,
+          totalVolume: response.market_data.total_volume,
+          priceChangePercentage:
+            response.market_data.price_change_percentage_24h,
+          maxSupply: response.market_data.max_supply,
+          circulatingSupply: response.market_data.circulating_supply,
+        };
+      },
+    }),
+    getChartData: builder.query(
+      {
+        query: ({ id, currency }) => `/coins/${id}/market_chart/?vs_currency=${currency}&days=7`,
+        transformResponse: (response: ChartDetails) => {
+          if(!response){
+            throw new Error("No data received");
+          }
+          return {
+            prices: response.prices,
+            marketCaps: response.market_caps,
+            totalVolumes: response.total_volumes,
+          };
+        },
+      }
+    ),
   }),
 });
 
-export const { useGetSearchDataQuery, useGetMarketDataQuery } = api;
+export const {
+  useGetSearchDataQuery,
+  useGetMarketDataQuery,
+  useGetCoinDataQuery,
+  useGetChartDataQuery,
+} = api;
