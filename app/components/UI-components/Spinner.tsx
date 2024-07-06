@@ -1,10 +1,10 @@
 import React from "react";
-import PuffLoader from "react-spinners/PuffLoader";
+import SpinnerIcon from "@/app/icons/spinnerIcon";
 
 function Spinner() {
   return (
-    <div className="w-24 m-auto block">
-      <PuffLoader color="#6d48c7" size={40} />
+    <div className="w-5 h-5 rounded-full ">
+      <SpinnerIcon/>
     </div>
   );
 }
