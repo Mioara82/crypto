@@ -26,4 +26,3 @@ export function formatLabelDate() {
   const currentDate = `${month} ${day}, ${year}`;
   return currentDate;
 }
-
