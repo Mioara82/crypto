@@ -1,25 +1,49 @@
-import { useMessageBox } from "@/lib/hooks/useMessageBox";
-import CheckIcon from "@/app/icons/checkIcon";
+import Image from "next/image";
+import { useVisibility } from "@/lib/hooks/useVisibility";
 
 interface NotificationCardProps {
   text: string;
 }
 
-const NotificationCard: React.FC<NotificationCardProps> = ({
-  text,
-}) => {
-  const isVisible = useMessageBox();
+const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
+  const isVisible = useVisibility();
   return (
     <div>
-      {isVisible ? (
-        <div
-          className="absolute flex justify-center w-[228px] h-[60px] top-[16px] right-[20px] rounded-md border-2 py-3.5 px-4.5 bg-common-green border-t-[#00B1A7] border-r-[#00B1A7]
-                      border-l-[#00B1A7] border-b-[#00B1A700]"
-        >
-          <CheckIcon />
-          <p className="text-base m-auto">{text} </p>
+      {text === "Data loaded" ? (
+        <div>
+          {isVisible ? (
+            <div
+              className="absolute z-40 flex justify-center w-[228px] h-[60px] top-[16px] right-[20px] border rounded border-transparent py-3.5 px-4.5 bg-[#00B1A780]"
+              style={{
+                borderWidth: "1px",
+                borderImageSource:
+                  "linear-gradient(180deg, #00B4A8 0%, rgba(0, 180, 168, 0) 100%)",
+                borderImageSlice: "1",
+              }}
+            >
+              <Image src="/notificationIcons/check.svg" alt="check icon" />
+              <p className="text-base m-auto">{text} </p>
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      ) : (
+        <div
+          className="absolute z-40 box-border text-center w-[228px] h-[60px] top-[16px] right-[20px] rounded-md border py-3.5 px-4.5 bg-[#FE226480]"
+          style={{
+            borderWidth: "1px",
+            borderImageSource:
+              "linear-gradient(180deg, #FF0061 0%, rgba(255, 0, 97, 0) 100%)",
+            borderImageSlice: "1",
+          }}
+        >
+          <Image
+            src="/notificationIcons/error.svg"
+            className="w-5 h-5"
+            alt="error icon red"
+          />
+          <p className="text-base m-auto">Loading data </p>
+        </div>
+      )}
     </div>
   );
 };

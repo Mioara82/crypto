@@ -22,7 +22,7 @@ export function formatLabelDate() {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.toLocaleString("default", { month: "long" });
-  const day = date.getDay();
+  const day = date.getDate();
   const currentDate = `${month} ${day}, ${year}`;
   return currentDate;
 }

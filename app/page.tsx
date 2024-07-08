@@ -7,8 +7,8 @@ import { useGetSearchDataQuery } from "@/lib/api";
 import { RootState } from "@/lib/store";
 import { CoinProps } from "./components/UI-components/CoinDetailsCarousel";
 import Button from "./components/UI-components/Button";
-import ErrorIcon from "./icons/checkIcon";
-import NotificationCard from "./components/UI-components/NotificationCard";
+import { ChartSkeleton } from "./components/UI-components/Skeleton/ChartSkeleton";
+import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 const CoinCarousel = lazy(
   () => import("./components/blocks-components/CoinCarousel")
 );
@@ -16,6 +16,14 @@ const LineChart = lazy(
   () => import("./components/blocks-components/LineChart")
 );
 const BarChart = lazy(() => import("./components/blocks-components/BarChart"));
+
+interface ChartWrapperProps {
+  children: React.ReactNode;
+}
+
+const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
+  <div className="w-1/2 h-[404px] p-6 rounded-xl relative">{children}</div>
+);
 
 export default function Home() {
   const [isActive, setIsActive] = useIsActive(0);
@@ -32,7 +40,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex flex-col w-maxWidth h-[1675px] mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg relative">
+      <main className="flex flex-col w-maxWidth-custom mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg">
         <div className="flex justify-start w-[506px] h-[53px] rounded-md p-1">
           <Button
             text="Coins"
@@ -46,24 +54,14 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-col gap-[72px]">
-          <p className="text-light-secondaryTextColor dark:text-dark-chartTextColor">
+          <p className="text-light-secondaryTextColor dark:text-dark-chartTextColor ml-3">
             Select the currency to view statistics
           </p>
         </div>
-        <Suspense
-          fallback={
-            <div
-              className="absolute box-border text-center w-[228px] h-[60px] top-[16px] right-[20px] rounded-md border py-3.5 px-4.5 bg-common-red border-[#fe226470]"
-            >
-              <ErrorIcon />
-              <p className="text-base m-auto">Loading data </p>
-            </div>
-          }
-        >
+        <Suspense fallback={<CarouselSkeleton />}>
           <div>
             {isSuccess ? (
               <div>
-                <NotificationCard text="Data loaded" />
                 <CoinCarousel
                   list={coinList}
                   isActive={coinList.findIndex(
@@ -75,10 +73,19 @@ export default function Home() {
               </div>
             ) : null}
           </div>
-          {isSuccess && coinList.length > 0 ? (
-            selectedCoinId ? (
-              <div className="flex justify-center w-maxWidth gap-10 p-4">
-                <div className="w-1/2 h-[404px] p-6 rounded-xl relative">
+        </Suspense>
+        {isSuccess &&
+          coinList.length > 0 &&
+          (selectedCoinId ? (
+            <div className="flex justify-center w-maxWidth gap-10 p-4">
+              <Suspense
+                fallback={
+                  <ChartWrapper>
+                    <ChartSkeleton type="line" />
+                  </ChartWrapper>
+                }
+              >
+                <ChartWrapper>
                   <LineChart
                     params={{ id: selectedCoinId }}
                     coin={coinList.find(
@@ -86,32 +93,54 @@ export default function Home() {
                     )}
                     currency={currency}
                   />
-                </div>
-                <div className="w-1/2 h-[404px] p-6 rounded-xl relative">
+                </ChartWrapper>
+              </Suspense>
+              <Suspense
+                fallback={
+                  <ChartWrapper>
+                    <ChartSkeleton type="bar" />
+                  </ChartWrapper>
+                }
+              >
+                <ChartWrapper>
                   <BarChart
                     params={{ id: selectedCoinId }}
                     currency={currency}
                   />
-                </div>
-              </div>
-            ) : (
-              <div className="flex justify-center w-maxWidth gap-10 p-4">
-                <div className="flex-1">
+                </ChartWrapper>
+              </Suspense>
+            </div>
+          ) : (
+            //show default coin charts before user selection
+            <div className="flex justify-center w-maxWidth gap-10 p-4">
+              <Suspense
+                fallback={
+                  <ChartWrapper>
+                    <ChartSkeleton type="line" />
+                  </ChartWrapper>
+                }
+              >
+                <ChartWrapper>
                   <LineChart
                     params={{ id: "bitcoin" }}
                     coin={coinList[0]}
                     currency={currency}
                   />
-                </div>
-                <div className="flex-1">
+                </ChartWrapper>
+              </Suspense>
+              <Suspense
+                fallback={
+                  <ChartWrapper>
+                    <ChartSkeleton type="bar" />
+                  </ChartWrapper>
+                }
+              >
+                <ChartWrapper>
                   <BarChart params={{ id: "bitcoin" }} currency={currency} />
-                </div>
-              </div>
-            )
-          ) : (
-            <p>Error loading data</p>
-          )}
-        </Suspense>
+                </ChartWrapper>
+              </Suspense>
+            </div>
+          ))}
       </main>
     </>
   );

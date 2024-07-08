@@ -1,7 +1,4 @@
-import React from "react";
-
-const EthereumIcon = () => (
-  <svg
+<svg
     width="16"
     height="16"
     viewBox="0 0 16 16"
@@ -41,6 +38,3 @@ const EthereumIcon = () => (
       </clipPath>
     </defs>
   </svg>
-);
-
-export default EthereumIcon;

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-export function useMessageBox() {
+export function useVisibility() {
   const [isVisible, setIsVisible] = useState(true);
   
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsVisible(false);
-    }, 4000);
+    }, 3500);
     return () => {
       clearTimeout(timeoutId);
     };
