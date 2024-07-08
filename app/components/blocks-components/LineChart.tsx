@@ -50,6 +50,7 @@ const options: ChartOptions<"line"> = {
     },
     tooltip: {
       enabled: true,
+      usePointStyle: true,
     },
   },
   interaction: {
@@ -95,6 +96,7 @@ const LineChart = ({
   coin: CoinProps;
   currency: Currency;
 }) => {
+  
   const { data, isSuccess } = useGetChartDataQuery({ id: params.id, currency });
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
@@ -143,10 +145,11 @@ const LineChart = ({
         },
         pointRadius: 0,
         pointHoverRadius: 0,
+        borderCapStyle:"round",
+        borderJoinStyle:"round"
       },
     ],
   };
-
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
       <div>

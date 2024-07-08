@@ -1,10 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import CoinIcon from "@/app/icons/coinIcon";
-import ExchangeIcon from "@/app/icons/exchangeIcon";
-import ArrowIcon from "@/app/icons/arrowIcon";
-import BitcoinIcon from "@/app/icons/bitcoinIcon";
-import EthereumIcon from "@/app/icons/ethereumIcon";
 import ProgressBar from "@/app/components/UI-components/progressBar";
 import { formatMarketCap, roundNumber } from "@/app/utils/formatHelpers";
 
@@ -38,7 +33,12 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
         <div className="flex gap-8 text-xs ">
           <div className="inline-flex justify-items-center gap-2">
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
-              <CoinIcon />
+              <Image
+                src="/market/coin.svg"
+                alt="flashing symbol of a coin"
+                width={14}
+                height={14}
+              />
               Coins
             </div>
             <div className="text-light-primary">{data.coinData}</div>
@@ -46,14 +46,24 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
 
           <div className="inline-flex justify-items-center gap-2">
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
-              <ExchangeIcon />
+              <Image
+                src="/market/exchange.svg"
+                alt="two squares overlapping"
+                width={14}
+                height={14}
+              />
               Exchange
             </div>
             <div className="text-light-primary">{data.exchange}</div>
           </div>
 
           <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
-            <ArrowIcon />
+            <Image
+              src="/market/arrow.svg"
+              alt="a coloured arrow"
+              width={12}
+              height={4}
+            />
             <div className="text-light-primary">
               {formatMarketCap(data.totalMarketCap[currency])}
             </div>
@@ -79,13 +89,23 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
           </div>
 
           <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
-            <BitcoinIcon />
+            <Image
+              src="/currency/bitcoin.svg"
+              alt="bitcoin symbol"
+              width={14}
+              height={14}
+            />
             <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
             <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" />
           </div>
 
           <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
-            <EthereumIcon />
+            <Image
+              src="/currency/ethereum.svg"
+              alt="ethereum symbol"
+              width={14}
+              height={14}
+            />
             <div>{roundNumber(data.ethMarketCapPercentage)}%</div>
             <ProgressBar value={data.ethMarketCapPercentage} color="#849DFF" />
           </div>

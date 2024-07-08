@@ -1,7 +1,4 @@
-import React from "react";
-
-const ArrowIcon = () => (
-  <svg className="self-center"
+<svg className="self-center"
     width="12"
     height="4"
     viewBox="0 0 8 4"
@@ -13,6 +10,3 @@ const ArrowIcon = () => (
       fill="#01F1E3"
     />
   </svg>
-);
-
-export default ArrowIcon;

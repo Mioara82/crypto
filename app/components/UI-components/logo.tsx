@@ -1,9 +1,9 @@
-import LogoIcon from "@/app/icons/logoIcon";
+import Image from "next/image";
 
 const Logo = () => {
   return (
     <div className="flex items-center gap-2 w-[171px]">
-      <LogoIcon />
+      <Image src="/logo.svg" alt="a symbol of a chain link" width={36} height={21}/>
       <div className="font-[Inter] font-bold leading-[1.6rem] text-[21px]">
         Logoipsm
       </div>

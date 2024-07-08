@@ -37,6 +37,14 @@ const options: ChartOptions<"bar"> = {
   layout: {
     padding: 20,
   },
+  elements:{
+    point:{
+      pointStyle:"circle"
+    },
+    bar:{
+      
+    }
+  },
   plugins: {
     legend: {
       display: false,
@@ -135,6 +143,8 @@ const BarChart = ({
           gradient.addColorStop(1, "rgba(179,116,217,1)");
           return gradient;
         },
+        categoryPercentage:1,
+        barPercentage:0.5,
       },
     ],
   };

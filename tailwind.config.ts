@@ -67,6 +67,10 @@ const config: Config = {
       width: {
         w86: "356px",
       },
+      padding: {
+        "3.5": "18px",
+        "4.5": "22px",
+      },
       backgroundImage: {
         customGradient:
           "linear-gradient(180deg, rgba(116, 116, 250, 0.6) 0%, rgba(116, 116, 250, 0.01) 100%)",
