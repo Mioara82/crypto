@@ -93,6 +93,15 @@ const config: Config = {
           },
         ],
       },
+      animation: {
+        fade: 'fadeOut 5s ease-in-out',
+      },
+      keyframes: theme => ({
+        fadeOut: {
+          '0%': { backgroundColor: "#00B1A780" },
+          '100%': { backgroundColor: "#00ffffff" },
+        },
+      }),
     },
   },
   plugins: [],

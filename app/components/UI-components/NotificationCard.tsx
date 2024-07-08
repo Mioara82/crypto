@@ -13,7 +13,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
         <div>
           {isVisible ? (
             <div
-              className="absolute z-40 flex justify-center w-[228px] h-[60px] top-[16px] right-[20px] border rounded border-transparent py-3.5 px-4.5 bg-[#00B1A780]"
+              className="absolute z-40 flex justify-center w-[228px] h-[60px] top-[16px] right-[20px] border rounded border-transparent py-3.5 px-4.5 bg-[#00B1A780] animate-fade"
               style={{
                 borderWidth: "1px",
                 borderImageSource:
@@ -21,14 +21,14 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
                 borderImageSlice: "1",
               }}
             >
-              <Image src="/notificationIcons/check.svg" alt="check icon" />
+              <Image src="/notificationIcons/check.svg" alt="check icon" width={20} height={20} />
               <p className="text-base m-auto">{text} </p>
             </div>
           ) : null}
         </div>
       ) : (
         <div
-          className="absolute z-40 box-border text-center w-[228px] h-[60px] top-[16px] right-[20px] rounded-md border py-3.5 px-4.5 bg-[#FE226480]"
+          className="absolute z-40 box-border text-center w-[228px] h-[60px] top-[16px] right-[20px] rounded-md border py-3.5 px-4.5 bg-[#FE226480] animate-fade"
           style={{
             borderWidth: "1px",
             borderImageSource:
@@ -38,6 +38,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
         >
           <Image
             src="/notificationIcons/error.svg"
+            width={20} height={20}
             className="w-5 h-5"
             alt="error icon red"
           />
