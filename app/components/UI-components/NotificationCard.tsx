@@ -21,7 +21,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
                 borderImageSlice: "1",
               }}
             >
-              <Image src="/notificationIcons/check.svg" alt="check icon" />
+              <Image src="/notificationIcons/check.svg" alt="check icon" width={20} height={20} />
               <p className="text-base m-auto">{text} </p>
             </div>
           ) : null}
@@ -38,8 +38,8 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ text }) => {
         >
           <Image
             src="/notificationIcons/error.svg"
-            className="w-5 h-5"
             alt="error icon red"
+            width={20} height={20}
           />
           <p className="text-base m-auto">Loading data </p>
         </div>

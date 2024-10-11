@@ -1,49 +1,46 @@
 "use-client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
-  ChartOptions,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Filler,
   Legend,
+  TimeScale,
+  ChartOptions,
   ChartData,
   ScriptableContext,
-  TimeScale,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import "chartjs-adapter-date-fns";
+import Chart from "chart.js/auto";
+import { Line } from "react-chartjs-2";
+import { formatLabelDate } from "@/app/utils/formatHelpers";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { formatLabelDate, formatMarketCap } from "@/app/utils/formatHelpers";
+import { CoinProps } from "../../UI-components/CoinDetailsCarousel";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
-  TimeScale,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Filler,
-  Legend
+  Legend,
+  TimeScale
 );
 
-const options: ChartOptions<"bar"> = {
+const options: ChartOptions<"line"> = {
   responsive: true,
   layout: {
     padding: 20,
-  },
-  elements:{
-    point:{
-      pointStyle:"circle"
-    },
-    bar:{
-      
-    }
   },
   plugins: {
     legend: {
@@ -54,6 +51,7 @@ const options: ChartOptions<"bar"> = {
     },
     tooltip: {
       enabled: true,
+      usePointStyle: true,
     },
   },
   interaction: {
@@ -70,9 +68,8 @@ const options: ChartOptions<"bar"> = {
         },
       },
       grid: {
-        display: true,
-        color: "rgba(0, 0, 0, 0)",
-        lineWidth: 1, 
+        display: false,
+        color: "rgba(0,0,0,0)",
       },
       ticks: {
         autoSkip: true,
@@ -91,42 +88,46 @@ const options: ChartOptions<"bar"> = {
   },
 };
 
-const BarChart = ({
+const LineChart = ({
   params,
+  coin,
   currency,
 }: {
   params: { id: string };
+  coin: CoinProps;
   currency: Currency;
 }) => {
   const { data, isSuccess } = useGetChartDataQuery({ id: params.id, currency });
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
   );
-  const today = formatLabelDate();
+
+  const chartRef = useRef<Chart | null>(null);
 
   let labels: number[] = [];
-  let volumes: number[] = [];
+  let prices: number[] = [];
 
   if (isSuccess && data) {
-    const result = data?.totalVolumes.reduce(
-      (acc:{ labels: number[]; volumes: number[] }, [label, volume]) => ({
+    const result = data?.prices.reduce(
+      (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
         labels: [...acc.labels, label],
-        volumes: [...acc.volumes, volume],
+        prices: [...acc.prices, price],
       }),
-      { labels: [], volumes: [] }
+      { labels: [], prices: [] }
     );
 
     labels = result.labels;
-    volumes = result.volumes;
+    prices = result.prices;
   }
-  
-  const chartData: ChartData<"bar"> = {
+
+  const chartData: ChartData<"line"> = {
     labels,
     datasets: [
       {
-        data: volumes,
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: (context: ScriptableContext<"bar">) => {
+        fill: true,
+        data: prices,
+        borderColor: "#7878FA",
+        backgroundColor: (context: ScriptableContext<"line">) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
 
@@ -139,37 +140,65 @@ const BarChart = ({
             0,
             chartArea.top
           );
-          gradient.addColorStop(0, "rgba(179,116,242,0.01)");
-          gradient.addColorStop(1, "rgba(179,116,217,1)");
+
+          gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
+          gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
           return gradient;
         },
-        categoryPercentage:1,
-        barPercentage:0.5,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderCapStyle: "round",
+        borderJoinStyle: "round",
       },
     ],
   };
+
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    const canvas = document.getElementById(
+      "barChart"
+    ) as HTMLCanvasElement | null;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        chartRef.current = new Chart(ctx, {
+          type: "line",
+          data: chartData,
+          options: options,
+        });
+      }
+    }
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
+  }, [chartData]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
       <div>
         <div className="flex flex-col justify-start gap-6">
           <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
-            Volume 24h
+            {coin.name} ({coin.symbol.toUpperCase()})
           </p>
           <p className="text-2.5xl font-bold">
             {currencySymbol}
-            {formatMarketCap(volumes[1])}
+            {coin.current_price}
           </p>
         </div>
         <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-          {today}
+          {formatLabelDate()}
         </p>
       </div>
       <div>
-        <Bar options={options} data={chartData} />
+        <Line options={options} data={chartData} />
       </div>
     </div>
   );
 };
 
-export default BarChart;
+export default LineChart;

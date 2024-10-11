@@ -96,7 +96,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               height={14}
             />
             <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
-            <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" />
+            <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" data="marketData" />
           </div>
 
           <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
@@ -107,7 +107,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               height={14}
             />
             <div>{roundNumber(data.ethMarketCapPercentage)}%</div>
-            <ProgressBar value={data.ethMarketCapPercentage} color="#849DFF" />
+            <ProgressBar value={data.ethMarketCapPercentage} color="#849DFF" data="marketData" />
           </div>
         </div>
       </nav>
