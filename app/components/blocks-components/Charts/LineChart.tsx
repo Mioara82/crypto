@@ -119,8 +119,6 @@ const LineChart = ({
         prices: result.prices,
       };
     }
-  
-    // Fallback in case data or isSuccess is not available
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
 

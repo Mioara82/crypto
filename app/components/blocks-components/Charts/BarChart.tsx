@@ -1,5 +1,5 @@
 "use-client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef,useMemo } from "react";
 import {
   Chart as ChartJS,
   ChartOptions,
@@ -10,7 +10,6 @@ import {
   Tooltip,
   Filler,
   Legend,
-  ChartData,
   ScriptableContext,
   TimeScale,
 } from "chart.js";
@@ -105,51 +104,55 @@ const BarChart = ({
 
   const chartRef = useRef<Chart | null>(null);
 
-  let labels: number[] = [];
-  let volumes: number[] = [];
+  const { labels, volumes} = useMemo(() => {
+    if (isSuccess && data) {
+      const result = data?.prices.reduce(
+        (acc: { labels: number[]; volumes: number[] }, [label, volume]) => ({
+          labels: [...acc.labels, label],
+          volumes: [...acc.volumes, volume],
+        }),
+        { labels: [], volumes: [] }
+      );
+  
+      return {
+        labels: result.labels,
+        volumes: result.volumes,
+      };
+    }
+    return { labels: [], prices: [] };
+  }, [isSuccess, data]);
 
-  if (isSuccess && data) {
-    const result = data?.totalVolumes.reduce(
-      (acc: { labels: number[]; volumes: number[] }, [label, volume]) => ({
-        labels: [...acc.labels, label],
-        volumes: [...acc.volumes, volume],
-      }),
-      { labels: [], volumes: [] }
-    );
-
-    labels = result.labels;
-    volumes = result.volumes;
-  }
-
-  const chartData: ChartData<"bar"> = {
-    labels,
-    datasets: [
-      {
-        data: volumes,
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: (context: ScriptableContext<"bar">) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-
-          if (!chartArea) {
-            return undefined;
-          }
-          const gradient = ctx.createLinearGradient(
-            0,
-            chartArea.bottom,
-            0,
-            chartArea.top
-          );
-          gradient.addColorStop(0, "rgba(179,116,242,0.01)");
-          gradient.addColorStop(1, "rgba(179,116,217,1)");
-          return gradient;
+  const chartData: any = useMemo(() =>{
+    return {
+      labels,
+      datasets: [
+        {
+          data: volumes,
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: (context: ScriptableContext<"bar">) => {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
+  
+            if (!chartArea) {
+              return undefined;
+            }
+            const gradient = ctx.createLinearGradient(
+              0,
+              chartArea.bottom,
+              0,
+              chartArea.top
+            );
+            gradient.addColorStop(0, "rgba(179,116,242,0.01)");
+            gradient.addColorStop(1, "rgba(179,116,217,1)");
+            return gradient;
+          },
+          categoryPercentage: 1,
+          barPercentage: 0.5,
         },
-        categoryPercentage: 1,
-        barPercentage: 0.5,
-      },
-    ],
-  };
-
+      ],
+    };
+  },[labels, volumes]);
+    
   useEffect(() => {
     if (chartRef.current) {
       chartRef.current.destroy();
@@ -173,7 +176,7 @@ const BarChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData, options]);
+  }, [chartData]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
@@ -184,7 +187,7 @@ const BarChart = ({
           </p>
           <p className="text-2.5xl font-bold">
             {currencySymbol}
-            {formatMarketCap(volumes[1])}
+            {formatMarketCap(volumes?.[1])}
           </p>
         </div>
         <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
