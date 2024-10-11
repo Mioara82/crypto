@@ -1,5 +1,5 @@
 "use-client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -120,38 +120,40 @@ const LineChart = ({
     prices = result.prices;
   }
 
-  const chartData: ChartData<"line"> = {
-    labels,
-    datasets: [
-      {
-        fill: true,
-        data: prices,
-        borderColor: "#7878FA",
-        backgroundColor: (context: ScriptableContext<"line">) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
+  const chartData: ChartData<"line"> = useMemo(() => {
+    return {
+      labels,
+      datasets: [
+        {
+          fill: true,
+          data: prices,
+          borderColor: "#7878FA",
+          backgroundColor: (context: ScriptableContext<"line">) => {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
 
-          if (!chartArea) {
-            return undefined;
-          }
-          const gradient = ctx.createLinearGradient(
-            0,
-            chartArea.bottom,
-            0,
-            chartArea.top
-          );
+            if (!chartArea) {
+              return undefined;
+            }
+            const gradient = ctx.createLinearGradient(
+              0,
+              chartArea.bottom,
+              0,
+              chartArea.top
+            );
 
-          gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
-          gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
-          return gradient;
+            gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
+            gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
+            return gradient;
+          },
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          borderCapStyle: "round",
+          borderJoinStyle: "round",
         },
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        borderCapStyle: "round",
-        borderJoinStyle: "round",
-      },
-    ],
-  };
+      ],
+    };
+  }, [labels, prices]);
 
   useEffect(() => {
     if (chartRef.current) {
