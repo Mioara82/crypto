@@ -104,21 +104,25 @@ const LineChart = ({
 
   const chartRef = useRef<Chart | null>(null);
 
-  let labels: number[] = [];
-  let prices: number[] = [];
-
-  if (isSuccess && data) {
-    const result = data?.prices.reduce(
-      (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
-        labels: [...acc.labels, label],
-        prices: [...acc.prices, price],
-      }),
-      { labels: [], prices: [] }
-    );
-
-    labels = result.labels;
-    prices = result.prices;
-  }
+  const { labels, prices } = useMemo(() => {
+    if (isSuccess && data) {
+      const result = data?.prices.reduce(
+        (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
+          labels: [...acc.labels, label],
+          prices: [...acc.prices, price],
+        }),
+        { labels: [], prices: [] }
+      );
+  
+      return {
+        labels: result.labels,
+        prices: result.prices,
+      };
+    }
+  
+    // Fallback in case data or isSuccess is not available
+    return { labels: [], prices: [] };
+  }, [isSuccess, data]);
 
   const chartData: ChartData<"line"> = useMemo(() => {
     return {
