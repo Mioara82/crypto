@@ -42,7 +42,7 @@ const Search = () => {
   const [show, setShow] = useState(false);
   const debouncedSearchValue = useDebounce(searchValue, 700);
   const { currentData, isSuccess } = useGetSearchDataQuery(currency);
-  const coinsList = currentData.slice(0, 30);
+  const coinsList = currentData?.slice(0, 30);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

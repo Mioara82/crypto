@@ -64,9 +64,6 @@ const config: Config = {
       maxWidth: {
         custom: "90rem",
       },
-      width: {
-        w86: "356px",
-      },
       padding: {
         "3.5": "18px",
         "4.5": "22px",

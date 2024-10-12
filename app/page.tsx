@@ -13,16 +13,21 @@ const CoinCarousel = lazy(
   () => import("./components/blocks-components/CoinCarousel")
 );
 const LineChart = lazy(
-  () => import("./components/blocks-components/LineChart")
+  () => import("./components/blocks-components/Charts/LineChart")
 );
-const BarChart = lazy(() => import("./components/blocks-components/BarChart"));
+const BarChart = lazy(
+  () => import("./components/blocks-components/Charts/BarChart")
+);
+const CoinsTable = lazy(
+  () => import("./components/blocks-components/CoinsTable")
+);
 
 interface ChartWrapperProps {
   children: React.ReactNode;
 }
 
 const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
-  <div className="w-1/2 h-[404px] p-6 rounded-xl relative">{children}</div>
+  <div className="w-full p-6 rounded-xl relative">{children}</div>
 );
 
 export default function Home() {
@@ -141,6 +146,7 @@ export default function Home() {
               </Suspense>
             </div>
           ))}
+        <CoinsTable />
       </main>
     </>
   );

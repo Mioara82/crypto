@@ -33,7 +33,7 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top" as const,
+      display:false,
     },
     title: {
       display: false,
@@ -42,7 +42,6 @@ export const options = {
 };
 
 const labels = ["01", "02", "03", "04", "05", "06", "07"];
-//const prices = [1000,2000, 3000,4000,5000,6000,7000]
 
 export const data = {
   labels,

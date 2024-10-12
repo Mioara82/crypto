@@ -1,6 +1,5 @@
 "use-client";
-import { useGetChartDataQuery } from "@/lib/api";
-import React from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,11 +16,13 @@ import {
   ScriptableContext,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
+import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { formatLabelDate } from "@/app/utils/formatHelpers";
+import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { CoinProps } from "../UI-components/CoinDetailsCarousel";
+import { CoinProps } from "../../UI-components/CoinDetailsCarousel";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
 ChartJS.register(
@@ -96,60 +97,91 @@ const LineChart = ({
   coin: CoinProps;
   currency: Currency;
 }) => {
-  
   const { data, isSuccess } = useGetChartDataQuery({ id: params.id, currency });
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
   );
 
-  let labels: number[] = [];
-  let prices: number[] = [];
+  const chartRef = useRef<Chart | null>(null);
 
-  if (isSuccess && data) {
-    const result = data?.prices.reduce(
-      (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
-        labels: [...acc.labels, label],
-        prices: [...acc.prices, price],
-      }),
-      { labels: [], prices: [] }
-    );
+  const { labels, prices } = useMemo(() => {
+    if (isSuccess && data) {
+      const result = data?.prices.reduce(
+        (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
+          labels: [...acc.labels, label],
+          prices: [...acc.prices, price],
+        }),
+        { labels: [], prices: [] }
+      );
+  
+      return {
+        labels: result.labels,
+        prices: result.prices,
+      };
+    }
+    return { labels: [], prices: [] };
+  }, [isSuccess, data]);
 
-    labels = result.labels;
-    prices = result.prices;
-  }
+  const chartData: ChartData<"line"> = useMemo(() => {
+    return {
+      labels,
+      datasets: [
+        {
+          fill: true,
+          data: prices,
+          borderColor: "#7878FA",
+          backgroundColor: (context: ScriptableContext<"line">) => {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
 
-  const chartData: ChartData<"line"> = {
-    labels,
-    datasets: [
-      {
-        fill: true,
-        data: prices,
-        borderColor: "#7878FA",
-        backgroundColor: (context: ScriptableContext<"line">) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
+            if (!chartArea) {
+              return undefined;
+            }
+            const gradient = ctx.createLinearGradient(
+              0,
+              chartArea.bottom,
+              0,
+              chartArea.top
+            );
 
-          if (!chartArea) {
-            return undefined;
-          }
-          const gradient = ctx.createLinearGradient(
-            0,
-            chartArea.bottom,
-            0,
-            chartArea.top
-          );
-
-          gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
-          gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
-          return gradient;
+            gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
+            gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
+            return gradient;
+          },
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          borderCapStyle: "round",
+          borderJoinStyle: "round",
         },
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        borderCapStyle:"round",
-        borderJoinStyle:"round"
-      },
-    ],
-  };
+      ],
+    };
+  }, [labels, prices]);
+
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    const canvas = document.getElementById(
+      "barChart"
+    ) as HTMLCanvasElement | null;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        chartRef.current = new Chart(ctx, {
+          type: "line",
+          data: chartData,
+          options: options,
+        });
+      }
+    }
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
+  }, [chartData]);
+
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
       <div>
