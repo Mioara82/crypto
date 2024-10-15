@@ -218,7 +218,7 @@ const LineChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData]);
+  }, [chartData,options]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
