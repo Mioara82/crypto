@@ -77,8 +77,8 @@ const BarChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
-
-  const options: ChartOptions<"bar"> = {
+ 
+  const options: ChartOptions<"bar"> = useMemo(() => ({
     responsive: true,
     layout: {
       padding: 20,
@@ -142,7 +142,7 @@ const BarChart = ({
         },
       },
     },
-  };
+  }), [days, volumes, labels]);
 
   const chartData: any = useMemo(() => {
     return {

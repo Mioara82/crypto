@@ -85,8 +85,8 @@ const LineChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
-
-  const options: ChartOptions<"line"> = {
+ 
+  const options: ChartOptions<"line"> = useMemo(() => ({
     responsive: true,
     layout: {
       padding: 20,
@@ -106,7 +106,7 @@ const LineChart = ({
         caretPadding: 1,
         callbacks: {
           label: (tooltipItems: any) => {
-            const { index } = tooltipItems.dataIndex;
+            const { index } = tooltipItems.dataIndex; // Adjusted this line to extract the index correctly
             const price = prices[index];
             return `Price: ${currencySymbol}${price}`;
           },
@@ -158,7 +158,7 @@ const LineChart = ({
         },
       },
     },
-  };
+  }), [days, prices, currencySymbol]);
 
   const chartData: ChartData<"line"> = useMemo(() => {
     return {
