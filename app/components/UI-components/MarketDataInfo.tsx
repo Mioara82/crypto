@@ -27,7 +27,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
     <>
       <nav
         className="flex justify-around m-0 flex-nowrap
-         bg-light-darkBg dark:bg-dark-darkBg
+         bg-light-darkBg dark:bg-[#191925]
         py-4 rounded-t-md max-w-1440"
       >
         <div className="flex gap-8 text-xs ">
@@ -85,7 +85,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 {formatMarketCap(data.totalVolumePerCurrency[currency])}
               </span>
             </div>
-            <ProgressBar value={5} color="#ffffff" />
+            <ProgressBar value={5} color="#ffffff" colorTwo="#ffffff60" data="marketData"/>
           </div>
 
           <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
@@ -96,7 +96,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               height={14}
             />
             <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
-            <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" data="marketData" />
+            <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" data="marketData" colorTwo="#ffffff60" />
           </div>
 
           <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
@@ -107,7 +107,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               height={14}
             />
             <div>{roundNumber(data.ethMarketCapPercentage)}%</div>
-            <ProgressBar value={data.ethMarketCapPercentage} color="#849DFF" data="marketData" />
+            <ProgressBar value={data.ethMarketCapPercentage} color="#849DFF" data="marketData" colorTwo="#ffffff60" />
           </div>
         </div>
       </nav>

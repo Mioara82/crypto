@@ -16,5 +16,11 @@ export interface CoinData {
   name: string;
 }
 
+export interface daysObject {
+  name: string;
+  period: number | string;
+  id: number;
+}
+
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];

@@ -1,5 +1,5 @@
 "use-client";
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,7 +18,12 @@ import {
 import "chartjs-adapter-date-fns";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { formatLabelDate } from "@/app/utils/formatHelpers";
+import {
+  formatMarketCap,
+  formatLabelDate,
+  getDisplayFormats,
+  formatTimestampToDate,
+} from "@/app/utils/formatHelpers";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
@@ -37,70 +42,29 @@ ChartJS.register(
   TimeScale
 );
 
-const options: ChartOptions<"line"> = {
-  responsive: true,
-  layout: {
-    padding: 20,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: false,
-    },
-    tooltip: {
-      enabled: true,
-      usePointStyle: true,
-    },
-  },
-  interaction: {
-    mode: "index",
-  },
-  scales: {
-    x: {
-      type: "time",
-      time: {
-        unit: "day",
-        tooltipFormat: "P",
-        displayFormats: {
-          day: "MMM dd",
-        },
-      },
-      grid: {
-        display: false,
-        color: "rgba(0,0,0,0)",
-      },
-      ticks: {
-        autoSkip: true,
-        maxTicksLimit: 10,
-      },
-    },
-    y: {
-      display: false,
-      grid: {
-        display: false,
-      },
-      ticks: {
-        display: false,
-      },
-    },
-  },
-};
-
 const LineChart = ({
   params,
   coin,
   currency,
+  days,
 }: {
   params: { id: string };
   coin: CoinProps;
   currency: Currency;
+  days: string | number;
 }) => {
-  const { data, isSuccess } = useGetChartDataQuery({ id: params.id, currency });
+  const { data, isSuccess } = useGetChartDataQuery({
+    id: params.id,
+    currency,
+    days,
+  });
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
   );
+
+  const today = formatLabelDate();
+  const [displayDate, setDisplayDate] = useState<string>(today);
+  const [displayPrice, setDisplayPrice] = useState<number>(0);
 
   const chartRef = useRef<Chart | null>(null);
 
@@ -113,7 +77,7 @@ const LineChart = ({
         }),
         { labels: [], prices: [] }
       );
-  
+
       return {
         labels: result.labels,
         prices: result.prices,
@@ -121,6 +85,80 @@ const LineChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
+ 
+  const options: ChartOptions<"line"> = useMemo(() => ({
+    responsive: true,
+    layout: {
+      padding: 20,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      tooltip: {
+        enabled: true,
+        usePointStyle: true,
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        caretSize: 5,
+        caretPadding: 1,
+        callbacks: {
+          label: (tooltipItems: any) => {
+            const { index } = tooltipItems.dataIndex; // Adjusted this line to extract the index correctly
+            const price = prices[index];
+            return `Price: ${currencySymbol}${price}`;
+          },
+        },
+      },
+    },
+    interaction: {
+      mode: "index",
+    },
+    onHover: (_, chartElements) => {
+      if (chartElements.length > 0 && prices && prices.length > 0) {
+        const chartIndex = chartElements[0].index;
+        const currentLabel = labels[chartIndex];
+        const currentPrice = prices[chartIndex];
+        const formattedDate = formatTimestampToDate(currentLabel);
+        setDisplayDate(formattedDate);
+        setDisplayPrice(Math.floor(formatMarketCap(currentPrice)));
+      }
+    },
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          ...getDisplayFormats(days),
+          tooltipFormat: "P",
+        },
+        grid: {
+          display: false,
+          color: "rgba(0,0,0,0)",
+        },
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 10,
+          callback: (value) => {
+            const date = new Date(value);
+            return `${date.toLocaleString("default", {
+              month: "short",
+            })} ${date.getDate()}`;
+          },
+        },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          display: false,
+        },
+      },
+    },
+  }), [days, prices,labels, currencySymbol]);
 
   const chartData: ChartData<"line"> = useMemo(() => {
     return {
@@ -180,7 +218,7 @@ const LineChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData]);
+  }, [chartData,options]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
@@ -191,11 +229,11 @@ const LineChart = ({
           </p>
           <p className="text-2.5xl font-bold">
             {currencySymbol}
-            {coin.current_price}
+            {displayPrice || coin.current_price}
           </p>
         </div>
         <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-          {formatLabelDate()}
+          {displayDate}
         </p>
       </div>
       <div>

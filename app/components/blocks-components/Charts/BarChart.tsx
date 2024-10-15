@@ -1,5 +1,5 @@
 "use-client";
-import React, { useEffect, useRef,useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Chart as ChartJS,
   ChartOptions,
@@ -18,7 +18,12 @@ import Chart from "chart.js/auto";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { formatLabelDate, formatMarketCap } from "@/app/utils/formatHelpers";
+import {
+  formatLabelDate,
+  formatMarketCap,
+  getDisplayFormats,
+  formatTimestampToDate,
+} from "@/app/utils/formatHelpers";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
 ChartJS.register(
@@ -32,79 +37,30 @@ ChartJS.register(
   Legend
 );
 
-const options: ChartOptions<"bar"> = {
-  responsive: true,
-  layout: {
-    padding: 20,
-  },
-  elements: {
-    point: {
-      pointStyle: "circle",
-    },
-    bar: {},
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: false,
-    },
-    tooltip: {
-      enabled: true,
-    },
-  },
-  interaction: {
-    mode: "index",
-  },
-  scales: {
-    x: {
-      type: "time",
-      time: {
-        unit: "day",
-        tooltipFormat: "P",
-        displayFormats: {
-          day: "MMM dd",
-        },
-      },
-      grid: {
-        display: true,
-        color: "rgba(0, 0, 0, 0)",
-        lineWidth: 1,
-      },
-      ticks: {
-        autoSkip: true,
-        maxTicksLimit: 10,
-      },
-    },
-    y: {
-      display: false,
-      grid: {
-        display: false,
-      },
-      ticks: {
-        display: false,
-      },
-    },
-  },
-};
-
 const BarChart = ({
   params,
   currency,
+  days,
 }: {
   params: { id: string };
   currency: Currency;
+  days: number | string;
 }) => {
-  const { data, isSuccess } = useGetChartDataQuery({ id: params.id, currency });
+  const { data, isSuccess } = useGetChartDataQuery({
+    id: params.id,
+    currency,
+    days,
+  });
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
   );
   const today = formatLabelDate();
+  const [displayDate, setDisplayDate] = useState<string>(today);
+  const [displayVolume, setDisplayVolume] = useState<number>(0);
 
   const chartRef = useRef<Chart | null>(null);
 
-  const { labels, volumes} = useMemo(() => {
+  const { labels, volumes } = useMemo(() => {
     if (isSuccess && data) {
       const result = data?.prices.reduce(
         (acc: { labels: number[]; volumes: number[] }, [label, volume]) => ({
@@ -113,7 +69,7 @@ const BarChart = ({
         }),
         { labels: [], volumes: [] }
       );
-  
+
       return {
         labels: result.labels,
         volumes: result.volumes,
@@ -121,8 +77,74 @@ const BarChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
+ 
+  const options: ChartOptions<"bar"> = useMemo(() => ({
+    responsive: true,
+    layout: {
+      padding: 20,
+    },
+    elements: {
+      point: {
+        pointStyle: "circle",
+      },
+      bar: {},
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      tooltip: {
+        enabled: true,
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        caretSize: 5,
+        caretPadding: 1,
+      },
+    },
+    interaction: {
+      mode: "index",
+    },
+    onHover: (_, chartElements) => {
+      if (chartElements.length > 0 && volumes && volumes.length > 0) {
+        const chartIndex = chartElements[0].index;
+        const currentLabel = labels[chartIndex];
+        const currentVolume = volumes[chartIndex];
+        const formattedDate = formatTimestampToDate(currentLabel);
+        setDisplayDate(formattedDate);
+        setDisplayVolume(Math.floor(formatMarketCap(currentVolume)));
+      }
+    },
+    scales: {
+      x: {
+        type: "time",
+        offset: true,
+        ...getDisplayFormats(days),
+        grid: {
+          display: true,
+          color: "rgba(0, 0, 0, 0)",
+          lineWidth: 1,
+        },
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 10,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        display: false,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          display: false,
+        },
+      },
+    },
+  }), [days, volumes, labels]);
 
-  const chartData: any = useMemo(() =>{
+  const chartData: any = useMemo(() => {
     return {
       labels,
       datasets: [
@@ -132,7 +154,7 @@ const BarChart = ({
           backgroundColor: (context: ScriptableContext<"bar">) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
-  
+
             if (!chartArea) {
               return undefined;
             }
@@ -143,16 +165,18 @@ const BarChart = ({
               chartArea.top
             );
             gradient.addColorStop(0, "rgba(179,116,242,0.01)");
-            gradient.addColorStop(1, "rgba(179,116,217,1)");
+            gradient.addColorStop(1, "rgba(157, 98, 217, 1)");
             return gradient;
           },
-          categoryPercentage: 1,
           barPercentage: 0.5,
+          barThickness: 1,
+          maxBarThickness: 3,
+          borderRadius: 10,
         },
       ],
     };
-  },[labels, volumes]);
-    
+  }, [labels, volumes]);
+
   useEffect(() => {
     if (chartRef.current) {
       chartRef.current.destroy();
@@ -176,7 +200,7 @@ const BarChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData]);
+  }, [chartData,options]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
@@ -185,13 +209,15 @@ const BarChart = ({
           <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
             Volume 24h
           </p>
-          <p className="text-2.5xl font-bold">
-            {currencySymbol}
-            {formatMarketCap(volumes?.[1])}
-          </p>
+          {volumes && volumes.length > 0 && (
+            <p className="text-2.5xl font-bold">
+              {currencySymbol}
+              {Math.floor(displayVolume || volumes[1])}
+            </p>
+          )}
         </div>
         <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-          {today}
+          {displayDate}
         </p>
       </div>
       <div>
