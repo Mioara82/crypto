@@ -158,7 +158,7 @@ const LineChart = ({
         },
       },
     },
-  }), [days, prices, currencySymbol]);
+  }), [days, prices,labels, currencySymbol]);
 
   const chartData: ChartData<"line"> = useMemo(() => {
     return {
