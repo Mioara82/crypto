@@ -40,3 +40,69 @@ export function formatDateAndTime(millisecondsFromNow: number){
 export function checkIfIsInteger(number:number){
   return Number.isInteger(number) ? number : number.toFixed(2);
 }
+
+export const getDisplayFormats = (days: number | string) => {
+  if (days === 1) {
+    return {
+      unit: "hour" as const,
+      displayFormats: {
+        hour: "HH:mm", 
+      },
+      stepSize: 4, 
+    };
+  } else if (days === 7) {
+    return {
+      unit: "day" as const,
+      displayFormats: {
+        day: "MMM dd", 
+      },
+    };
+  } else if (days === 14) {
+    return {
+      unit: "day" as const,
+      displayFormats: {
+        day: "MMM dd", 
+      },
+      stepSize: 2, 
+    };
+  } else if (days === 30) {
+    return {
+      unit: "day" as const,
+      displayFormats: {
+        day: "MMM dd", 
+      },
+      stepSize: 4, 
+    };
+  } else if (days === 180) {
+    return {
+      unit: "month" as const,
+      displayFormats: {
+        month: "MMM yyyy",
+      },
+    };
+  } else if (days === 360) {
+    return {
+      unit: "month" as const,
+      displayFormats: {
+        month: "MMM yyyy", 
+      },
+      stepSize: 2, 
+    };
+  } else if (days === "max") {
+    return {
+      unit: "month" as const,
+      displayFormats: {
+        month: "MMM yyyy", 
+      },
+      stepSize: 4, 
+    };
+  }
+};
+
+export function formatTimestampToDate(timestamp: number) {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = date.toLocaleString("default", { month: "long" });
+  const day = date.getDate();
+  return `${month} ${day}, ${year}`;
+}

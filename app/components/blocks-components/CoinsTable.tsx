@@ -8,6 +8,7 @@ import TableChart from "./Charts/TableChart";
 import ProgressBar from "../UI-components/progressBar";
 import ArrowIconCarousel from "@/app/icons/arrowIconCarousel";
 import { formatMarketCap, checkIfIsInteger } from "@/app/utils/formatHelpers";
+import { coinTableColors } from "@/app/utils/colours";
 
 const CoinsTable: React.FC = () => {
   const currency = useAppSelector((state: RootState) =>
@@ -38,23 +39,26 @@ const CoinsTable: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <table className="w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor ">
+      <table className="table-auto w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
         <tbody>
-          <tr className="py-4 px-5 text-center">
-            <th className="p-4">#</th>
-            <th className="w-[15%]">Name</th>
+          <tr className=" text-left text-sm">
+            <th className="w-[3%]">#</th>
+            <th className="w-[12%]">Name</th>
             <th className="w-[10%] ">Price</th>
-            <th className="w-[5%]">1h %</th>
-            <th className="w-[5%]">24h %</th>
-            <th className="w-[5%]">7d %</th>
-            <th className="w-[20%] ">24h volume / Market Cap</th>
-            <th className="w-[20%]">Circulating /Total Supply</th>
-            <th className="w-[20%] ">Last 7 days</th>
+            <th className="w-[7%]">1h %</th>
+            <th className="w-[7%]">24h %</th>
+            <th className="w-[7%]">7d %</th>
+            <th className="w-[21%] px-1.5">24h volume / Market Cap</th>
+            <th className="w-[21%] px-1.5">Circulating /Total Supply</th>
+            <th className="w-[12%] px-1.5">Last 7 days</th>
           </tr>
           {isSuccess &&
             data?.map((coin, index) => (
-              <tr key={coin.id} className="h-[77px]">
-                <td className="p-4">{startIndex + index + 1}</td>
+              <tr
+                key={coin.id}
+                className="h-[77px] dark:bg-[#191925] bg-light-primary"
+              >
+                <td className="p-4 ">{startIndex + index + 1}</td>
                 <td>
                   <div className="flex gap-4">
                     <Image
@@ -63,10 +67,12 @@ const CoinsTable: React.FC = () => {
                       height={24}
                       alt="Coin icon"
                     />
-                    {coin.name}({coin.symbol})
+                    <span className="text-[17px]">
+                      {coin.name}({coin.symbol})
+                    </span>
                   </div>
                 </td>
-                <td>
+                <td className="text-base">
                   {currencySymbol}
                   {checkIfIsInteger(coin.currentPrice)}
                 </td>
@@ -75,7 +81,13 @@ const CoinsTable: React.FC = () => {
                     <ArrowIconCarousel
                       isPositive={coin.priceChangePercentage1h > 0}
                     />
-                    <span className={`text-xs ${coin.priceChangePercentage1h > 0 ? "text-[#077f77]" : "text-[#fe2264]"}`}>
+                    <span
+                      className={`text-xs ${
+                        coin.priceChangePercentage1h > 0
+                          ? "text-[#01f1e3]"
+                          : "text-[#fe2264]"
+                      }`}
+                    >
                       {checkIfIsInteger(coin.priceChangePercentage1h)}
                     </span>
                   </div>
@@ -85,7 +97,13 @@ const CoinsTable: React.FC = () => {
                     <ArrowIconCarousel
                       isPositive={coin.priceChangePercentage24h > 0}
                     />
-                    <span className={`text-xs ${coin.priceChangePercentage24h > 0 ? "text-[#077f77]" : "text-[#fe2264]"}`}>
+                    <span
+                      className={`text-xs ${
+                        coin.priceChangePercentage24h > 0
+                          ? "text-[#01f1e3]"
+                          : "text-[#fe2264]"
+                      }`}
+                    >
                       {checkIfIsInteger(coin.priceChangePercentage24h)}
                     </span>
                   </div>
@@ -95,12 +113,18 @@ const CoinsTable: React.FC = () => {
                     <ArrowIconCarousel
                       isPositive={coin.priceChangePercentage7d > 0}
                     />
-                    <span className={`text-xs ${coin.priceChangePercentage7d > 0 ? "text-[#077f77]" : "text-[#fe2264]"}`}>
+                    <span
+                      className={`text-xs ${
+                        coin.priceChangePercentage7d > 0
+                          ? "text-[#01f1e3]"
+                          : "text-[#fe2264]"
+                      }`}
+                    >
                       {checkIfIsInteger(coin.priceChangePercentage7d)}
                     </span>
                   </div>
                 </td>
-                <td>
+                <td className="px-1.5">
                   <div className="flex flex-col gap-1">
                     <div className="flex">
                       <span className="text-xs">
@@ -115,17 +139,22 @@ const CoinsTable: React.FC = () => {
                     <div className="w-full">
                       <ProgressBar
                         value={Math.round(
-                          (coin.totalVolume /
-                            coin.marketCap) * 100
+                          (coin.totalVolume / coin.marketCap) * 100
                         )}
-                        color="#F7931A"
+                        color={coinTableColors[index % 10]}
+                        colorTwo={`rgba(${parseInt(
+                          coinTableColors[index % 10].substring(1, 3),
+                          16
+                        )}, 
+                   ${parseInt(coinTableColors[index % 10].substring(3, 5),16)}, 
+                   ${parseInt(coinTableColors[index % 10].substring(5, 7),16)}, 0.4)`}
                       />
                     </div>
                   </div>
                 </td>
-                <td>
+                <td className="px-1.5">
                   {" "}
-                  <div className="flex flex-col gap-1 px-4">
+                  <div className="flex flex-col gap-1">
                     <div className="flex">
                       <span className="text-xs">
                         {currencySymbol}
@@ -138,15 +167,19 @@ const CoinsTable: React.FC = () => {
                     </div>
                     <ProgressBar
                       value={Math.round(
-                        (coin.circulatingSupply /
-                          coin.totalSupply) *
-                          100
+                        (coin.circulatingSupply / coin.totalSupply) * 100
                       )}
-                      color="#F7931A"
+                      color={coinTableColors[index % 10]}
+                      colorTwo={`rgba(${parseInt(
+                        coinTableColors[index % 10].substring(1, 3),
+                        16
+                      )}, 
+                   ${parseInt(coinTableColors[index % 10].substring(3, 5),16)}, 
+                   ${parseInt(coinTableColors[index % 10].substring(5, 7),16)}, 0.4)`}
                     />
                   </div>
                 </td>
-                <td>
+                <td className="px-1.5">
                   <TableChart data={coin.sparkline.price} index={index} />
                 </td>
               </tr>

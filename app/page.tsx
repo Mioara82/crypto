@@ -9,6 +9,10 @@ import { CoinProps } from "./components/UI-components/CoinDetailsCarousel";
 import Button from "./components/UI-components/Button";
 import { ChartSkeleton } from "./components/UI-components/Skeleton/ChartSkeleton";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
+import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
+import { chartFilter } from "./utils/chartFilter";
+import { daysObject } from "@/lib/types/types";
+
 const CoinCarousel = lazy(
   () => import("./components/blocks-components/CoinCarousel")
 );
@@ -33,6 +37,10 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
 export default function Home() {
   const [isActive, setIsActive] = useIsActive(0);
   const [selectedCoinId, setSelectedCoinId] = useState<string | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<daysObject>(
+    chartFilter[0]
+  );
+
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
@@ -41,6 +49,15 @@ export default function Home() {
 
   const handleActiveButton = (value: number) => {
     setIsActive((prev) => (prev === value ? null : value));
+  };
+
+  const handleSelectedFilter = (id: number) => {
+    const found = chartFilter.find((item) => item.id === id);
+    if (!found) {
+      return;
+    } else {
+      setSelectedFilter(found);
+    }
   };
 
   return (
@@ -97,6 +114,7 @@ export default function Home() {
                       (coin: CoinProps) => coin.id === selectedCoinId
                     )}
                     currency={currency}
+                    days={selectedFilter.period}
                   />
                 </ChartWrapper>
               </Suspense>
@@ -111,6 +129,7 @@ export default function Home() {
                   <BarChart
                     params={{ id: selectedCoinId }}
                     currency={currency}
+                    days={selectedFilter.period}
                   />
                 </ChartWrapper>
               </Suspense>
@@ -130,6 +149,7 @@ export default function Home() {
                     params={{ id: "bitcoin" }}
                     coin={coinList[0]}
                     currency={currency}
+                    days={selectedFilter.period}
                   />
                 </ChartWrapper>
               </Suspense>
@@ -141,11 +161,19 @@ export default function Home() {
                 }
               >
                 <ChartWrapper>
-                  <BarChart params={{ id: "bitcoin" }} currency={currency} />
+                  <BarChart
+                    params={{ id: "bitcoin" }}
+                    currency={currency}
+                    days={selectedFilter.period}
+                  />
                 </ChartWrapper>
               </Suspense>
             </div>
           ))}
+        <ChartFilterTabs
+          days={selectedFilter}
+          handleSelectedFilter={handleSelectedFilter}
+        />
         <CoinsTable />
       </main>
     </>

@@ -64,8 +64,8 @@ export const api = createApi({
       },
     }),
     getChartData: builder.query({
-      query: ({ id, currency }) =>
-        `/coins/${id}/market_chart/?vs_currency=${currency}&days=7`,
+      query: ({ id, currency, days }) =>
+        `/coins/${id}/market_chart/?vs_currency=${currency}&days=${days}`,
       transformResponse: (response: ChartDetails) => {
         if (!response) {
           throw new Error("No data received");

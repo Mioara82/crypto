@@ -1,6 +1,7 @@
 import React from "react";
 import { ChartSkeleton } from "../../UI-components/Skeleton/ChartSkeleton";
 import { formatDateAndTime } from "@/app/utils/formatHelpers";
+import { coinTableColors } from "@/app/utils/colours";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,7 +28,6 @@ ChartJS.register(
   Legend,
 );
 
-const colors = ["#FFA500", "#6374C3", "#00B1A7", "#FFA500", "#FFD700", "#6374C3", "#00B1A7", "#FF6347", "#FF0000", "#FFD700"];
 export const options = {
   elements: {
     point: {
@@ -79,12 +79,12 @@ const TableChart = ({data, index}:{data: any, index: number}) => {
         tension: 0.75,
         label: "$",
         data: data,
-        borderColor: colors[index % 10],
+        borderColor: coinTableColors[index % 10],
         borderWidth: 1.5,
         pointRadius: 0,
         backgroundColor: (context: any) => {
           const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 380);
-          gradient.addColorStop(0, colors[index % 10]);
+          gradient.addColorStop(0, coinTableColors[index % 10]);
           gradient.addColorStop(0.15, "rgba(120, 120, 250, 0)");
           return gradient;
         },
@@ -92,7 +92,7 @@ const TableChart = ({data, index}:{data: any, index: number}) => {
     ],
   };
   return (
-    <div className="w-full">
+    <div className="max-w-[140px] max-h-[37px] flex justify-centre items-centre m-auto">
       {isLoaded ? <Line options={options} data={chartData} /> : <ChartSkeleton type="line"/>}
     </div>
   );

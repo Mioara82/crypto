@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} rounded-[20px]`}>
+      <body className={`${spaceGrotesk.className} rounded-[20px] bg-light-primary dark:bg-dark-primaryBg`}>
         <ThemeProvider>
           <StoreProvider>
             <GlobalNavbar />
