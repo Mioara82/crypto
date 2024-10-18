@@ -92,7 +92,7 @@ const TableChart = ({data, index}:{data: any, index: number}) => {
     ],
   };
   return (
-    <div className="max-w-[140px] max-h-[37px] flex justify-centre items-centre m-auto">
+    <div className="max-w-[140px] h-[37px] flex justify-centre items-centre m-auto">
       {isLoaded ? <Line options={options} data={chartData} /> : <ChartSkeleton type="line"/>}
     </div>
   );

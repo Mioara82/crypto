@@ -4,8 +4,9 @@ interface ButtonProps {
   text: string;
   isActive: boolean;
   onButtonClick: () => void;
+  feature:string;
 }
-const Button: React.FC<ButtonProps> = ({ text, isActive, onButtonClick }) => {
+const Button: React.FC<ButtonProps> = ({ text, isActive, onButtonClick, feature }) => {
   const variants = {
     open: {
       opacity: 1,
@@ -26,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({ text, isActive, onButtonClick }) => {
     <motion.button
       animate={isActive ? "open" : "closed"}
       variants={variants}
-      className={`w-[244px] h-[45px] rounded-md py-3 px-4 border-1 border-solid drop-shadow-md ${
+      className={`${feature === "nav" ? "w-[244px] " : "w-20"} h-[45px] rounded-md py-3 px-4 border-1 border-solid drop-shadow-md ${
         isActive
           ? "bg-common-linearGradient"
           : "bg-light-primary dark:bg-[#232336]"
