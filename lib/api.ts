@@ -78,8 +78,8 @@ export const api = createApi({
       },
     }),
     getCoinsTableData: builder.query({
-      query: ({ currency, coinsPerPage, currentPage }) =>
-        `/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${coinsPerPage}&page=${currentPage}&market_data=true&price_change_percentage=1h%2C24h%2C7d&sparkline=true`,
+      query: ({ currency, coinsPerPage, currentPage, sortQuery }) =>
+        `/coins/markets?vs_currency=${currency}&order=${sortQuery}&per_page=${coinsPerPage}&page=${currentPage}&market_data=true&price_change_percentage=1h%2C24h%2C7d&sparkline=true`,
 
       transformResponse: (response: CoinsTableDetails[]) => {
         if (!response) {
@@ -87,20 +87,18 @@ export const api = createApi({
         }
         return response.map((coin) => ({
           id: coin.id,
-          image:coin.image,
+          image: coin.image,
           name: coin.name,
           symbol: coin.symbol,
           currentPrice: coin.current_price,
           priceChangePercentage1h: coin.price_change_percentage_1h_in_currency,
-          priceChangePercentage24h:
-            coin.price_change_percentage_24h,
+          priceChangePercentage24h: coin.price_change_percentage_24h_in_currency,
           priceChangePercentage7d: coin.price_change_percentage_7d_in_currency,
           circulatingSupply: coin.circulating_supply,
           totalSupply: coin.total_supply,
           marketCap: coin.market_cap,
           totalVolume: coin.total_volume,
-          sparkline:coin.sparkline_in_7d,
-          rank:coin.market_cap_rank
+          sparkline: coin.sparkline_in_7d,
         }));
       },
     }),

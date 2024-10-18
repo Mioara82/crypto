@@ -4,16 +4,16 @@ import { daysObject } from "@/lib/types/types";
 
 interface ChartFilterTabsProps {
   days: daysObject;
-  handleSelectedDays: any;
+  handleSelectedFilter: any;
 }
 
 const ChartFilterTabs: React.FC<ChartFilterTabsProps> = ({
   days,
-  handleSelectedDays,
+  handleSelectedFilter,
 }) => {
  
   return (
-    <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
+    <div className="flex items-center w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
       <ul className="flex justify-around text-center gap-2">
         {chartFilter.map((title) => (
           <li
@@ -21,7 +21,7 @@ const ChartFilterTabs: React.FC<ChartFilterTabsProps> = ({
               days && title.id === days.id ? "dark:bg-[#6161d650]" : ""
             }`}
             key={title.id}
-            onClick={() => handleSelectedDays(title.id)}
+            onClick={()=>handleSelectedFilter(title.id)}
           >
             {title.name}
           </li>
