@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import Link from "next/link";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";
@@ -25,9 +24,6 @@ export default function RootLayout({
         <ThemeProvider>
           <StoreProvider>
             <GlobalNavbar />
-            <Link href="/"></Link>
-            <Link href="/Converter"></Link>
-            <Link href="/Portfolio"></Link>
             {children}
           </StoreProvider>
         </ThemeProvider>

@@ -14,11 +14,13 @@ export interface CoinSearch {
   price_change_percentage_24h: number;
 }
 
-export interface CoinDetails {
+export interface CoinDetailsProps {
   id: string;
   symbol: string;
   name: string;
-  description: string;
+  description: {
+    en:string;
+  };
   image: Image;
   links: Link;
   market_data: MarketData;
@@ -34,15 +36,40 @@ interface Image {
 
 interface Link {
   homepage: string;
+  blockchain_site:string[];
 }
 
 export interface MarketData {
-  current_price: string;
-  ath: number;
-  atl: number;
-  market_cap: number;
-  fully_diluted_valuation: number;
-  total_volume: number;
+  symbol:string;
+  current_price: {
+    [currency:string]:number;
+  };
+  profit:number;
+  ath: {
+    [currency:string]:number;
+  };
+  ath_date:{
+    [currency:string]:Date;
+  };
+  atl: {
+    [currency:string]:number;
+  };
+  atl_date:{
+    [currency:string]:Date;
+  };
+  market_cap: {
+    [currency:string]:number;
+  }
+  market_cap_change_24h:{
+    [currency:string]:number;
+  }
+  fully_diluted_valuation: {
+    [currency:string]:number;
+  }
+  total_volume: {
+    [currency:string]:number;
+  };
+  price_change_24h:number;
   price_change_percentage_24h: number;
   circulating_supply: number;
   max_supply: number;

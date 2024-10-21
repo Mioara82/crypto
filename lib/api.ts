@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   MarketDataApi,
-  CoinDetails,
+  CoinDetailsProps,
   ChartDetails,
   CoinsTableDetails,
 } from "./types/apiInterfaces";
@@ -42,18 +42,27 @@ export const api = createApi({
     getCoinData: builder.query({
       query: (id) =>
         `/coins/${id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`,
-      transformResponse: (response: CoinDetails) => {
+      transformResponse: (response: CoinDetailsProps) => {
         return {
           id: response.id,
           symbol: response.symbol,
           name: response.name,
           description: response.description,
-          links: response.links.homepage[0],
+          links: {
+            homepage: response.links.homepage[0], 
+            blockchain_site_2: response.links.blockchain_site[1], 
+            blockchain_site_3: response.links.blockchain_site[2],
+            blockchair:response.links.blockchain_site[3]   
+          },
           image: response.image,
           currentPrice: response.market_data.current_price,
+          profit:response.market_data.price_change_24h,
           ath: response.market_data.ath,
+          athDate:response.market_data.ath_date,
           atl: response.market_data.atl,
+          atlDate:response.market_data.atl_date,
           marketCap: response.market_data.market_cap,
+          marketCapChange:response.market_data.market_cap_change_24h,
           fullyDilutedValuation: response.market_data.fully_diluted_valuation,
           totalVolume: response.market_data.total_volume,
           priceChangePercentage:

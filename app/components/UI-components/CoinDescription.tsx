@@ -22,7 +22,7 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
 }) => {
   return (
     <Link
-      href={`/Coin/${coin.id}`}
+      href={`/CoinDetails/${coin.id}`}
       key={coin.id}
       onClick={onCoinClick}
       className="flex justify-stretch p-2 mb-0.5 text-sm font-Inter hover:cursor-pointer hover:bg-[#CCCCFA] hover:dark:bg-dark-hover hover:shadow-gray-400 hover:opacity-50 hover:rounded-md transition-all dura"
