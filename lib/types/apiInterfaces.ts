@@ -88,7 +88,7 @@ export interface CoinsTableDetails {
   symbol: string;
   current_price: number;
   price_change_percentage_1h_in_currency: number;
-  price_change_percentage_24h: number;
+  price_change_percentage_24h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
   circulating_supply: number;
   total_supply: number;
@@ -97,5 +97,4 @@ export interface CoinsTableDetails {
   sparkline_in_7d: {
     price: number;
   };
-  market_cap_rank:number
 }

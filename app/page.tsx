@@ -23,7 +23,7 @@ const BarChart = lazy(
   () => import("./components/blocks-components/Charts/BarChart")
 );
 const CoinsTable = lazy(
-  () => import("./components/blocks-components/CoinsTable")
+  () => import("./components/blocks-components/CoinTable/CoinsTable")
 );
 
 interface ChartWrapperProps {
@@ -68,11 +68,13 @@ export default function Home() {
             text="Coins"
             isActive={isActive === 0}
             onButtonClick={() => handleActiveButton(0)}
+            feature="nav"
           />
           <Button
             text="Converter"
             isActive={isActive === 1}
             onButtonClick={() => handleActiveButton(1)}
+            feature="nav"
           />
         </div>
         <div className="flex flex-col gap-[72px]">

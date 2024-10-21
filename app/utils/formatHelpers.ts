@@ -53,6 +53,10 @@ export function formatDateAndTime(millisecondsFromNow: number) {
 }
 
 export function checkIfIsInteger(number: number) {
+export function checkIfIsInteger(number: number | null) {
+  if (number === null) {
+    return "";
+  }
   return Number.isInteger(number) ? number : number.toFixed(2);
 }
 
@@ -122,6 +126,27 @@ export function formatTimestampToDate(timestamp: number) {
   return `${month} ${day}, ${year}`;
 }
 
+
 export function calculateProgress(unitOne:number, unitTwo:number){
   return Math.ceil(unitTwo / unitOne * 100);
 }
+
+function uppercaseLetter(letter: string) {
+  return letter.toUpperCase();
+}
+
+export function capitaliseString(string: string) {
+  return string
+    .split("")
+    .map((el) => uppercaseLetter(el))
+    .join("");
+}
+
+export const hexToRgba = (hex: string, alpha: number = 1): string => {
+  const hexWithoutHash = hex.replace("#", "");
+  const r = parseInt(hexWithoutHash.substring(0, 2), 16);
+  const g = parseInt(hexWithoutHash.substring(2, 4), 16);
+  const b = parseInt(hexWithoutHash.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
