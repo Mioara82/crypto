@@ -27,6 +27,21 @@ export function formatLabelDate() {
   return currentDate;
 }
 
+export function formatDate(value: Date) {
+  const date = new Date(value);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZoneName: "short",
+  };
+  return date.toLocaleDateString("en-GB", options);
+}
+
 export function formatDateAndTime(millisecondsFromNow: number) {
   const currentTime = new Date();
   const pastTime = new Date(currentTime.getTime() - millisecondsFromNow);
@@ -37,6 +52,7 @@ export function formatDateAndTime(millisecondsFromNow: number) {
   return formattedDateTime;
 }
 
+export function checkIfIsInteger(number: number) {
 export function checkIfIsInteger(number: number | null) {
   if (number === null) {
     return "";
@@ -108,6 +124,11 @@ export function formatTimestampToDate(timestamp: number) {
   const month = date.toLocaleString("default", { month: "long" });
   const day = date.getDate();
   return `${month} ${day}, ${year}`;
+}
+
+
+export function calculateProgress(unitOne:number, unitTwo:number){
+  return Math.ceil(unitTwo / unitOne * 100);
 }
 
 function uppercaseLetter(letter: string) {
