@@ -52,7 +52,6 @@ export function formatDateAndTime(millisecondsFromNow: number) {
   return formattedDateTime;
 }
 
-export function checkIfIsInteger(number: number) {
 export function checkIfIsInteger(number: number | null) {
   if (number === null) {
     return "";
@@ -126,9 +125,8 @@ export function formatTimestampToDate(timestamp: number) {
   return `${month} ${day}, ${year}`;
 }
 
-
-export function calculateProgress(unitOne:number, unitTwo:number){
-  return Math.ceil(unitTwo / unitOne * 100);
+export function calculateProgress(unitOne: number, unitTwo: number) {
+  return Math.ceil(unitTwo / unitOne);
 }
 
 function uppercaseLetter(letter: string) {
@@ -150,3 +148,22 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+export function formatLink(url: string) {
+  const newUrl = url.slice(8).split("").reverse().concat("www.").reverse();
+  const lastIndex = newUrl.length - 1;
+  if (newUrl[lastIndex] === "/") {
+    newUrl.pop();
+  }
+  return newUrl.join("");
+}
+
+export function formatNumber(num: any) {
+  const parts = num.toString().split(".");
+  const integerPart = parts[0];
+  const decimalPart = parts[1] || "";
+
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return formattedInteger + (decimalPart ? "." + decimalPart : "");
+}
