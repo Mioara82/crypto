@@ -8,7 +8,7 @@ export function ArrowLeft() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-6 h-6"
+      className="w-[18px] h-[18px]"
     >
       <path
         strokeLinecap="round"
@@ -42,10 +42,10 @@ export function PlusIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
+      fill="#6161d650"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke="currentColor"
+      stroke="#7878fa"
       className="w-6 h-6"
     >
       <path
