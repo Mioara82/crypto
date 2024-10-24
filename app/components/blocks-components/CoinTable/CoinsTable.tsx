@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetCoinsTableDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useIsActive } from "@/lib/hooks/useIsActive";
@@ -20,9 +20,9 @@ const CoinsTable: React.FC = () => {
     "volume_asc",
     "volume_desc",
   ];
-  const [sortQuery, setSortQuery] = useState(queriesAPI[0]);
-  const [sortBy, setSortBy] = useState({
-    key: "name",
+  const [sortQuery, setSortQuery] = useState(queriesAPI[1]);
+  const [sortBy, setSortBy] = useState<{ key: string; direction: string }>({
+    key: "",
     direction: "asc",
   });
 
@@ -35,22 +35,27 @@ const CoinsTable: React.FC = () => {
   const startIndex = (currentPage - 1) * coinsPerPage;
   const [isActive, setIsActive] = useIsActive(0);
 
-  const { data, isSuccess } = useGetCoinsTableDataQuery({
+  const { data, isSuccess, refetch, isFetching } = useGetCoinsTableDataQuery({
     currency,
     coinsPerPage: 50,
     currentPage,
     sortQuery: sortQuery,
   });
-  // const [coins, setCoins] = useState<Coin[] | null>(data || null);
+  const [coins, setCoins] = useState<Coin[] | null>(data || null);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setCoins((prevCoins) => [...prevCoins]);
-  //   }, 60000);
-  //   return () => clearInterval(intervalId);
-  // }, [data]);
+  useEffect(() => {
+    if (!data) return;
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 20000);
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
-  /* eslint-disable indent */
+  useEffect(() => {
+    if (isSuccess) {
+      setCoins(data);
+    }
+  }, [data, isSuccess]);
 
   const handleSort = (value: string) => {
     let newSortQuery;
@@ -83,10 +88,8 @@ const CoinsTable: React.FC = () => {
     }));
   };
 
-  /* eslint-disable indent */
-
   const sortedData = isSuccess
-    ? data.slice().sort((a: any, b: any) => {
+    ? coins?.slice().sort((a: any, b: any) => {
         if (sortBy.key === "name") {
           return sortBy.direction === "asc"
             ? a.name.localeCompare(b.name)
@@ -116,6 +119,7 @@ const CoinsTable: React.FC = () => {
 
   return (
     <div className="flex flex-col relative">
+      {isFetching && <div>data is being fetched</div>}
       <table className="table-auto flex flex-col w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
         <thead>
           <tr className="w-full flex justify-center items-center">
@@ -153,9 +157,10 @@ const CoinsTable: React.FC = () => {
             handleSort={() => handleSortInTable(sortBy.key)}
           />
           {isSuccess &&
-            sortedData.map((coin: Coin, index) => (
+            sortedData?.map((coin: Coin, index) => (
               <CoinDetails
                 key={coin.id}
+                isFetching={isFetching}
                 coin={coin}
                 index={index}
                 startIndex={startIndex}

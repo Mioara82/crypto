@@ -16,7 +16,7 @@
     "react/no-array-index-key": "warn",
     "react/react-in-jsx-scope": "off",
     "no-undef": "off",
-    "indent":["error", 2],
+    "indent":"off",
     "@stylistic/indent": "off",
     "react/prop-types":0
   },

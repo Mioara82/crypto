@@ -18,10 +18,12 @@ const CoinDetails = ({
   coin,
   index,
   startIndex,
+  isFetching
 }: {
   coin: Coin;
   index: number;
   startIndex: number;
+  isFetching:boolean;
 }) => {
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
@@ -34,7 +36,7 @@ const CoinDetails = ({
           <div className="flex gap-4">
             <Image src={coin.image} width={24} height={24} alt="Coin icon" />
             <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
-              {coin.name}({coin.symbol})
+              {coin.name}({coin.symbol}){isFetching ? "..." : ""}
             </Link>
           </div>
         </td>
