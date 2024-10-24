@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGetCoinDataQuery } from "@/lib/api";
@@ -20,7 +20,8 @@ import {
 import Spinner from "@/app/components/UI-components/Spinner";
 
 const CoinDetails = ({ params }: { params: { id: string } }) => {
-  const { data, isSuccess } = useGetCoinDataQuery(params.id);
+  const[unwrappedParams, setUnwrappedParams] = useState<{id:string} | null>(null);
+  const { data, isSuccess } = useGetCoinDataQuery(unwrappedParams?.id);
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
@@ -30,6 +31,14 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
   );
 
   const isPositive = data ? data.priceChangePercentage > 0 : false;
+
+  useEffect(() => {
+    async function unwrapParams(){
+      const resolvedParams:any = await params;
+      setUnwrappedParams(resolvedParams);
+    }
+    unwrapParams();
+  },[params]);
 
   return (
     <div className="flex flex-col w-maxWidth-custom mx-[72px] mt-16 bg-light-primaryBg dark:bg-dark-primaryBg">

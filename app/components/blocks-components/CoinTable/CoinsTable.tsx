@@ -41,8 +41,16 @@ const CoinsTable: React.FC = () => {
     currentPage,
     sortQuery: sortQuery,
   });
+  // const [coins, setCoins] = useState<Coin[] | null>(data || null);
 
-  /* eslint-disable indent */ 
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setCoins((prevCoins) => [...prevCoins]);
+  //   }, 60000);
+  //   return () => clearInterval(intervalId);
+  // }, [data]);
+
+  /* eslint-disable indent */
 
   const handleSort = (value: string) => {
     let newSortQuery;
@@ -75,19 +83,21 @@ const CoinsTable: React.FC = () => {
     }));
   };
 
+  /* eslint-disable indent */
+
   const sortedData = isSuccess
     ? data.slice().sort((a: any, b: any) => {
-      if (sortBy.key === "name") {
-        return sortBy.direction === "asc"
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      } else {
-        return (
-          (sortBy.direction === "asc" ? a[sortBy.key] : b[sortBy.key]) -
-          (sortBy.direction === "asc" ? b[sortBy.key] : a[sortBy.key])
-        );
-      }
-    })
+        if (sortBy.key === "name") {
+          return sortBy.direction === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+        } else {
+          return (
+            (sortBy.direction === "asc" ? a[sortBy.key] : b[sortBy.key]) -
+            (sortBy.direction === "asc" ? b[sortBy.key] : a[sortBy.key])
+          );
+        }
+      })
     : [];
 
   const handleActiveButton = (value: number) => {
@@ -107,33 +117,35 @@ const CoinsTable: React.FC = () => {
   return (
     <div className="flex flex-col relative">
       <table className="table-auto flex flex-col w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
-        <tr className="w-full flex justify-center items-center">
-          <th className="flex justify-center items-center gap-5 mr-auto">
-            <CirclesIcon />
-            <TableTitle value={sortQuery} />
-            <ArrowIcon handleSort={() => handleSort(sortQuery)} />
-          </th>
-          <th className="flex gap-2 ml-auto pr-3">
-            <Button
-              onButtonClick={() => {
-                handlePrevPage();
-                handleActiveButton(0);
-              }}
-              text="Previous"
-              isActive={isActive === 0}
-              feature="table"
-            />
-            <Button
-              onButtonClick={() => {
-                handleNextPage();
-                handleActiveButton(1);
-              }}
-              text="Next"
-              isActive={isActive === 1}
-              feature="table"
-            />
-          </th>
-        </tr>
+        <thead>
+          <tr className="w-full flex justify-center items-center">
+            <th className="flex justify-center items-center gap-5 mr-auto">
+              <CirclesIcon />
+              <TableTitle value={sortQuery} />
+              <ArrowIcon handleSort={() => handleSort(sortQuery)} />
+            </th>
+            <th className="flex gap-2 ml-auto pr-3">
+              <Button
+                onButtonClick={() => {
+                  handlePrevPage();
+                  handleActiveButton(0);
+                }}
+                text="Previous"
+                isActive={isActive === 0}
+                feature="table"
+              />
+              <Button
+                onButtonClick={() => {
+                  handleNextPage();
+                  handleActiveButton(1);
+                }}
+                text="Next"
+                isActive={isActive === 1}
+                feature="table"
+              />
+            </th>
+          </tr>
+        </thead>
         <tbody>
           <TableRow
             sort={sortBy.key}

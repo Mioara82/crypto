@@ -33,7 +33,7 @@ const CoinDetails = ({
         <td>
           <div className="flex gap-4">
             <Image src={coin.image} width={24} height={24} alt="Coin icon" />
-            <Link href={`/Coin/${coin.id}`} className="text-[17px]">
+            <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
               {coin.name}({coin.symbol})
             </Link>
           </div>

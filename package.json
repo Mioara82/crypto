@@ -16,7 +16,7 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^3.0.1",
     "framer-motion": "^11.2.4",
-    "next": "^14.2.5",
+    "next": "^15.0.1",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
@@ -28,7 +28,8 @@
     "redux-persist": "^6.0.0",
     "semantic-ui-react": "^2.1.5",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^6.1.9"
+    "styled-components": "^6.1.9",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.8.0",
@@ -36,6 +37,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
     "eslint-plugin-react": "^7.34.1",

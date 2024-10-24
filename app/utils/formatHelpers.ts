@@ -149,7 +149,8 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export function formatLink(url: string) {
+export function formatLink(url: string | null) {
+  if(url === null) return;
   const newUrl = url.slice(8).split("").reverse().concat("www.").reverse();
   const lastIndex = newUrl.length - 1;
   if (newUrl[lastIndex] === "/") {
@@ -159,6 +160,7 @@ export function formatLink(url: string) {
 }
 
 export function formatNumber(num: any) {
+  if(num === null)return;
   const parts = num.toString().split(".");
   const integerPart = parts[0];
   const decimalPart = parts[1] || "";
