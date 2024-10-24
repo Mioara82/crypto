@@ -49,7 +49,7 @@ const CoinsTable: React.FC = () => {
       refetch();
     }, 20000);
     return () => clearInterval(intervalId);
-  }, [refetch]);
+  }, [data,refetch]);
 
   useEffect(() => {
     if (isSuccess) {
