@@ -62,7 +62,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex flex-col w-maxWidth-custom mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg">
+      <main id="scrollable-container" className="h-full overflow-y-auto flex flex-col w-maxWidth-custom mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg">
         <div className="flex justify-start w-[506px] h-[53px] rounded-md p-1">
           <Button
             text="Coins"

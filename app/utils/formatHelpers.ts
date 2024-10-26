@@ -136,6 +136,7 @@ function uppercaseLetter(letter: string) {
 export function capitaliseString(string: string) {
   return string
     .split("")
+    .map(el => el === "_" ? " " : el)
     .map((el) => uppercaseLetter(el))
     .join("");
 }
