@@ -21,7 +21,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails"],
+  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails","CoinsTableDetails"],
   endpoints: (builder) => ({
     getSearchData: builder.query({
       query: (currency) => `/coins/markets/?vs_currency=${currency}`,
@@ -89,7 +89,6 @@ export const api = createApi({
     getCoinsTableData: builder.query({
       query: ({ currency, coinsPerPage, currentPage, sortQuery }) =>
         `/coins/markets?vs_currency=${currency}&order=${sortQuery}&per_page=${coinsPerPage}&page=${currentPage}&market_data=true&price_change_percentage=1h%2C24h%2C7d&sparkline=true`,
-
       transformResponse: (response: CoinsTableDetails[]) => {
         if (!response) {
           throw new Error("No data received");

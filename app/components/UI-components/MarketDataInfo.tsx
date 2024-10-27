@@ -62,7 +62,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               src="/market/arrow.svg"
               alt="a coloured arrow"
               width={12}
-              height={4}
+              height={12}
             />
             <div className="text-light-primary">
               {formatMarketCap(data.totalMarketCap[currency])}
