@@ -27,7 +27,7 @@ import {
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { CoinProps } from "../../UI-components/CoinDetailsCarousel";
+import { CoinProps } from "../../CoinCarousel/CoinDetailsCarousel";
 import { Currency } from "@/lib/features/appSettingsSlice";
 
 ChartJS.register(

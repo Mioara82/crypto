@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import CoinDetail from "../UI-components/CoinDetailsCarousel";
-import { CoinProps } from "../UI-components/CoinDetailsCarousel";
+import CoinDetail from "./CoinDetailsCarousel";
+import { CoinProps } from "./CoinDetailsCarousel";
 import { Currency } from "@/lib/features/appSettingsSlice";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

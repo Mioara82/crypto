@@ -5,8 +5,9 @@ import { useAppSelector } from "@/lib/hooks/hooks";
 import { useIsActive } from "@/lib/hooks/useIsActive";
 import { useGetSearchDataQuery } from "@/lib/api";
 import { RootState } from "@/lib/store";
-import { CoinProps } from "./components/UI-components/CoinDetailsCarousel";
-import Button from "./components/UI-components/Button";
+import { CoinProps } from "./components/CoinCarousel/CoinDetailsCarousel";
+import ButtonGroup from "./components/UI-components/ButtonGroup";
+import { CompareButton } from "./components/CoinCarousel/CompareButton";
 import { ChartSkeleton } from "./components/UI-components/Skeleton/ChartSkeleton";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
@@ -14,7 +15,7 @@ import { chartFilter } from "./utils/chartFilter";
 import { daysObject } from "@/lib/types/types";
 
 const CoinCarousel = lazy(
-  () => import("./components/blocks-components/CoinCarousel")
+  () => import("./components/CoinCarousel/CoinCarousel")
 );
 const LineChart = lazy(
   () => import("./components/blocks-components/Charts/LineChart")
@@ -36,6 +37,7 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
 
 export default function Home() {
   const [isActive, setIsActive] = useIsActive(0);
+  const [isCompared, setIsCompared] = useState(false);
   const [selectedCoinId, setSelectedCoinId] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<daysObject>(
     chartFilter[0]
@@ -51,6 +53,10 @@ export default function Home() {
     setIsActive((prev) => (prev === value ? null : value));
   };
 
+  const handleChartComparison = () => {
+    setIsCompared((prev) => !prev);
+  };
+
   const handleSelectedFilter = (id: number) => {
     const found = chartFilter.find((item) => item.id === id);
     if (!found) {
@@ -62,25 +68,19 @@ export default function Home() {
 
   return (
     <>
-      <main id="scrollable-container" className="h-full overflow-y-auto flex flex-col w-maxWidth-custom mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg">
-        <div className="flex justify-start w-[506px] h-[53px] rounded-md p-1">
-          <Button
-            text="Coins"
-            isActive={isActive === 0}
-            onButtonClick={() => handleActiveButton(0)}
-            feature="nav"
-          />
-          <Button
-            text="Converter"
-            isActive={isActive === 1}
-            onButtonClick={() => handleActiveButton(1)}
-            feature="nav"
-          />
-        </div>
-        <div className="flex flex-col gap-[72px]">
+      <main
+        id="scrollable-container"
+        className="h-full overflow-y-auto flex flex-col w-maxWidth-custom mx-[72px] gap-[40px] bg-light-primaryBg dark:bg-dark-primaryBg"
+      >
+        <ButtonGroup isActive={isActive} handleActiveButton={handleActiveButton}/>
+        <div className="flex gap-[72px] items-center">
           <p className="text-light-secondaryTextColor dark:text-dark-chartTextColor ml-3">
             Select the currency to view statistics
           </p>
+          <CompareButton
+            isCompared={isCompared}
+            handleChartComparison={handleChartComparison}
+          />
         </div>
         <Suspense fallback={<CarouselSkeleton />}>
           <div>
