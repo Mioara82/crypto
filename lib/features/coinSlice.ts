@@ -1,0 +1,51 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+interface ChartCoinData {
+  id: string;
+  symbol: string;
+  currentPrice: number;
+}
+
+interface ChartCoins {
+  chartCoins: {
+    [key: string]: ChartCoinData;
+  };
+}
+
+const initialState: ChartCoins = {
+  chartCoins: {
+    bitcoin: {
+      id: "bitcoin",
+      symbol: "btc",
+      currentPrice: 45000,
+    },
+  },
+};
+
+const chartCoins = createSlice({
+  name: "selectedChartCoinSlice",
+  initialState,
+  reducers: {
+    handleChartCoin(state, action) {
+      const { name, id, symbol, current_price } = action.payload;
+      if (name) {
+        const nameLowercased = name.toLowerCase();
+        if (state.chartCoins[nameLowercased]) {
+          delete state.chartCoins[nameLowercased];
+        } else if (Object.keys(state.chartCoins).length < 3) {
+          state.chartCoins[nameLowercased] = {
+            id: id || "",
+            symbol: symbol.toUpperCase() || "",
+            currentPrice: current_price || 0,
+          };
+        }
+      }
+    },
+    deleteAllCoins(state) {
+      state.chartCoins = {};
+    },
+  },
+});
+
+export const { handleChartCoin, deleteAllCoins } = chartCoins.actions;
+export default chartCoins.reducer;

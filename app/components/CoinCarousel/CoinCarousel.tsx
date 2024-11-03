@@ -1,10 +1,13 @@
 import React from "react";
 import Slider from "react-slick";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
 import CoinDetail from "./CoinDetailsCarousel";
 import { CoinProps } from "./CoinDetailsCarousel";
-import { Currency } from "@/lib/features/appSettingsSlice";
+import { Currency } from "@/lib/features/currencySlice";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { RootState } from "@/lib/store";
+import { handleChartCoin } from "@/lib/features/coinSlice";
 
 interface ArrowProps {
   className?: string;
@@ -44,17 +47,23 @@ const SamplePrevArrow = (props: any) => <Arrow {...props}></Arrow>;
 interface CoinCarouselProps {
   list: CoinProps[];
   currency: Currency;
-  isActive: number | null;
-  //type any as I have an error in deployment "type defined but never used"
-  onSelectCoin:any;
 }
 
-const CoinCarousel: React.FC<CoinCarouselProps> = ({
-  list,
-  currency,
-  isActive,
-  onSelectCoin
-}) => {
+const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
+  const selectedCoins = useAppSelector(
+    (state: RootState) => state.chartCoins.chartCoins
+  );
+
+  const dispatch = useAppDispatch();
+  const handleSelected = (
+    name: string,
+    id: string,
+    symbol: string,
+    current_price: number
+  ) => {
+    dispatch(handleChartCoin({ name, id, symbol, current_price }));
+  };
+
   const settings = {
     dots: false,
     infinite: true,
@@ -94,14 +103,21 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({
   return (
     <div className="w-full">
       <Slider {...settings}>
-        {list.map((coin: CoinProps, index: number) => {
+        {list.map((coin: CoinProps) => {
           return (
             <CoinDetail
               key={coin.id}
-              onSelectCoin={()=>onSelectCoin(coin.id)}
+              handleSelectedCoin={() =>
+                handleSelected(
+                  coin.name,
+                  coin.id,
+                  coin.symbol,
+                  coin.current_price
+                )
+              }
               coin={coin}
               currency={currency}
-              isActive={isActive === index}
+              isActive={!!selectedCoins[coin.name.toLowerCase()]}
             />
           );
         })}

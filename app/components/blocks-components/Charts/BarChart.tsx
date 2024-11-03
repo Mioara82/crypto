@@ -24,7 +24,7 @@ import {
   getDisplayFormats,
   formatTimestampToDate,
 } from "@/app/utils/formatHelpers";
-import { Currency } from "@/lib/features/appSettingsSlice";
+import { Currency } from "@/lib/features/currencySlice";
 
 ChartJS.register(
   CategoryScale,
@@ -77,72 +77,75 @@ const BarChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
- 
-  const options: ChartOptions<"bar"> = useMemo(() => ({
-    responsive: true,
-    layout: {
-      padding: 20,
-    },
-    elements: {
-      point: {
-        pointStyle: "circle",
+
+  const options: ChartOptions<"bar"> = useMemo(
+    () => ({
+      responsive: true,
+      layout: {
+        padding: 20,
       },
-      bar: {},
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-      },
-      tooltip: {
-        enabled: true,
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        caretSize: 5,
-        caretPadding: 1,
-      },
-    },
-    interaction: {
-      mode: "index",
-    },
-    onHover: (_, chartElements) => {
-      if (chartElements.length > 0 && volumes && volumes.length > 0) {
-        const chartIndex = chartElements[0].index;
-        const currentLabel = labels[chartIndex];
-        const currentVolume = volumes[chartIndex];
-        const formattedDate = formatTimestampToDate(currentLabel);
-        setDisplayDate(formattedDate);
-        setDisplayVolume(Math.floor(formatMarketCap(currentVolume)));
-      }
-    },
-    scales: {
-      x: {
-        type: "time",
-        offset: true,
-        ...getDisplayFormats(days),
-        grid: {
-          display: true,
-          color: "rgba(0, 0, 0, 0)",
-          lineWidth: 1,
+      elements: {
+        point: {
+          pointStyle: "circle",
         },
-        ticks: {
-          autoSkip: true,
-          maxTicksLimit: 10,
-        },
+        bar: {},
       },
-      y: {
-        beginAtZero: true,
-        display: false,
-        grid: {
+      plugins: {
+        legend: {
           display: false,
         },
-        ticks: {
+        title: {
           display: false,
         },
+        tooltip: {
+          enabled: true,
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          caretSize: 5,
+          caretPadding: 1,
+        },
       },
-    },
-  }), [days, volumes, labels]);
+      interaction: {
+        mode: "index",
+      },
+      onHover: (_, chartElements) => {
+        if (chartElements.length > 0 && volumes && volumes.length > 0) {
+          const chartIndex = chartElements[0].index;
+          const currentLabel = labels[chartIndex];
+          const currentVolume = volumes[chartIndex];
+          const formattedDate = formatTimestampToDate(currentLabel);
+          setDisplayDate(formattedDate);
+          setDisplayVolume(Math.floor(formatMarketCap(currentVolume)));
+        }
+      },
+      scales: {
+        x: {
+          type: "time",
+          offset: true,
+          ...getDisplayFormats(days),
+          grid: {
+            display: true,
+            color: "rgba(0, 0, 0, 0)",
+            lineWidth: 1,
+          },
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10,
+          },
+        },
+        y: {
+          beginAtZero: true,
+          display: false,
+          grid: {
+            display: false,
+          },
+          ticks: {
+            display: false,
+          },
+        },
+      },
+    }),
+    [days, volumes, labels]
+  );
 
   const chartData: any = useMemo(() => {
     return {
@@ -200,7 +203,7 @@ const BarChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData,options]);
+  }, [chartData, options]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">

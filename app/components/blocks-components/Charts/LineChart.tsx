@@ -27,8 +27,7 @@ import {
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { CoinProps } from "../../CoinCarousel/CoinDetailsCarousel";
-import { Currency } from "@/lib/features/appSettingsSlice";
+import { Currency } from "@/lib/features/currencySlice";
 
 ChartJS.register(
   CategoryScale,
@@ -49,7 +48,7 @@ const LineChart = ({
   days,
 }: {
   params: { id: string };
-  coin: CoinProps;
+  coin: any;
   currency: Currency;
   days: string | number;
 }) => {
@@ -69,7 +68,7 @@ const LineChart = ({
   const chartRef = useRef<Chart | null>(null);
 
   const { labels, prices } = useMemo(() => {
-    if (isSuccess && data) {
+    if (isSuccess && data && data.prices && data.prices.length > 0) {
       const result = data?.prices.reduce(
         (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
           labels: [...acc.labels, label],
@@ -85,80 +84,83 @@ const LineChart = ({
     }
     return { labels: [], prices: [] };
   }, [isSuccess, data]);
- 
-  const options: ChartOptions<"line"> = useMemo(() => ({
-    responsive: true,
-    layout: {
-      padding: 20,
-    },
-    plugins: {
-      legend: {
-        display: false,
+
+  const options: ChartOptions<"line"> = useMemo(
+    () => ({
+      responsive: true,
+      layout: {
+        padding: 20,
       },
-      title: {
-        display: false,
-      },
-      tooltip: {
-        enabled: true,
-        usePointStyle: true,
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        caretSize: 5,
-        caretPadding: 1,
-        callbacks: {
-          label: (tooltipItems: any) => {
-            const { index } = tooltipItems.dataIndex; // Adjusted this line to extract the index correctly
-            const price = prices[index];
-            return `Price: ${currencySymbol}${price}`;
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+        },
+        tooltip: {
+          enabled: true,
+          usePointStyle: true,
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          caretSize: 5,
+          caretPadding: 1,
+          callbacks: {
+            label: (tooltipItems: any) => {
+              const { index } = tooltipItems.dataIndex;
+              const price = prices[index];
+              return `Price: ${currencySymbol}${price}`;
+            },
           },
         },
       },
-    },
-    interaction: {
-      mode: "index",
-    },
-    onHover: (_, chartElements) => {
-      if (chartElements.length > 0 && prices && prices.length > 0) {
-        const chartIndex = chartElements[0].index;
-        const currentLabel = labels[chartIndex];
-        const currentPrice = prices[chartIndex];
-        const formattedDate = formatTimestampToDate(currentLabel);
-        setDisplayDate(formattedDate);
-        setDisplayPrice(Math.floor(formatMarketCap(currentPrice)));
-      }
-    },
-    scales: {
-      x: {
-        type: "time",
-        time: {
-          ...getDisplayFormats(days),
-          tooltipFormat: "P",
+      interaction: {
+        mode: "index",
+      },
+      onHover: (_, chartElements) => {
+        if (chartElements.length > 0 && prices && prices.length > 0) {
+          const chartIndex = chartElements[0].index;
+          const currentLabel = labels[chartIndex];
+          const currentPrice = prices[chartIndex];
+          const formattedDate = formatTimestampToDate(currentLabel);
+          setDisplayDate(formattedDate);
+          setDisplayPrice(Math.floor(formatMarketCap(currentPrice)));
+        }
+      },
+      scales: {
+        x: {
+          type: "time",
+          time: {
+            ...getDisplayFormats(days),
+            tooltipFormat: "P",
+          },
+          grid: {
+            display: false,
+            color: "rgba(0,0,0,0)",
+          },
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10,
+            callback: (value) => {
+              const date = new Date(value);
+              return `${date.toLocaleString("default", {
+                month: "short",
+              })} ${date.getDate()}`;
+            },
+          },
         },
-        grid: {
+        y: {
           display: false,
-          color: "rgba(0,0,0,0)",
-        },
-        ticks: {
-          autoSkip: true,
-          maxTicksLimit: 10,
-          callback: (value) => {
-            const date = new Date(value);
-            return `${date.toLocaleString("default", {
-              month: "short",
-            })} ${date.getDate()}`;
+          grid: {
+            display: false,
+          },
+          ticks: {
+            display: false,
           },
         },
       },
-      y: {
-        display: false,
-        grid: {
-          display: false,
-        },
-        ticks: {
-          display: false,
-        },
-      },
-    },
-  }), [days, prices,labels, currencySymbol]);
+    }),
+    [days, prices, labels, currencySymbol]
+  );
 
   const chartData: ChartData<"line"> = useMemo(() => {
     return {
@@ -218,14 +220,14 @@ const LineChart = ({
         chartRef.current = null;
       }
     };
-  }, [chartData,options]);
+  }, [chartData, options]);
 
   return (
     <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
       <div>
         <div className="flex flex-col justify-start gap-6">
           <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
-            {coin.name} ({coin.symbol.toUpperCase()})
+            {coin.name} {coin.symbol}
           </p>
           <p className="text-2.5xl font-bold">
             {currencySymbol}
