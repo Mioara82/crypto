@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
-import { Currency } from "@/lib/features/appSettingsSlice";
+import { Currency } from "@/lib/features/currencySlice";
 
 interface FilteredCurrencyListProps {
   list: CurrencyProps[];

@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { currencyList } from "../UI-components/currencyList";
-import { setCurrency, Currency } from "@/lib/features/appSettingsSlice";
+import { setCurrency, Currency } from "@/lib/features/currencySlice";
 import CurrencyDetails from "../UI-components/CurrencyDetails";
 import FilteredCurrencyList from "../UI-components/FilteredCurrencyList";
 

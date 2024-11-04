@@ -14,16 +14,17 @@ export interface CoinDetailProps {
   coin: CoinProps;
   isActive: boolean;
   currency: string;
-  onSelectCoin: () => void;
+  handleSelectedCoin: () => void;
 }
 
 const CoinDetail: React.FC<CoinDetailProps> = ({
   coin,
   currency,
   isActive,
-  onSelectCoin,
+  handleSelectedCoin,
 }) => {
   const isPositive = coin.price_change_percentage_24h > 0;
+
   return (
     <div
       className={`flex flex-wrap w-[252px] rounded-md p-4 justify-center cursor-pointer ${
@@ -31,7 +32,7 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
           ? "bg-common-linearGradient"
           : "bg-light-primary dark:bg-dark-191"
       }`}
-      onClick={onSelectCoin}
+      onClick={handleSelectedCoin}
     >
       <div className="w-1/6 m-auto">
         <Image width={20} height={20} src={coin.image} alt="coin image" />
@@ -39,7 +40,9 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
       <div className="flex-col w-5/6">
         <div
           className={`flex gap-2 ${
-            isActive ? ("text-light-primary dark:text-dark-text") :("text-light-primaryTextColor dark:text-dark-text")
+            isActive
+              ? "text-light-primary dark:text-dark-text"
+              : "text-light-primaryTextColor dark:text-dark-text"
           }`}
         >
           {coin.name.length > 6

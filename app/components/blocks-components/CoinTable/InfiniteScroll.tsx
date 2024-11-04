@@ -27,7 +27,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
 }) => {
   return (
     <InfiniteScroll
-      dataLength={sortedData.length || 0}
+      dataLength={20000}
       next={fetchMoreData}
       hasMore={true}
       scrollableTarget="scrollable-container"
