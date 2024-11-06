@@ -6,10 +6,11 @@ export interface MarketDataApi {
   market_cap_percentage: { [key: string]: number };
 }
 
-export interface CoinSearch {
+export interface CoinSearchProps {
   id: string;
   symbol: string;
   name: string;
+  image:string;
   current_price: number;
   price_change_percentage_24h: number;
 }

@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type Currency = "USD" | "EUR" | "GBP" | "JPY" | "CHF" | "BTC" | "ETH";
 
-type CurrencyState = {
+interface CurrencyState {
   currencyName: Currency;
   symbol: string;
-};
+}
 
 export const getCurrencySymbol = (currency: Currency): string => {
   const symbols: Record<Currency, string> = {
