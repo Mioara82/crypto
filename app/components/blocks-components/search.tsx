@@ -8,7 +8,7 @@ import { RootState } from "@/lib/store";
 import FilteredCoinList from "../UI-components/FilteredCoinList";
 import Input from "../UI-components/input";
 import Spinner from "../UI-components/Spinner";
-import { CoinSearch } from "@/lib/types/apiInterfaces";
+import { CoinSearchProps } from "@/lib/types/apiInterfaces";
 
 const variants = {
   open: {
@@ -64,7 +64,7 @@ const Search = () => {
 
   useClickOutside(ref, handleDropdownDisplay);
 
-  const filteredCoinsList = coinsList?.filter((coin: CoinSearch) =>
+  const filteredCoinsList = coinsList?.filter((coin: CoinSearchProps) =>
     coin.name.toLowerCase().startsWith(debouncedSearchValue.toLowerCase())
   );
 
