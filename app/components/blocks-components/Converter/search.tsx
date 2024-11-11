@@ -23,6 +23,11 @@ const SearchCoin = ({
     setShow(false);
   };
 
+  const handleCoinSearch = (id:string) => {
+    hideDropdown();
+    handleSelectedCoin(id);
+  };
+
   useClickOutside(ref, handleDropdownDisplay);
   return (
     <Suspense
@@ -45,10 +50,7 @@ const SearchCoin = ({
             {list.map((c) => (
               <li
                 key={c.id}
-                onClick={() => {
-                  hideDropdown();
-                  handleSelectedCoin(c.id);
-                }}
+                onClick={() => handleCoinSearch(c.id)}
               >
                 {c.image} {c.name} ({c.symbol})
               </li>

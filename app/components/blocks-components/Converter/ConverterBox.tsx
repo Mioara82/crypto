@@ -27,6 +27,12 @@ const ConverterBox = () => {
   const exchangeValue =
     (quantityValue * coinOne.current_price) / coinTwo.current_price;
 
+  const isValidLeft =
+    isSuccess && coinsList && coinsList.length > 0 && direction === "left";
+
+  const isValidRight =
+    isSuccess && coinsList && coinsList.length > 0 && direction === "right";
+
   const handleDirection = () => {
     setDirection(direction === "left" ? "right" : "left");
   };
@@ -49,16 +55,13 @@ const ConverterBox = () => {
         <div>
           <h5>You sell</h5>
           <div>
-            {isSuccess &&
-              coinsList &&
-              coinsList.length > 0 &&
-              direction === "left" && (
-                <SearchCoin
-                  list={coinsList}
-                  coin={coinOne}
-                  handleSelectedCoin={handleSelectedCoin}
-                />
-              )}
+            {isValidLeft && (
+              <SearchCoin
+                list={coinsList}
+                coin={coinOne}
+                handleSelectedCoin={handleSelectedCoin}
+              />
+            )}
             <form>
               <input
                 type="number"
@@ -86,16 +89,13 @@ const ConverterBox = () => {
         <div>
           <h5>You buy</h5>
           <div>
-            {isSuccess &&
-              coinsList &&
-              coinsList.length > 0 &&
-              direction === "right" && (
-                <SearchCoin
-                  list={coinsList}
-                  coin={coinTwo}
-                  handleSelectedCoin={handleSelectedCoin}
-                />
-              )}
+            {isValidRight && (
+              <SearchCoin
+                list={coinsList}
+                coin={coinTwo}
+                handleSelectedCoin={handleSelectedCoin}
+              />
+            )}
             <p>{exchangeValue}</p>
           </div>
           <hr />
