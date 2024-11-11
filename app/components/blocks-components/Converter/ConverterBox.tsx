@@ -32,13 +32,15 @@ const ConverterBox = () => {
   };
 
   const handleSelectedCoin = (coinId: string) => {
-    direction === "left"
-      ? dispatch(
-          setCoinOne(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
-        )
-      : dispatch(
-          setCoinTwo(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
-        );
+    if (direction === "left") {
+      dispatch(
+        setCoinOne(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
+      );
+    } else {
+      dispatch(
+        setCoinTwo(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
+      );
+    }
   };
 
   return (
