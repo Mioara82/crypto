@@ -1,6 +1,10 @@
 import React from "react";
+import {v4 as uuidv4} from "uuid";
 
-const coinSkeletonArray = Array(6).fill({name:"coin", id:"Math.random()-Math.random()"});
+const coinSkeletonArray = Array.from({length:6},()=>({
+  name:"coin",
+  id:uuidv4()
+}));
 
 const CarouselSkeleton = () => {
   return (
