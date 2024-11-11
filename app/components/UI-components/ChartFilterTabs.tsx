@@ -11,7 +11,7 @@ const ChartFilterTabs: React.FC<ChartFilterTabsProps> = ({
   days,
   handleSelectedFilter,
 }) => {
- 
+
   return (
     <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
       <ul className="flex justify-around text-center gap-2">
