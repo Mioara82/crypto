@@ -17,9 +17,7 @@ import {
 import "chartjs-adapter-date-fns";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import {
-  getDisplayFormats,
-} from "@/app/utils/formatHelpers";
+import { getDisplayFormats, capitaliseString } from "@/app/utils/formatHelpers";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
@@ -34,12 +32,16 @@ ChartJS.register(
   Legend,
   TimeScale
 );
-const ConverterChart = ({ days }: { days: string | number }) => {
+const ConverterChart = () => {
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
   const coinOne = useAppSelector((state: RootState) => state.converter.coinOne);
   const coinTwo = useAppSelector((state: RootState) => state.converter.coinTwo);
+  const selectedFilter = useAppSelector(
+    (state: RootState) => state.converter.selectedFilter
+  );
+  const days = selectedFilter.period;
   const { data: dataOne } = useGetChartDataQuery({
     id: coinOne.id,
     currency,
@@ -62,7 +64,7 @@ const ConverterChart = ({ days }: { days: string | number }) => {
       const pricesTwo = dataTwo.prices;
 
       const rates = pricesOne.map(([priceOne], index) => {
-        const priceTwo = pricesTwo[index]?.[1] ?? 1; 
+        const priceTwo = pricesTwo[index]?.[1] ?? 1;
         return priceOne / priceTwo;
       });
 
@@ -76,6 +78,7 @@ const ConverterChart = ({ days }: { days: string | number }) => {
   const options: ChartOptions<"line"> = useMemo(
     () => ({
       responsive: true,
+      maintainAspectRatio:false,
       layout: {
         padding: 20,
       },
@@ -201,13 +204,21 @@ const ConverterChart = ({ days }: { days: string | number }) => {
   }, [chartData, options]);
 
   return (
-    <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+    <div className=" dark:bg-dark-darkBg bg-light-primary p-6">
       <div>
-        <div>
-          {coinOne.name(coinOne.symbol)} to {coinTwo.name(coinTwo.symbol)}
+        <div className="flex gap-3">
+          <p className="flex gap-2">
+            {coinOne.name}
+            <span>({capitaliseString(coinOne.symbol)})</span>
+          </p>
+          <p>to</p>
+          <p className="flex gap-3">
+            {coinTwo.name}
+            <span>({capitaliseString(coinTwo.symbol)})</span>
+          </p>
         </div>
       </div>
-      <div>
+      <div className="h-96 w-full flex-grow">
         <Line options={options} data={chartData} />
       </div>
     </div>

@@ -6,14 +6,17 @@ export const ConverterIcon = ({
   handleDirection: () => void;
 }) => {
   return (
-    <div onClick={handleDirection}>
+    <div
+      className="cursor-pointer z-10 absolute top-50 left-[49%] rounded-full"
+      onClick={handleDirection}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="none"
+        
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-8 h-8"
+        className="w-8 h-8 fill-light-darkBg dark:fill-dark-text"
       >
         <path
           strokeLinecap="round"
