@@ -1,25 +1,21 @@
 "use client";
 import React from "react";
-import { formatLabelDate } from "../utils/formatHelpers";
+import ButtonGroup from "../components/UI-components/ButtonGroup";
 import ConverterBox from "../components/blocks-components/Converter/ConverterBox";
 import ConverterChart from "../components/blocks-components/Converter/ConverterChart";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { RootState } from "@/lib/store";
+import ConverterHeading from "../components/blocks-components/Converter/ConverterHeading";
+import ChartFilterTabs from "../components/UI-components/ChartFilterTabs";
 
 export default function Converter() {
-  const currentDate = formatLabelDate();
-  const selectedFilter = useAppSelector(
-    (state: RootState) => state.converter.selectedFilter
-  );
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <h3>Online currency convertor</h3>
-        <h5>{currentDate}</h5>
-      </div>
+    <div className="h-auto overflow-y-auto flex flex-col w-maxWidth-custom mx-[72px] gap-10 bg-light-primaryBg dark:bg-dark-primaryBg">
+      <ButtonGroup />
+      <ConverterHeading />
       <ConverterBox />
-      <ConverterChart days={selectedFilter.period} />
-    </main>
+      <div className="flex flex-col gap-10">
+        <ConverterChart />
+        <ChartFilterTabs />
+      </div>
+    </div>
   );
 }
