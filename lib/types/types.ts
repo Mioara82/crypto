@@ -18,7 +18,7 @@ export interface CoinData {
 
 export interface daysObject {
   name: string;
-  period: number | string;
+  period: number;
   id: number;
 }
 

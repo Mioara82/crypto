@@ -12,7 +12,6 @@ import {
   Legend,
   TimeScale,
   ChartOptions,
-  ChartData,
   ScriptableContext,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
@@ -23,6 +22,7 @@ import {
   formatLabelDate,
   getDisplayFormats,
   formatTimestampToDate,
+  getChartLabels,
 } from "@/app/utils/formatHelpers";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
@@ -42,21 +42,34 @@ ChartJS.register(
 );
 
 const LineChart = ({
-  params,
-  coin,
+  paramsOne,
+  paramsTwo,
+  coinOne,
+  coinTwo,
   currency,
   days,
+  chartType,
 }: {
-  params: { id: string };
-  coin: any;
+paramsOne: { id: string };
+paramsTwo:{id:string};
+  coinOne:any;
+  coinTwo: any;
   currency: Currency;
-  days: string | number;
+  days: number;
+  chartType: string;
 }) => {
-  const { data, isSuccess } = useGetChartDataQuery({
-    id: params.id,
+  const { data: coinOneData } = useGetChartDataQuery({
+    id: paramsOne.id,
     currency,
     days,
   });
+
+  const { data: coinTwoData } = useGetChartDataQuery({
+    id: paramsTwo.id,
+    currency,
+    days,
+  });
+
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
   );
@@ -67,23 +80,14 @@ const LineChart = ({
 
   const chartRef = useRef<Chart | null>(null);
 
-  const { labels, prices } = useMemo(() => {
-    if (isSuccess && data && data.prices && data.prices.length > 0) {
-      const result = data?.prices.reduce(
-        (acc: { labels: number[]; prices: number[] }, [label, price]) => ({
-          labels: [...acc.labels, label],
-          prices: [...acc.prices, price],
-        }),
-        { labels: [], prices: [] }
-      );
+  const labels =
+    coinOneData?.prices?.map((item: any) => getChartLabels(days, item[0])) ||
+    [];
 
-      return {
-        labels: result.labels,
-        prices: result.prices,
-      };
-    }
-    return { labels: [], prices: [] };
-  }, [isSuccess, data]);
+  const coinOnePrices = coinOneData?.prices?.map((item: any) => item[1]) || [];
+  const coinTwoPrices = coinTwoData?.prices?.map((item: any) => item[1]) || [];
+
+  const allPrices = [...coinOnePrices, ...coinTwoPrices];
 
   const options: ChartOptions<"line"> = useMemo(
     () => ({
@@ -107,7 +111,7 @@ const LineChart = ({
           callbacks: {
             label: (tooltipItems: any) => {
               const { index } = tooltipItems.dataIndex;
-              const price = prices[index];
+              const price = allPrices[index];
               return `Price: ${currencySymbol}${price}`;
             },
           },
@@ -117,11 +121,11 @@ const LineChart = ({
         mode: "index",
       },
       onHover: (_, chartElements) => {
-        if (chartElements.length > 0 && prices && prices.length > 0) {
+        if (chartElements.length > 0 && allPrices && allPrices.length > 0) {
           const chartIndex = chartElements[0].index;
           const currentLabel = labels[chartIndex];
-          const currentPrice = prices[chartIndex];
-          const formattedDate = formatTimestampToDate(currentLabel);
+          const currentPrice = allPrices[chartIndex];
+          const formattedDate = formatTimestampToDate(Number(currentLabel));
           setDisplayDate(formattedDate);
           setDisplayPrice(Math.floor(formatMarketCap(currentPrice)));
         }
@@ -149,6 +153,7 @@ const LineChart = ({
           },
         },
         y: {
+          type: chartType === "logarithmic" ? "logarithmic" : "linear",
           display: false,
           grid: {
             display: false,
@@ -159,43 +164,64 @@ const LineChart = ({
         },
       },
     }),
-    [days, prices, labels, currencySymbol]
+    [days, allPrices, labels, currencySymbol]
   );
 
-  const chartData: ChartData<"line"> = useMemo(() => {
+  const chartData = useMemo(() => {
     return {
       labels,
       datasets: [
-        {
-          fill: true,
-          data: prices,
+        coinOne && {
+          label: coinOne?.name || "Coin One",
+          data: coinOnePrices,
           borderColor: "#7878FA",
+          borderWidth: 3,
+          borderRadius: 3,
+          categoryPercentage: 0.75,
           backgroundColor: (context: ScriptableContext<"line">) => {
-            const chart = context.chart;
-            const { ctx, chartArea } = chart;
-
-            if (!chartArea) {
-              return undefined;
-            }
-            const gradient = ctx.createLinearGradient(
+            const gradient = context.chart.ctx.createLinearGradient(
               0,
-              chartArea.bottom,
               0,
-              chartArea.top
+              0,
+              400
             );
-
-            gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
-            gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
+            gradient.addColorStop(0, "#7878FA");
+            gradient.addColorStop(0.65, "rgba(120, 120, 250, 0)");
             return gradient;
           },
           pointRadius: 0,
           pointHoverRadius: 0,
           borderCapStyle: "round",
           borderJoinStyle: "round",
+          fill: true,
         },
-      ],
+        coinTwo && {
+          label: coinTwo?.name || "Coin Two",
+          data: coinTwoPrices,
+          borderColor: "#D878FA",
+          borderWidth: 3,
+          borderRadius: 3,
+          categoryPercentage: 0.75,
+          backgroundColor: (context: ScriptableContext<"line">) => {
+            const gradient = context.chart.ctx.createLinearGradient(
+              0,
+              0,
+              0,
+              400
+            );
+            gradient.addColorStop(0, "#D878FA");
+            gradient.addColorStop(0.65, "rgba(216, 120, 250, 0)");
+            return gradient;
+          },
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          borderCapStyle: "round",
+          borderJoinStyle: "round",
+          fill: true,
+        },
+      ].filter(Boolean),
     };
-  }, [labels, prices]);
+  }, [labels, coinOnePrices, coinTwoPrices,coinOne, coinTwo, chartType]);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -223,25 +249,53 @@ const LineChart = ({
   }, [chartData, options]);
 
   return (
-    <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
-      <div>
-        <div className="flex flex-col justify-start gap-6">
-          <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
-            {coin.name} {coin.symbol}
-          </p>
-          <p className="text-2.5xl font-bold">
-            {currencySymbol}
-            {displayPrice || coin.current_price}
-          </p>
+    <>
+      {chartType === "line" && (
+        <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+          <div>
+            <div className="flex flex-col justify-start gap-6">
+              <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
+                {coinOne.name} {coinOne.symbol}
+              </p>
+              <p className="text-2.5xl font-bold">
+                {currencySymbol}
+                {displayPrice || coinOne.current_price}
+              </p>
+            </div>
+            <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+              {displayDate}
+            </p>
+          </div>
+          <div>
+            <Line options={options} data={chartData} />
+          </div>
         </div>
-        <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-          {displayDate}
-        </p>
-      </div>
-      <div>
-        <Line options={options} data={chartData} />
-      </div>
-    </div>
+      )}
+      {chartType === "logarithmic" && (
+        <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+          <p className="text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+            {displayDate}
+          </p>
+          <div>
+            <Line options={options} data={chartData} />
+          </div>
+          <div className="flex gap-2">
+            <div className="w-4 h-4 bg-common-linearGradient"></div>
+            <div>{coinOne.name}</div>
+            <div>
+              {currencySymbol} {coinOne.currentPrice}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="w-4 h-4 bg-common-chart-graph-100"></div>
+            <div>{coinTwo.name}</div>
+            <div>
+              {currencySymbol} {coinTwo.currentPrice}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -170,3 +170,35 @@ export function formatNumber(num: any) {
 
   return formattedInteger + (decimalPart ? "." + decimalPart : "");
 }
+
+export const month = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export function getChartLabels(days: number, milliseconds: number) {
+  if (days === 1) {
+    let minutes: string | number = (milliseconds / (1000 * 60)) % 60;
+    let hours: string | number = (milliseconds / (1000 * 60 * 60)) % 24;
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    return (
+      Math.floor(+hours) + ":" + String(Math.floor(+minutes)).padStart(2, "0")
+    );
+  } else {
+    const d = new Date(milliseconds);
+    const currentMonth = month[d.getMonth()];
+    const currentDate = d.getDate();
+    return `${currentMonth.slice(0, 3)} ${currentDate}`;
+  }
+}
