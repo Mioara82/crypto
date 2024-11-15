@@ -164,7 +164,7 @@ paramsTwo:{id:string};
         },
       },
     }),
-    [days, allPrices, labels, currencySymbol]
+    [days, allPrices, labels, currencySymbol, chartType]
   );
 
   const chartData = useMemo(() => {
@@ -221,7 +221,7 @@ paramsTwo:{id:string};
         },
       ].filter(Boolean),
     };
-  }, [labels, coinOnePrices, coinTwoPrices,coinOne, coinTwo, chartType]);
+  }, [labels, coinOnePrices, coinTwoPrices,coinOne, coinTwo]);
 
   useEffect(() => {
     if (chartRef.current) {
