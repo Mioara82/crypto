@@ -1,5 +1,5 @@
 import React from "react";
-import { chartFilter } from "@/app/utils/chartFilter";
+import { chartFilter } from "@/app/utils/ChartUtils/chartFilter";
 import { daysObject } from "@/lib/types/types";
 
 interface ChartFilterTabsProps {
@@ -11,7 +11,6 @@ const ChartFilterTabs: React.FC<ChartFilterTabsProps> = ({
   days,
   handleSelectedFilter,
 }) => {
- 
   return (
     <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
       <ul className="flex justify-around text-center gap-2">

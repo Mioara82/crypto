@@ -15,6 +15,7 @@
     "no-extra-semi": "error", // Disallows unnecessary semicolons
     "react/no-array-index-key": "warn",
     "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "off",
     "no-undef": "off",
     "indent":"off",
     "@stylistic/indent": "off",
