@@ -61,7 +61,7 @@ export default function Home() {
           </div>
         </Suspense>
 
-        <ChartsWrapper currency={currency} days={selectedFilter.period} />
+        <ChartsContainer currency={currency} days={selectedFilter.period} />
         <ChartFilterTabs />
         <CoinsTable />
       </main>
