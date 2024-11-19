@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
-import { chartFilter } from "@/app/utils/chartFilter";
+import { chartFilter } from "@/app/utils/ChartUtils/chartFilter";
 import { handleSelectedFilter } from "@/lib/features/converterSlice";
 import { RootState } from "@/lib/store";
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { chartFilter } from "@/app/utils/chartFilter";
+import { chartFilter } from "@/app/utils/ChartUtils/chartFilter";
 import { daysObject } from "../types/types";
 
 export interface ConverterCoinProps {
