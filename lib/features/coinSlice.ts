@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface ChartCoinData {
+export interface ChartCoinData {
   id: string;
   symbol: string;
   currentPrice: number;
@@ -30,9 +30,9 @@ const chartCoins = createSlice({
       const { name, id, symbol, current_price } = action.payload;
       if (name) {
         const nameLowercased = name.toLowerCase();
-        if (state.chartCoins[nameLowercased]) {
+        if (state.chartCoins[nameLowercased] && Object.keys(state.chartCoins).length > 1 ) {
           delete state.chartCoins[nameLowercased];
-        } else if (Object.keys(state.chartCoins).length < 3) {
+        } else if (Object.keys(state.chartCoins).length < 2) {
           state.chartCoins[nameLowercased] = {
             id: id || "",
             symbol: symbol.toUpperCase() || "",

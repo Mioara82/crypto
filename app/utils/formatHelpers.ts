@@ -136,7 +136,7 @@ function uppercaseLetter(letter: string) {
 export function capitaliseString(string: string) {
   return string
     .split("")
-    .map(el => el === "_" ? " " : el)
+    .map((el) => (el === "_" ? " " : el))
     .map((el) => uppercaseLetter(el))
     .join("");
 }
@@ -151,7 +151,7 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
 };
 
 export function formatLink(url: string | null) {
-  if(url === null) return;
+  if (url === null) return;
   const newUrl = url.slice(8).split("").reverse().concat("www.").reverse();
   const lastIndex = newUrl.length - 1;
   if (newUrl[lastIndex] === "/") {
@@ -161,7 +161,7 @@ export function formatLink(url: string | null) {
 }
 
 export function formatNumber(num: any) {
-  if(num === null)return;
+  if (num === null) return;
   const parts = num.toString().split(".");
   const integerPart = parts[0];
   const decimalPart = parts[1] || "";
@@ -169,4 +169,29 @@ export function formatNumber(num: any) {
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return formattedInteger + (decimalPart ? "." + decimalPart : "");
+}
+
+export function handleCoinDateDisplay(date: Date | number, days: number) {
+  switch (days) {
+    case 0.0416666666666667:
+    case 1:
+      return Intl.DateTimeFormat("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+    case 7:
+    case 14:
+    case 30:
+    case 90:
+      return Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+      }).format(date);
+    case 180:
+    case 365:
+      return Intl.DateTimeFormat("en-GB", {
+        month: "short",
+        year: "numeric",
+      }).format(date);
+  }
 }

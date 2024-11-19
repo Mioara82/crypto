@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { chartFilter } from "@/app/utils/chartFilter";
 import { handleSelectedFilter } from "@/lib/features/converterSlice";
@@ -10,6 +11,7 @@ const dispatch = useAppDispatch();
 const handleFilter = (id:number) => {
   dispatch(handleSelectedFilter({id}));
 };
+
   return (
     <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
       <ul className="flex justify-around text-center gap-2">

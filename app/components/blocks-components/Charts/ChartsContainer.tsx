@@ -4,84 +4,45 @@ import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
 import { Currency } from "@/lib/features/currencySlice";
 
-import { SuspenseChart } from "./SuspenseChart";
+const Chart = lazy(() => import("./Chart"));
 
-const LineChart = lazy(() => import("./LineChart"));
-const BarChart = lazy(() => import("./BarChart"));
-
-interface ChartWrapperProps {
-  children: React.ReactNode;
-}
-
-const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
-  <div className="w-full p-6 rounded-xl relative">{children}</div>
-);
-
-const ChartsWrapper = ({
+const ChartsContainer = ({
   currency,
   days,
 }: {
   currency: Currency;
-  days: string | number;
+  days: number;
 }) => {
   const { chartCoins } = useAppSelector((state: RootState) => state.chartCoins);
-  const chartCoinsKeys = Object.keys(chartCoins);
-  const numberOfCoins = chartCoinsKeys.length;
-  const firstCoin =
-    numberOfCoins > 0
-      ? chartCoins[chartCoinsKeys[0]]
-      : { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
+  const chartCoinKeys = Object.keys(chartCoins);
+  const chartCoinsValues = Object.values(chartCoins);
+  const [coinOneName, coinTwoName] = chartCoinKeys;
+  const [coinOne, coinTwo] = chartCoinsValues;
+  const data = chartCoinsValues.map((coin: any) => coin.currentPrice);
+  const isLogScale =
+    data.length > 1 && Math.max(...data) / Math.min(...data) > 10;
+
+  const chartType = isLogScale ? "logarithmic" : "linear";
+  const isLinear = !!coinOne && !coinTwo;
+  const isLogarithmic = !!coinOne && coinTwo;
 
   return (
     <>
-      {numberOfCoins > 0 ? (
-        <div className="flex justify-center w-maxWidth gap-10 p-4">
-          <SuspenseChart type="line">
-            <ChartWrapper>
-              <LineChart
-                params={{ id: firstCoin.id }}
-                coin={firstCoin}
-                currency={currency}
-                days={days}
-              />
-            </ChartWrapper>
-          </SuspenseChart>
-          <SuspenseChart type="bar">
-            <ChartWrapper>
-              <BarChart
-                params={{ id: firstCoin.id }}
-                currency={currency}
-                days={days}
-              />
-            </ChartWrapper>
-          </SuspenseChart>
-        </div>
-      ) : (
-        //show default coin charts before user selection
-        <div className="flex justify-center w-maxWidth gap-10 p-4">
-          <SuspenseChart type="line">
-            <ChartWrapper>
-              <LineChart
-                params={{ id: "bitcoin" }}
-                coin={chartCoins}
-                currency={currency}
-                days={days}
-              />
-            </ChartWrapper>
-          </SuspenseChart>
-          <SuspenseChart type="bar">
-            <ChartWrapper>
-              <BarChart
-                params={{ id: "bitcoin" }}
-                currency={currency}
-                days={days}
-              />
-            </ChartWrapper>
-          </SuspenseChart>
-        </div>
-      )}
+      <div className="flex justify-center w-maxWidth gap-10 p-4">
+        <Chart
+          chartType={chartType}
+          currency={currency}
+          days={days}
+          coinOne={coinOne}
+          coinOneName={coinOneName}
+          coinTwo={isLogarithmic ? coinTwo : null}
+          coinTwoName={isLogarithmic ? coinTwoName : "n/a"}
+          isLinear={isLinear}
+          isLogarithmic={isLogarithmic}
+        />
+      </div>
     </>
   );
 };
 
-export default ChartsWrapper;
+export default ChartsContainer;

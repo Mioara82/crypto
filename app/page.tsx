@@ -6,9 +6,10 @@ import { useGetSearchDataQuery } from "@/lib/api";
 import { RootState } from "@/lib/store";
 import ButtonGroup from "./components/UI-components/ButtonGroup";
 import CarouselHeader from "./components/UI-components/CarouselHeader";
-import ChartsWrapper from "./components/blocks-components/Charts/ChartsContainer";
+import ChartsContainer from "./components/blocks-components/Charts/ChartsContainer";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
+
 import { deleteAllCoins } from "@/lib/features/coinSlice";
 
 const CoinCarousel = lazy(
@@ -59,6 +60,7 @@ export default function Home() {
             ) : null}
           </div>
         </Suspense>
+
         <ChartsWrapper currency={currency} days={selectedFilter.period} />
         <ChartFilterTabs />
         <CoinsTable />
