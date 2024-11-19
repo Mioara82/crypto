@@ -8,7 +8,7 @@ import { RootState } from "@/lib/store";
 import FilteredCoinList from "../UI-components/FilteredCoinList";
 import Input from "../UI-components/input";
 import Spinner from "../UI-components/Spinner";
-import { CoinSearch } from "@/lib/types/apiInterfaces";
+import { CoinSearchProps } from "@/lib/types/apiInterfaces";
 
 const variants = {
   open: {
@@ -64,7 +64,7 @@ const Search = () => {
 
   useClickOutside(ref, handleDropdownDisplay);
 
-  const filteredCoinsList = coinsList?.filter((coin: CoinSearch) =>
+  const filteredCoinsList = coinsList?.filter((coin: CoinSearchProps) =>
     coin.name.toLowerCase().startsWith(debouncedSearchValue.toLowerCase())
   );
 
@@ -86,6 +86,8 @@ const Search = () => {
           name="searchInput"
           type="text"
           placeholder="Search..."
+          className={`border-1 z-50 rounded-md pl-9 pr-4 py-2 bg-light-lightBg dark:bg-dark-191 focus:outline-none text-sm w-[356px] text-light-secondaryTextColor/80  dark:text-dark-chartTextColor 
+            ${show ? "rounded-b-none" : "rounded-xl"}`}
         />
         <motion.ul
           animate={show ? "open" : "closed"}

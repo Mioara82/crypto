@@ -16,8 +16,9 @@ import {
   persistReducer,
   persistStore,
 } from "redux-persist";
+import converterReducer from "./features/converterSlice";
 import currencyReducer from "./features/currencySlice";
-import  chartCoinsReducer from "./features/coinSlice";
+import chartCoinsReducer from "./features/coinSlice";
 
 const reduxLogger = require("redux-logger");
 const logger = reduxLogger.createLogger();
@@ -31,7 +32,8 @@ const persistConfig = {
 export const rootReducer: any = combineReducers({
   [api.reducerPath]: api.reducer,
   currency: currencyReducer,
-  chartCoins: chartCoinsReducer
+  converter: converterReducer,
+  chartCoins: chartCoinsReducer,
 });
 
 export const makeStore = () => {

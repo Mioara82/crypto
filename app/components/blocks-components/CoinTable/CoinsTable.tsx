@@ -129,14 +129,17 @@ const CoinsTable = () => {
 
   return (
     <div className="relative">
-      <button className="absolute -top-20 right-20 border-dark-darkBg rounded-md px-4 py-3 dark:bg-dark-hover dark:hover:bg-common-purple" onClick={handlePageView}>
+      <button
+        className="absolute -top-20 right-20 border-dark-darkBg rounded-md px-4 py-3 dark:bg-dark-hover dark:hover:bg-common-purple"
+        onClick={handlePageView}
+      >
         {pageView === "Pagination" ? "Scroll" : "Pagination"}
       </button>
       <div className="w-full flex justify-center items-center">
         <div className="flex justify-center items-center gap-5 mr-auto">
           <CirclesIcon />
           <TableTitle value={sortQuery} />
-          <ArrowIcon handleSort={() => handleSort(sortQuery)} />
+          <ArrowIcon handleClick={() => handleSort(sortQuery)} />
         </div>
       </div>
       {pageView === "Scroll" ? (
