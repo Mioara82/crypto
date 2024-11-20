@@ -13,7 +13,7 @@ import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
 import { deleteAllCoins } from "@/lib/features/coinSlice";
 
 const CoinCarousel = lazy(
-  () => import("./components/CoinCarousel/CoinCarousel")
+  () => import("./components/blocks-components/CoinCarousel/CoinCarousel")
 );
 
 const CoinsTable = lazy(

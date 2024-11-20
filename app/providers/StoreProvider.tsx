@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 import { persistor, makeStore, AppStore } from "../../lib/store";
 import { PersistGate } from "redux-persist/integration/react";
+import LoadingCard from "../components/UI-components/Skeleton/Loading";
 
 export default function StoreProvider({
   children,
@@ -16,7 +17,7 @@ export default function StoreProvider({
 
   return (
     <Provider store={storeRef.current}>
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <PersistGate loading={<LoadingCard />} persistor={persistor}>
         {children}
       </PersistGate>
     </Provider>

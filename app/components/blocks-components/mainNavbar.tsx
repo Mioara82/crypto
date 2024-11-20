@@ -1,8 +1,8 @@
 "use client";
 import ThemeSwitch from "../ThemeSwitch";
-import Logo from "../UI-components/logo";
-import HomeButton from "../UI-components/homeButton";
-import PortfolioButton from "../UI-components/portfolioButton";
+import Logo from "../UI-components/Logo";
+import HomeButton from "../UI-components/HomeButton";
+import PortfolioButton from "../UI-components/PortfolioButton";
 import Search from "./search";
 import CurrencySelector from "./currencySelector";
 

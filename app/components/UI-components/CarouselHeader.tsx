@@ -1,5 +1,5 @@
 import React from "react";
-import { CompareButton } from "../CoinCarousel/CompareButton";
+import { CompareButton } from "../blocks-components/CoinCarousel/CompareButton";
 
 const CarouselHeader = React.memo(function CarouselGroup({
   isCompared,
