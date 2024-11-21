@@ -7,12 +7,15 @@ import { InfiniteCoinScroll } from "./InfiniteScroll";
 import TableButtons from "./TableButtons";
 import BackToTopButton from "./BackToTopButton";
 import CoinDetails from "./Coin";
+import Button from "../../UI-components/Button";
+import NotificationCard from "../../UI-components/NotificationCard";
 import { TableRow } from "./TableRow";
 import { TableTitle } from "./TableTitle";
 import { ArrowIcon } from "@/app/icons/arrowIcon";
 import { CirclesIcon } from "@/app/icons/circles";
 
 import { Coin } from "@/lib/types/types";
+import TableSkeleton from "../../UI-components/Skeleton/TableSkeleton";
 
 const CoinsTable = () => {
   const currency = useAppSelector((state: RootState) =>
@@ -34,12 +37,13 @@ const CoinsTable = () => {
   const coinsPerPage = 20;
   const startIndex = (currentPage - 1) * coinsPerPage;
 
-  const { data, isSuccess, refetch, isFetching } = useGetCoinsTableDataQuery({
-    currency,
-    coinsPerPage: coinsPerPage,
-    currentPage,
-    sortQuery: sortQuery,
-  });
+  const { data, isSuccess, isError, refetch, isFetching } =
+    useGetCoinsTableDataQuery({
+      currency,
+      coinsPerPage: coinsPerPage,
+      currentPage,
+      sortQuery: sortQuery,
+    });
 
   const [coins, setCoins] = useState<Coin[] | null>(data || null);
   const [pageView, setPageView] = useState("Pagination");
@@ -56,7 +60,7 @@ const CoinsTable = () => {
     if (!data) return;
     const intervalId = setInterval(() => {
       refetch();
-    }, 20000);
+    }, 600000);
     return () => clearInterval(intervalId);
   }, [data, refetch]);
 
@@ -128,13 +132,12 @@ const CoinsTable = () => {
   };
 
   return (
-    <div className="relative">
-      <button
-        className="absolute -top-20 right-20 border-dark-darkBg rounded-md px-4 py-3 dark:bg-dark-hover dark:hover:bg-common-purple"
-        onClick={handlePageView}
-      >
-        {pageView === "Pagination" ? "Scroll" : "Pagination"}
-      </button>
+    <div className="relative overscroll-none w-full">
+      <Button
+        onButtonClick={handlePageView}
+        feature="Pagination"
+        text={pageView === "Pagination" ? "Scroll" : "Pagination"}
+      />
       <div className="w-full flex justify-center items-center">
         <div className="flex justify-center items-center gap-5 mr-auto">
           <CirclesIcon />
@@ -142,51 +145,60 @@ const CoinsTable = () => {
           <ArrowIcon handleClick={() => handleSort(sortQuery)} />
         </div>
       </div>
-      {pageView === "Scroll" ? (
+      {isSuccess ? (
         <>
-          <InfiniteCoinScroll
-            sortBy={sortBy}
-            handleSortInTable={handleSortInTable}
-            fetchMoreData={fetchMoreData}
-            isSuccess={isSuccess}
-            isFetching={isFetching}
-            sortedData={sortedData || []}
-            startIndex={startIndex}
-          />
-          <BackToTopButton />
+          <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
+          {pageView === "Scroll" ? (
+            <>
+              <InfiniteCoinScroll
+                sortBy={sortBy}
+                handleSortInTable={handleSortInTable}
+                fetchMoreData={fetchMoreData}
+                isSuccess={isSuccess}
+                isFetching={isFetching}
+                sortedData={sortedData || []}
+                startIndex={startIndex}
+              />
+              <BackToTopButton />
+            </>
+          ) : (
+            <>
+              <table className="table-auto flex flex-col w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
+                <tbody>
+                  <TableRow
+                    sort={sortBy.key}
+                    order={sortBy.direction}
+                    handleSort={() => handleSortInTable(sortBy.key)}
+                  />
+                  {sortedData &&
+                    pageView === "Pagination" &&
+                    sortedData?.map((coin: Coin, index) => (
+                      <CoinDetails
+                        key={coin.id}
+                        isFetching={isFetching}
+                        coin={coin}
+                        index={index}
+                        startIndex={startIndex}
+                      />
+                    ))}
+                </tbody>
+              </table>
+              <BackToTopButton />
+              <div>
+                <div className="flex gap-2 ml-auto pr-3">
+                  <TableButtons
+                    handleNextPage={handleNextPage}
+                    handlePrevPage={handlePrevPage}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <>
-          <table className="table-auto flex flex-col w-full text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
-            <tbody>
-              <TableRow
-                sort={sortBy.key}
-                order={sortBy.direction}
-                handleSort={() => handleSortInTable(sortBy.key)}
-              />
-              {isSuccess &&
-                sortedData &&
-                pageView === "Pagination" &&
-                sortedData?.map((coin: Coin, index) => (
-                  <CoinDetails
-                    key={coin.id}
-                    isFetching={isFetching}
-                    coin={coin}
-                    index={index}
-                    startIndex={startIndex}
-                  />
-                ))}
-            </tbody>
-          </table>
-          <BackToTopButton />
-          <div>
-            <div className="flex gap-2 ml-auto pr-3">
-              <TableButtons
-                handleNextPage={handleNextPage}
-                handlePrevPage={handlePrevPage}
-              />
-            </div>
-          </div>
+          <NotificationCard isSuccess={isError} text="Failed loading data" />
+          <TableSkeleton />
         </>
       )}
     </div>

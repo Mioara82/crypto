@@ -14,7 +14,8 @@ const BackToTopButton = () => {
         <div>
           <button
             onClick={scrollToTop}
-            className="w-10 h-10 rounded-full fixed flex justify-center items-center bottom-10 left-[50%] z-50 bg-[#7878fa90] dark:bg-light-lightBg hover:bg-[#7878fa] hover:dark:bg-light-darkBg hover:border-slate-800"
+            className="w-10 h-10 rounded-full fixed flex justify-center items-center bottom-10 left-[50%] z-50 bg-common-brigthBlue
+             dark:bg-common-cyan hover:bg-common-azure hover:dark:bg-common-azure hover:scale-125"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

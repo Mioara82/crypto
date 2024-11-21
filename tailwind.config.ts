@@ -17,6 +17,9 @@ const config: Config = {
         light: "FFFFFF",
         "chart-graph-100": "rgba(231, 114, 255, 0.6)",
         "chart-graph-200": "rgba(116, 116, 250, 0.6)",
+        brigthBlue:"#02a4ff",
+        cyan:"#4da1ff",
+        azure:"#4dffdf"
       },
       light: {
         primary: "#FFFFFF",
@@ -28,6 +31,7 @@ const config: Config = {
         secondaryTextColor: "#424286",
         lightTextColor: "#D1D1D1",
         darkText: "#191932",
+        
       },
       dark: {
         primaryBg: "#13121A",
@@ -52,6 +56,11 @@ const config: Config = {
         "chart-900": "#F06142",
         "chart-910": "#5082CF",
       },
+     
+        skeleton300:"#495057",
+        skeleton200:"#6c757d",
+        skeleton100:"#adb5bd",
+      
     },
     extend: {
       fontFamily: {
@@ -67,6 +76,37 @@ const config: Config = {
       padding: {
         "3.5": "18px",
         "4.5": "22px",
+      },
+      width:{
+        "63":"253px",
+      },
+      height:{
+        "15":"60px",
+        "150":"600px"
+      },
+      border:{
+        width:{
+          "1":"1px"
+        }
+      },
+      keyframes: {
+        wave: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        },
+        fadeInRight: {
+          "0%": { opacity: "0", transform: "translateX(100%)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        fadeOutLeft: {
+          "0%": { opacity: "1", transform: "translateX(0)" },
+          "100%": { opacity: "0", transform: "translateX(-100%)" },
+        },
+      },
+      animation: {
+        wave: "wave 1s linear infinite",
+        fadeInRight:"fadeInRight 1s ease-in-out",
+        fadeOutLeft:"fadeOutLeft 1s ease-in-out"
       },
       backgroundImage: {
         customGradient:

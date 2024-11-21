@@ -1,19 +1,17 @@
 "use client";
-import { useState, lazy } from "react";
+import { lazy } from "react";
 import { Suspense } from "react";
-import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
+import { useAppSelector } from "@/lib/hooks/hooks";
 import { useGetSearchDataQuery } from "@/lib/api";
 import { RootState } from "@/lib/store";
 import ButtonGroup from "./components/UI-components/ButtonGroup";
-import CarouselHeader from "./components/UI-components/CarouselHeader";
 import ChartsContainer from "./components/blocks-components/Charts/ChartsContainer";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
-
-import { deleteAllCoins } from "@/lib/features/coinSlice";
+import TableSkeleton from "./components/UI-components/Skeleton/TableSkeleton";
 
 const CoinCarousel = lazy(
-  () => import("./components/CoinCarousel/CoinCarousel")
+  () => import("./components/blocks-components/CoinCarousel/CoinCarousel")
 );
 
 const CoinsTable = lazy(
@@ -21,8 +19,6 @@ const CoinsTable = lazy(
 );
 
 export default function Home() {
-  const [isCompared, setIsCompared] = useState(false);
-  const dispatch = useAppDispatch();
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
@@ -33,24 +29,13 @@ export default function Home() {
   const { data, isSuccess } = useGetSearchDataQuery(currency);
   const coinList = data?.slice(0, 20);
 
-  const handleChartComparison = () => {
-    if (!isCompared) {
-      dispatch(deleteAllCoins());
-    }
-    setIsCompared((prev) => !prev);
-  };
-
   return (
     <>
-      <main
-        id="scrollable-container"
-        className="h-full overflow-y-auto flex flex-col w-maxWidth-custom mx-[72px] gap-10 bg-light-primaryBg dark:bg-dark-primaryBg"
-      >
+      <main className="h-full relative overscoll-none flex flex-col w-maxWidth-custom mx-[72px] gap-10 bg-light-primaryBg dark:bg-dark-primaryBg">
         <ButtonGroup />
-        <CarouselHeader
-          isCompared={isCompared}
-          handleChartComparison={handleChartComparison}
-        />
+        <p className="text-light-secondaryTextColor dark:text-dark-chartTextColor ml-3">
+          Select the currency to view statistics
+        </p>
         <Suspense fallback={<CarouselSkeleton />}>
           <div>
             {isSuccess ? (
@@ -60,10 +45,11 @@ export default function Home() {
             ) : null}
           </div>
         </Suspense>
-
         <ChartsContainer currency={currency} days={selectedFilter.period} />
         <ChartFilterTabs />
-        <CoinsTable />
+        <Suspense fallback={<TableSkeleton />}>
+          <CoinsTable />
+        </Suspense>
       </main>
     </>
   );

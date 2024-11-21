@@ -30,11 +30,10 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
       dataLength={20000}
       next={fetchMoreData}
       hasMore={true}
-      scrollableTarget="scrollable-container"
       loader={<Spinner />}
       endMessage={<p className="text-center">No more data to show</p>}
     >
-      <table className="table-auto flex flex-col w-full h-[600px] overflow-y-auto text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
+      <table className="table-auto flex flex-col w-full h-auto overflow-y-auto text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
         <tbody>
           <TableRow
             sort={sortBy.key}

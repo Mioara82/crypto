@@ -5,7 +5,7 @@ export function useScrollButtonVisibility() {
 
   const handleScroll = () => {
     const pageOffset = window.scrollY;
-    const showButtonOnScroll = pageOffset > 700;
+    const showButtonOnScroll = pageOffset > 1000;
     setShow(showButtonOnScroll);
   };
 
