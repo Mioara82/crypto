@@ -41,11 +41,8 @@ const chartCoins = createSlice({
         }
       }
     },
-    deleteAllCoins(state) {
-      state.chartCoins = {};
-    },
   },
 });
 
-export const { handleChartCoin, deleteAllCoins } = chartCoins.actions;
+export const { handleChartCoin } = chartCoins.actions;
 export default chartCoins.reducer;

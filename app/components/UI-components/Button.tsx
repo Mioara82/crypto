@@ -2,11 +2,16 @@ import { motion } from "framer-motion";
 
 interface ButtonProps {
   text: string;
-  isActive: boolean;
+  isActive?: boolean;
   onButtonClick: () => void;
-  feature:string;
+  feature: string;
 }
-const Button: React.FC<ButtonProps> = ({ text, isActive, onButtonClick, feature }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  isActive,
+  onButtonClick,
+  feature,
+}) => {
   const variants = {
     open: {
       opacity: 1,
@@ -27,12 +32,18 @@ const Button: React.FC<ButtonProps> = ({ text, isActive, onButtonClick, feature 
     <motion.button
       animate={isActive ? "open" : "closed"}
       variants={variants}
-      className={`${feature === "nav" ? "w-[244px] " : "w-20"} h-[45px] rounded-md py-3 px-4 border-1 border-solid drop-shadow-md ${
+      className={`${feature === "nav" ? "w-60 " : "w-32"} ${
+        feature === "Pagination" ? "absolute -top-20 right-10 hover:bg-common-brigthBlue hover:dark:bg-common-purple" : ""
+      } h-11 text-center rounded-md py-3 px-4 border-1 border-solid drop-shadow-md ${
         isActive
-          ? "bg-common-linearGradient"
+          ? "bg-common-linearGradient shadow-indigo-500/50"
           : "bg-light-primary dark:bg-[#232336]"
       }
-     ${isActive ? "text-light-primary" : "text-light-secondaryTextColor dark:text-dark-text"}`}
+     ${
+       isActive
+         ? "text-light-primary"
+         : "text-light-secondaryTextColor dark:text-dark-text"
+     }`}
       onClick={onButtonClick}
     >
       {text}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Suspense } from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
 import { useGetSearchDataQuery } from "@/lib/api";
 import { RootState } from "@/lib/store";
@@ -9,7 +10,8 @@ import {
   swapCoins,
 } from "@/lib/features/converterSlice";
 import SearchCoin from "./search";
-import Input from "../../UI-components/input";
+import Input from "../../UI-components/Input";
+import Spinner from "../../UI-components/Spinner";
 import { ConverterIcon } from "../../../icons/converterIcon";
 
 const ConverterBox = () => {
@@ -43,7 +45,7 @@ const ConverterBox = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setQuantityValue(parseFloat(value));
   };
 
@@ -65,14 +67,14 @@ const ConverterBox = () => {
         <div className="flex flex-col basis-2/4 dark:bg-dark-lightBg bg-light-primary p-6 gap-10 rounded-2xl">
           <h5>You sell</h5>
           <div className="flex gap-5 h-6 justify-between items-center">
-            <div>
+            <Suspense fallback={<Spinner />}>
               <SearchCoin
                 list={coinsList}
                 coin={coinOne}
                 handleSelectedCoin={handleSelectedCoin}
                 direction="left"
               />
-            </div>
+            </Suspense>
             <div>
               <Input
                 className="box-border w-12 rounded-md dark:bg-dark-lightBg bg-light-primary "
