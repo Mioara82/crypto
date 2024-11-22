@@ -4,6 +4,7 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   BarElement,
   Title,
   Tooltip,
@@ -19,7 +20,6 @@ import { RootState } from "@/lib/store";
 import {
   formatLabelDate,
   formatMarketCap,
-  formatTimestampToDate,
   handleCoinDateDisplay,
 } from "@/app/utils/formatHelpers";
 import { createBarChartOptions } from "@/app/utils/ChartUtils/chartOptions";
@@ -29,6 +29,7 @@ import { Currency } from "@/lib/features/currencySlice";
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   BarElement,
   TimeScale,
   Title,
@@ -77,42 +78,48 @@ const BarChart = ({
   );
   const today = formatLabelDate();
   const [displayDate, setDisplayDate] = useState<string>(today);
-  const [displayVolume, setDisplayVolume] = useState<number>(0);
+  const [displayVolumeOne, setDisplayVolumeOne] = useState<number>(0);
+  const [displayVolumeTwo, setDisplayVolumeTwo] = useState<number>(0);
 
   const labels =
     coinOneData?.totalVolumes?.map((volume: any) =>
       handleCoinDateDisplay(new Date(volume[0]), days)
     ) || [];
 
+  const timestamps =
+    coinOneData?.totalVolumes?.map((volume: any) => volume[0]) || [];
+
   const coinOneVolumes =
     coinOneData?.totalVolumes?.map((volume: any) => volume[1]) || [];
   const coinTwoVolumes =
     coinTwoData?.totalVolumes?.map((volume: any) => volume[1]) || [];
 
-  const allVolumes = [...coinOneVolumes, ...coinTwoVolumes];
-
   const options = useMemo(
     () =>
       createBarChartOptions(
-        allVolumes,
-        coinOneData,
-        labels,
+        coinOneVolumes,
+        coinTwoVolumes,
+        coinOneName,
+        coinTwoName,
+        timestamps,
         currencySymbol,
-        formatTimestampToDate,
-        formatMarketCap,
         setDisplayDate,
-        setDisplayVolume,
+        setDisplayVolumeOne,
+        setDisplayVolumeTwo,
         days,
         chartType
       ),
     [
-      allVolumes,
-      coinOneData,
-      labels,
+      coinOneVolumes,
+      coinTwoVolumes,
+      coinOneName,
+      coinTwoName,
+      timestamps,
       currencySymbol,
       days,
       setDisplayDate,
-      setDisplayVolume,
+      setDisplayVolumeOne,
+      setDisplayVolumeTwo,
       chartType,
     ]
   );
@@ -129,7 +136,7 @@ const BarChart = ({
     [labels, coinOne, coinOneVolumes, coinTwo, coinTwoVolumes]
   );
 
-  useChart("barChart", options, chartData);
+  useChart(options, chartData);
 
   return (
     <>
@@ -143,7 +150,7 @@ const BarChart = ({
               {coinOneVolumes && coinOneVolumes.length > 0 && (
                 <p className="text-2.5xl font-bold">
                   {currencySymbol}
-                  {Math.floor(displayVolume || coinOneVolumes[1])}
+                  {formatMarketCap(displayVolumeOne || coinOneVolumes[1])}
                 </p>
               )}
             </div>
@@ -165,18 +172,22 @@ const BarChart = ({
           <div>
             <Bar options={options} data={chartData} />
           </div>
-          <div className="flex gap-2">
-            <div className="w-4 h-4 bg-common-linearGradient"></div>
-            <div>{coinOneName}</div>
-            <div>
-              {currencySymbol} {formatMarketCap(coinOneVolumes[0])}
+          <div className="flex gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-common-linearGradient"></div>
+              <div>{coinOneName}</div>
+              <div>
+                {currencySymbol}{" "}
+                {formatMarketCap(displayVolumeOne || coinOneVolumes[0])}
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2">
-            <div className="w-4 h-4 bg-common-chart-graph-100"></div>
-            <div>{coinTwoName}</div>
-            <div>
-              {currencySymbol} {formatMarketCap(coinTwoVolumes[0])}
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-common-chart-graph-100"></div>
+              <div>{coinTwoName}</div>
+              <div>
+                {currencySymbol}{" "}
+                {formatMarketCap(displayVolumeTwo || coinTwoVolumes[0])}
+              </div>
             </div>
           </div>
         </div>

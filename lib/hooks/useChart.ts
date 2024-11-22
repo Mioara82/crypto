@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Chart} from "chart.js";
 
 export const useChart = (
-  chartId: string,
+  //chartId: string,
   chartData: any,
   options: any
 ) => {
@@ -13,7 +13,7 @@ export const useChart = (
       chartRef.current.destroy();
     }
 
-    const canvas = document.getElementById(chartId) as HTMLCanvasElement | null;
+    const canvas = document.getElementById("barChart") as HTMLCanvasElement | null;
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
@@ -30,7 +30,7 @@ export const useChart = (
         chartRef.current = null;
       }
     };
-  }, [chartId, chartData, options]);
+  }, [chartData, options]);
 
   return chartRef;
 };

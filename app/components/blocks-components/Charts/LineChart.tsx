@@ -1,8 +1,9 @@
 "use-client";
-import React, { useState,useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
+  LogarithmicScale,
   LinearScale,
   PointElement,
   LineElement,
@@ -15,22 +16,23 @@ import {
 import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 import {
-  formatMarketCap,
   formatLabelDate,
-  formatTimestampToDate,
-  handleCoinDateDisplay
+  handleCoinDateDisplay,
 } from "@/app/utils/formatHelpers";
 import { createChartOptions } from "@/app/utils/ChartUtils/chartOptions";
 import { createLineChartData } from "@/app/utils/ChartUtils/chartData";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useChart } from "@/lib/hooks/useChart";
 import { useAppSelector } from "@/lib/hooks/hooks";
+import { ChartSkeleton } from "../../UI-components/Skeleton/ChartSkeleton";
+import NotificationCard from "../../UI-components/NotificationCard";
 import { RootState } from "@/lib/store";
 import { Currency } from "@/lib/features/currencySlice";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   PointElement,
   LineElement,
   Title,
@@ -63,13 +65,21 @@ const LineChart = ({
 }) => {
   const defaultCoinOne = { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
 
-  const { data: coinOneData} = useGetChartDataQuery({
+  const {
+    data: coinOneData,
+    isError: isErrorOne,
+    isLoading: isLoadingOne,
+  } = useGetChartDataQuery({
     id: coinOne?.id || defaultCoinOne.id,
     currency,
     days,
   });
 
-  const { data: coinTwoData} = useGetChartDataQuery({
+  const {
+    data: coinTwoData,
+    isError: isErrorTwo,
+    isLoading: isLoadingTwo,
+  } = useGetChartDataQuery({
     id: coinTwo?.id,
     currency,
     days,
@@ -81,33 +91,46 @@ const LineChart = ({
 
   const today = formatLabelDate();
   const [displayDate, setDisplayDate] = useState<string>(today);
-  const [displayPrice, setDisplayPrice] = useState<number>(0);
+  const [displayPriceOne, setDisplayPriceOne] = useState<number>(0);
+  const [displayPriceTwo, setDisplayPriceTwo] = useState<number>(0);
 
-  const labels = coinOneData?.prices?.map((price: any) => handleCoinDateDisplay(price[0], days)) || [];
+  const labels =
+    coinOneData?.prices?.map((price: any) =>
+      handleCoinDateDisplay(price[0], days)
+    ) || [];
 
-  const coinOnePrices = coinOneData?.prices?.map((price: any) => price[1]) || [];
-  const coinTwoPrices = coinTwoData?.prices?.map((price: any) => price[1]) || [];
+  const timestamps = coinOneData?.prices?.map((price: any) => price[0] || []);
 
-  const allPrices = [...coinOnePrices, ...coinTwoPrices];
+  const coinOnePrices =
+    coinOneData?.prices?.map((price: any) => price[1]) || [];
+  const coinTwoPrices =
+    coinTwoData?.prices?.map((price: any) => price[1]) || [];
 
   const options = useMemo(
     () =>
       createChartOptions(
-        allPrices,
-        labels,
+        coinOnePrices,
+        coinTwoPrices,
+        coinOneName,
+        coinTwoName,
+        timestamps,
         currencySymbol,
-        formatTimestampToDate,
-        formatMarketCap,
+        days,
         setDisplayDate,
-        setDisplayPrice,
+        setDisplayPriceOne,
+        setDisplayPriceTwo,
         chartType
       ),
     [
-      allPrices,
-      labels,
+      coinOnePrices,
+      coinTwoPrices,
+      coinOneName,
+      coinTwoName,
+      timestamps,
       currencySymbol,
       setDisplayDate,
-      setDisplayPrice,
+      setDisplayPriceOne,
+      setDisplayPriceTwo,
       chartType,
     ]
   );
@@ -116,62 +139,87 @@ const LineChart = ({
     () =>
       createLineChartData(
         labels,
+        timestamps,
         coinOne,
         coinOnePrices,
         coinTwo,
         coinTwoPrices
       ),
-    [labels, coinOne, coinOnePrices, coinTwo, coinTwoPrices]
+    [labels, timestamps, coinOne, coinOnePrices, coinTwo, coinTwoPrices]
   );
 
-  useChart("lineChart", options, chartData);
+  useChart(options, chartData);
 
   return (
     <>
       {isLinear && (
-        <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
-          <div>
-            <div className="flex flex-col justify-start gap-6">
-              <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
-                {coinOneName} {coinOne.symbol}
-              </p>
-              <p className="text-2.5xl font-bold">
-                {currencySymbol}
-                {displayPrice || coinOne.current_price}
+        <>
+          {isLoadingOne && <ChartSkeleton type="line" />}
+          {isErrorOne && (
+            <NotificationCard
+              text="Error loading data"
+              isSuccess={isErrorOne}
+            />
+          )}
+          <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+            <div>
+              <div className="flex flex-col justify-start gap-6">
+                <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
+                  {coinOneName} {coinOne.symbol}
+                </p>
+                <p className="text-2.5xl font-bold">
+                  {currencySymbol}
+                  {displayPriceOne.toFixed(2) || coinOne.currentPrice}
+                </p>
+              </div>
+              <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+                {displayDate || today}
               </p>
             </div>
-            <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-              {displayDate ||today}
-            </p>
+            <div>
+              <Line options={options} data={chartData} />
+            </div>
           </div>
-          <div>
-            <Line options={options} data={chartData} />
-          </div>
-        </div>
+        </>
       )}
       {isLogarithmic && (
-        <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
-          <p className="text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
-            {displayDate || today}
-          </p>
-          <div>
-            <Line options={options} data={chartData} />
-          </div>
-          <div className="flex gap-2">
-            <div className="w-4 h-4 bg-common-linearGradient"></div>
-            <div>{coinOneName}</div>
+        <>
+          {(isLoadingOne || isLoadingTwo) && <ChartSkeleton type="line" />}
+          {(isErrorOne || isErrorTwo) && (
+            <NotificationCard
+              text="Error loading data"
+              isSuccess={isErrorOne || isErrorTwo}
+            />
+          )}
+          <div className="flex flex-col h-full justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+            <div className="h-14">
+              <p className="text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+                {displayDate || today}
+              </p>
+            </div>
             <div>
-              {currencySymbol} {coinOne.currentPrice}
+              <Line options={options} data={chartData} />
+            </div>
+            <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-common-linearGradient"></div>
+                <div>{coinOneName}</div>
+                <div>
+                  {currencySymbol}{" "}
+                  {(displayPriceOne || coinOne.currentPrice).toFixed(2)}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-common-chart-graph-100"></div>
+                <div>{coinTwoName}</div>
+                <div>
+                  {currencySymbol}{" "}
+                  {(displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="w-4 h-4 bg-common-chart-graph-100"></div>
-            <div>{coinTwoName}</div>
-            <div>
-              {currencySymbol} {coinTwo.currentPrice}
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </>
   );
