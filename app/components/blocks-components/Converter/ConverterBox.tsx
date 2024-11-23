@@ -10,7 +10,7 @@ import {
   swapCoins,
 } from "@/lib/features/converterSlice";
 import SearchCoin from "./search";
-import Input from "../../UI-components/Input";
+import Input from "../../UI-components/input";
 import Spinner from "../../UI-components/Spinner";
 import { ConverterIcon } from "../../../icons/converterIcon";
 

@@ -6,7 +6,7 @@ import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { RootState } from "@/lib/store";
 import FilteredCoinList from "../UI-components/FilteredCoinList";
-import Input from "../UI-components/Input";
+import Input from "../UI-components/input";
 import Spinner from "../UI-components/Spinner";
 import { CoinSearchProps } from "@/lib/types/apiInterfaces";
 
