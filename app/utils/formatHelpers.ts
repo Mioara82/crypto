@@ -59,7 +59,7 @@ export function checkIfIsInteger(number: number | null) {
   return Number.isInteger(number) ? number : number.toFixed(2);
 }
 
-export const getDisplayFormats = (days: number | string) => {
+export const getDisplayFormats = (days: number) => {
   if (days === 1) {
     return {
       unit: "hour" as const,
@@ -91,7 +91,7 @@ export const getDisplayFormats = (days: number | string) => {
       },
       stepSize: 4,
     };
-  } else if (days === 180) {
+  } else if (days === 90 || days === 180) {
     return {
       unit: "month" as const,
       displayFormats: {
@@ -106,15 +106,7 @@ export const getDisplayFormats = (days: number | string) => {
       },
       stepSize: 2,
     };
-  } else if (days === "max") {
-    return {
-      unit: "month" as const,
-      displayFormats: {
-        month: "MMM yyyy",
-      },
-      stepSize: 4,
-    };
-  }
+  } 
 };
 
 export function formatTimestampToDate(timestamp: number) {

@@ -14,7 +14,7 @@ const handleFilter = (id:number) => {
 
   return (
     <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
-      <ul className="flex justify-around text-center gap-2">
+      <ul className="flex justify-around items-center p-1 gap-2">
         {chartFilter.map((title) => (
           <li
             className={`text-sm text-light-secondaryTextColor dark:text-[#a7a7cc] text-center cursor-pointer px-5 py-2 rounded-md ${

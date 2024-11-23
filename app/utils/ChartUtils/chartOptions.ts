@@ -1,16 +1,25 @@
+/* eslint-disable prefer-const */
 import { ChartOptions } from "chart.js";
-import { handleCoinDateDisplay } from "../formatHelpers";
+import {
+  handleCoinDateDisplay,
+  formatMarketCap,
+  formatTimestampToDate,
+} from "../formatHelpers";
 
 export const createChartOptions = (
-  allPrices: number[],
-  labels: any,
+  coinOnePrices: number[],
+  coinTwoPrices: number[],
+  coinOneName: string,
+  coinTwoName: string,
+  timestamps: any,
   currencySymbol: string,
-  formatTimestampToDate: any,
-  formatMarketCap: any,
+  days: number,
   setDisplayDate: any,
-  setDisplayPrice: any,
+  setDisplayPriceOne: any,
+  setDisplayPriceTwo: any,
   chartType: "linear" | "logarithmic"
-): ChartOptions<"line"> => ({
+): ChartOptions<"line"> => {
+  return {
   responsive: true,
   layout: {
     padding: 20,
@@ -25,16 +34,29 @@ export const createChartOptions = (
     tooltip: {
       enabled: true,
       usePointStyle: true,
-      intersect: false,
-      mode: "index",
-      backgroundColor: "rgba(0, 0, 0, 0)",
+      backgroundColor: "rgba(0, 50, 0, 0)",
       caretSize: 5,
       caretPadding: 1,
+      mode: "index",
+      intersect: false,
+      padding: 8,
       callbacks: {
         label: (tooltipItems: any) => {
-          const { index } = tooltipItems.dataIndex;
-          const price = allPrices[index];
-          return `Price: ${currencySymbol}${price}`;
+          const { datasetIndex, dataIndex } = tooltipItems;
+          let price, name;
+          const currentLabel = timestamps[dataIndex];
+          const formattedDate = formatTimestampToDate(Number(currentLabel));
+          if (datasetIndex === 0) {
+            price = coinOnePrices[dataIndex];
+            name = coinOneName;
+            setDisplayPriceOne(price);
+          } else if (datasetIndex === 1 && coinTwoPrices && coinTwoName) {
+            price = coinTwoPrices[dataIndex];
+            name = coinTwoName;
+            setDisplayPriceTwo(price);
+          }
+          setDisplayDate(formattedDate);
+          return `${name}: ${currencySymbol}${price?.toFixed(2)}`;
         },
       },
     },
@@ -42,18 +64,12 @@ export const createChartOptions = (
   interaction: {
     mode: "index",
   },
-  onHover: (_, chartElements) => {
-    if (chartElements.length > 0 && allPrices && allPrices.length > 0) {
-      const chartIndex = chartElements[0].index;
-      const currentLabel = labels[chartIndex];
-      const currentPrice = allPrices[chartIndex];
-      const formattedDate = formatTimestampToDate(Number(currentLabel));
-      setDisplayDate(formattedDate);
-      setDisplayPrice(Math.floor(formatMarketCap(currentPrice)));
-    }
-  },
   scales: {
     x: {
+      type: "time",
+      time: {
+        unit: days === 1 ? "hour" : days <= 90 ? "day" : "month",
+      },
       grid: {
         display: false,
         color: "rgba(0,0,0,0)",
@@ -61,13 +77,14 @@ export const createChartOptions = (
       ticks: {
         autoSkip: true,
         maxTicksLimit: 10,
+        callback: (value) => {
+          const date = new Date(value);
+          return handleCoinDateDisplay(date, days);
+        },
       },
     },
     y: {
-      type: chartType,
-      beginAtZero: false,
-      min: 0.1,
-      max: 1000,
+      type:chartType,
       display: false,
       grid: {
         display: false,
@@ -77,17 +94,19 @@ export const createChartOptions = (
       },
     },
   },
-});
+  // eslint-disable-next-line semi
+}};
 
 export const createBarChartOptions = (
-  allVolumes: number[],
-  coinOneData: any,
-  labels: any,
+  coinOneVolumes: number[],
+  coinTwoVolumes: number[],
+  coinOneName: string,
+  coinTwoName: string,
+  timestamps: any,
   currencySymbol: any,
-  formatTimestampToDate: any,
-  formatMarketCap: any,
   setDisplayDate: any,
-  setDisplayVolume: any,
+  setDisplayVolumeOne: any,
+  setDisplayVolumeTwo: any,
   days: number,
   chartType: "linear" | "logarithmic"
 ): ChartOptions<"bar"> => ({
@@ -110,36 +129,44 @@ export const createBarChartOptions = (
     },
     tooltip: {
       enabled: true,
-      backgroundColor: "rgba(0, 0, 0, 0)",
+      usePointStyle: true,
+      backgroundColor: "rgba(0, 50, 0, 0)",
       caretSize: 5,
       caretPadding: 1,
       mode: "index",
       intersect: false,
+      padding: 8,
       callbacks: {
         label: (tooltipItems: any) => {
-          const { index } = tooltipItems.dataIndex;
-          const price = allVolumes[index];
-          return `Price: ${currencySymbol}${price}`;
+          const { datasetIndex, dataIndex } = tooltipItems;
+          let volume, name;
+          const currentLabel = timestamps[dataIndex];
+          const formattedDate = formatTimestampToDate(Number(currentLabel));
+          if (datasetIndex === 0) {
+            volume = formatMarketCap(coinOneVolumes[dataIndex]);
+            name = coinOneName;
+            setDisplayVolumeOne(volume);
+          } else if (datasetIndex === 1 && coinTwoVolumes && coinTwoName) {
+            volume = formatMarketCap(coinTwoVolumes[dataIndex]);
+            name = coinTwoName;
+            setDisplayVolumeTwo(volume);
+          }
+          setDisplayDate(formattedDate);
+          return `${name}: ${currencySymbol}${volume}`;
         },
+        title: (tooltipItems) => tooltipItems[0].label,
       },
     },
   },
   interaction: {
     mode: "index",
   },
-  onHover: (_, chartElements) => {
-    if (chartElements.length > 0 && allVolumes && allVolumes.length > 0) {
-      const chartIndex = chartElements[0].index;
-      const currentLabel = labels[chartIndex];
-      const currentVolume = allVolumes[chartIndex];
-      const formattedDate = formatTimestampToDate(Number(currentLabel));
-      setDisplayDate(formattedDate);
-      setDisplayVolume(Math.floor(formatMarketCap(currentVolume)));
-    }
-  },
   scales: {
     x: {
+      type: "category",
+      offset:true,
       grid: {
+        
         display: true,
         color: "rgba(0, 0, 0, 0)",
         lineWidth: 1,
@@ -149,11 +176,11 @@ export const createBarChartOptions = (
         maxTicksLimit: 10,
       },
       beforeFit: (axis) => {
-        const volumes = coinOneData?.totalVolumes || [];
+        const volumes = coinOneVolumes || [];
         const length = volumes.length - 1;
         if (volumes && length >= 0) {
           axis.ticks.push({
-            label: handleCoinDateDisplay(volumes[length][0], days),
+            label: handleCoinDateDisplay(volumes[length], days),
             value: length,
           });
         }
@@ -172,3 +199,122 @@ export const createBarChartOptions = (
     },
   },
 });
+
+export const createConverterChartOptions = (
+  conversionRates: any,
+  coinOne: any,
+  coinTwo: any,
+  setDisplayRate: any,
+  days: number
+): ChartOptions<"line"> => {
+  return {
+  responsive: true,
+  maintainAspectRatio: false,
+  layout: {
+    padding: 20,
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: false,
+    },
+    tooltip: {
+      enabled: true,
+      usePointStyle: true,
+      backgroundColor: "rgba(0, 50, 0, 0)",
+      caretSize: 5,
+      caretPadding: 1,
+      mode: "index",
+      intersect: false,
+      padding: 8,
+      callbacks: {
+        label: (tooltipItems: any) => {
+          const { dataIndex } = tooltipItems;
+          // eslint-disable-line prefer-const
+          let rate, nameOne, nameTwo;
+          rate = conversionRates[dataIndex];
+          nameOne = coinOne.name;
+          nameTwo = coinTwo.name;
+          setDisplayRate(rate);
+          return `${nameOne}/${nameTwo}: ${rate.toFixed(2)}`;
+        },
+      },
+    },
+  },
+  interaction: {
+    mode: "index",
+  },
+  scales: {
+    x: {
+      type: "time",
+      time: {
+        unit: days === 1 ? "hour" : days <= 90 ? "day" : "month",
+      },
+      grid: {
+        display: false,
+        color: "rgba(0,0,0,0)",
+      },
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 10,
+        callback: (value: any) => {
+          const date = new Date(value);
+          return handleCoinDateDisplay(date, days);
+        },
+      },
+    },
+    y: {
+      display: false,
+      grid: {
+        display: false,
+      },
+      ticks: {
+        display: false,
+      },
+    },
+  },
+  // eslint-disable-next-line semi
+}};
+
+export const TableChartOptions = {
+  elements: {
+    point: {
+      radius: 50,
+    },
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  hitRadius: 250,
+  scales: {
+    y: {
+      display: false, 
+      ticks: {
+        display: false,
+      },
+    },
+    x: {
+      display: false,
+      categoryPercentage: 0.26,
+      ticks: {
+        display: false,
+      },
+      grid: {
+        display: false, 
+      },
+    },
+  },
+  plugins: {
+    tooltip: {
+      enabled: true, 
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      caretSize: 5,
+      caretPadding: 1,
+      displayColors: false,
+    },
+    legend: {
+      display: false,
+    },
+  },
+};

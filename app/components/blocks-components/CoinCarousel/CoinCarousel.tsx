@@ -1,9 +1,11 @@
 import React from "react";
 import Slider from "react-slick";
+import { Suspense } from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks/hooks";
 import CoinDetail from "./CoinDetailsCarousel";
 import { CoinProps } from "./CoinDetailsCarousel";
 import { Currency } from "@/lib/features/currencySlice";
+import CarouselSkeleton from "../../UI-components/Skeleton/CarouselSkeleton";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { RootState } from "@/lib/store";
@@ -102,26 +104,28 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
 
   return (
     <div className="w-full">
-      <Slider {...settings}>
-        {list.map((coin: CoinProps) => {
-          return (
-            <CoinDetail
-              key={coin.id}
-              handleSelectedCoin={() =>
-                handleSelected(
-                  coin.name,
-                  coin.id,
-                  coin.symbol,
-                  coin.current_price
-                )
-              }
-              coin={coin}
-              currency={currency}
-              isActive={!!selectedCoins[coin.name.toLowerCase()]}
-            />
-          );
-        })}
-      </Slider>
+      <Suspense fallback={<CarouselSkeleton />}>
+        <Slider {...settings}>
+          {list.map((coin: CoinProps) => {
+            return (
+              <CoinDetail
+                key={coin.id}
+                handleSelectedCoin={() =>
+                  handleSelected(
+                    coin.name,
+                    coin.id,
+                    coin.symbol,
+                    coin.current_price
+                  )
+                }
+                coin={coin}
+                currency={currency}
+                isActive={!!selectedCoins[coin.name.toLowerCase()]}
+              />
+            );
+          })}
+        </Slider>
+      </Suspense>
     </div>
   );
 };
