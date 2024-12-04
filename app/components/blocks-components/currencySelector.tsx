@@ -70,6 +70,7 @@ const CurrencySelector = () => {
           currency={currency}
           currencySymbol={currencySymbol}
         />
+ 
       )}
       <motion.ul
         animate={show ? "open" : "closed"}

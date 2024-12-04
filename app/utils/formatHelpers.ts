@@ -117,8 +117,8 @@ export function formatTimestampToDate(timestamp: number) {
   return `${month} ${day}, ${year}`;
 }
 
-export function calculateProgress(unitOne: number, unitTwo: number) {
-  return Math.ceil(unitTwo / unitOne);
+export function calculateProgress(unitOne: any, unitTwo: any) {
+  return Math.floor((unitOne / unitTwo) * 100);
 }
 
 function uppercaseLetter(letter: string) {

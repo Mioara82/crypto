@@ -21,7 +21,8 @@ import {
 import Spinner from "@/app/components/UI-components/Spinner";
 
 const CoinDetails = ({ params }: { params: { id: string } }) => {
-  const { data, isSuccess, isError } = useGetCoinDataQuery(params.id);
+  const { data, isSuccess} = useGetCoinDataQuery(params.id);
+
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
@@ -31,6 +32,8 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
   );
 
   const isPositive = data ? data.priceChangePercentage > 0 : false;
+  const circulatingFromMax = calculateProgress(data?.circulatingSupply,
+    data?.maxSupply);
 
   return (
     <div className="flex flex-col w-maxWidth-custom mx-[72px] mt-16 bg-light-primaryBg dark:bg-dark-primaryBg">
@@ -212,7 +215,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   <PlusIcon />
                   <p>Circulating Supply</p>
                   <p className="flex gap-2 ml-auto text-xl">
-                    <span>{formatNumber(data.circulatingSupply)}</span>
+                    <span>{formatNumber(data.circulatingSupply.toFixed())}</span>
                     <span>{capitaliseString(data.symbol)}</span>
                   </p>
                 </div>
@@ -221,21 +224,14 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                     <div className="flex gap-2 items-center">
                       <div className="w-2 h-2 rounded-full dark:bg-common-orange"></div>
                       <div className="text-xs">
-                        {calculateProgress(
-                          data.circulatingSupply,
-                          data.maxSupply
-                        )}
+                        {circulatingFromMax}
                         %
                       </div>
                     </div>
                     <div className="flex gap-2 items-center ml-auto">
                       <div className="w-2 h-2 rounded-full  dark:bg-[#f8d2a6]"></div>
                       <div className="text-xs">
-                        {100 -
-                          calculateProgress(
-                            data.circulatingSupply,
-                            data.maxSupply
-                          )}
+                        {100 -circulatingFromMax}
                         %
                       </div>
                     </div>
@@ -280,7 +276,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
         </>
       ) : (
         <>
-          <NotificationCard isSuccess={isError} text="Error fetching data" />
+          <NotificationCard isSuccess={false} text="Error fetching data" />
           <Spinner />
         </>
       )}
