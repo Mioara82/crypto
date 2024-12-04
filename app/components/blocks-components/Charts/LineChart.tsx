@@ -24,7 +24,6 @@ import { createLineChartData } from "@/app/utils/ChartUtils/chartData";
 import { useGetChartDataQuery } from "@/lib/api";
 import { useChart } from "@/lib/hooks/useChart";
 import { useAppSelector } from "@/lib/hooks/hooks";
-import { ChartSkeleton } from "../../UI-components/Skeleton/ChartSkeleton";
 import NotificationCard from "../../UI-components/NotificationCard";
 import { RootState } from "@/lib/store";
 import { Currency } from "@/lib/features/currencySlice";
@@ -68,7 +67,6 @@ const LineChart = ({
   const {
     data: coinOneData,
     isError: isErrorOne,
-    isLoading: isLoadingOne,
   } = useGetChartDataQuery({
     id: coinOne?.id || defaultCoinOne.id,
     currency,
@@ -78,7 +76,6 @@ const LineChart = ({
   const {
     data: coinTwoData,
     isError: isErrorTwo,
-    isLoading: isLoadingTwo,
   } = useGetChartDataQuery({
     id: coinTwo?.id,
     currency,
@@ -154,11 +151,10 @@ const LineChart = ({
     <>
       {isLinear && (
         <>
-          {isLoadingOne && <ChartSkeleton type="line" />}
           {isErrorOne && (
             <NotificationCard
               text="Error loading data"
-              isSuccess={isErrorOne}
+              isSuccess={false}
             />
           )}
           <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
@@ -184,11 +180,10 @@ const LineChart = ({
       )}
       {isLogarithmic && (
         <>
-          {(isLoadingOne || isLoadingTwo) && <ChartSkeleton type="line" />}
           {(isErrorOne || isErrorTwo) && (
             <NotificationCard
               text="Error loading data"
-              isSuccess={isErrorOne || isErrorTwo}
+              isSuccess={false}
             />
           )}
           <div className="flex flex-col h-full justify-start dark:bg-dark-darkBg bg-light-primary p-6">

@@ -7,6 +7,8 @@ import { Coin } from "@/lib/types/types";
 import TableChart from "../Charts/TableChart";
 import ArrowIconCarousel from "@/app/icons/arrowIconCarousel";
 import ProgressBar from "../../UI-components/progressBar";
+import Spinner from "../../UI-components/Spinner";
+import NotificationCard from "../../UI-components/NotificationCard";
 import {
   checkIfIsInteger,
   formatMarketCap,
@@ -17,13 +19,17 @@ import { coinTableColors } from "@/app/utils/colours";
 const CoinDetails = ({
   coin,
   index,
-  startIndex,
-  isFetching
+  isFetching,
+  isLoading,
+  isError,
+  isSuccess,
 }: {
   coin: Coin;
   index: number;
-  startIndex: number;
-  isFetching:boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
 }) => {
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol
@@ -31,14 +37,22 @@ const CoinDetails = ({
   return (
     <>
       <tr key={coin.id} className="h-[77px] dark:bg-[#191925] bg-light-primary">
-        <td className="p-4 ">{startIndex + index + 1}</td>
+        <td className="p-4 ">{index + 1}</td>
         <td>
-          <div className="flex gap-4">
-            <Image src={coin.image} width={24} height={24} alt="Coin icon" />
-            <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
-              {coin.name}({coin.symbol}){isFetching ? "..." : ""}
-            </Link>
-          </div>
+          {isError && (
+            <NotificationCard isSuccess={false} text="Error fetching data" />
+          )}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <div className="flex gap-4">
+              <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
+              <Image src={coin.image} width={24} height={24} alt="Coin icon" />
+              <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
+                {coin.name}({coin.symbol}){isFetching ? "..." : ""}
+              </Link>
+            </div>
+          )}
         </td>
         <td className="text-base">
           {currencySymbol}

@@ -8,6 +8,7 @@ import { RootState } from "@/lib/store";
 import FilteredCoinList from "../UI-components/FilteredCoinList";
 import Input from "../UI-components/input";
 import Spinner from "../UI-components/Spinner";
+import NotificationCard from "../UI-components/NotificationCard";
 import { CoinSearchProps } from "@/lib/types/apiInterfaces";
 
 const variants = {
@@ -41,7 +42,7 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [show, setShow] = useState(false);
   const debouncedSearchValue = useDebounce(searchValue, 700);
-  const { currentData, isSuccess } = useGetSearchDataQuery(currency);
+  const { currentData, isSuccess, isLoading } = useGetSearchDataQuery(currency);
   const coinsList = currentData?.slice(0, 30);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +66,7 @@ const Search = () => {
   useClickOutside(ref, handleDropdownDisplay);
 
   const filteredCoinsList = coinsList?.filter((coin: CoinSearchProps) =>
-    coin.name.toLowerCase().startsWith(debouncedSearchValue.toLowerCase())
+    coin.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
 
   return (
@@ -77,7 +78,7 @@ const Search = () => {
         </div>
       }
     >
-      <div className="relative flex items-center justify-center gap-3 font-[Inter] font-normal">
+      <div className="relative flex items-center justify-center gap-3 font-[Inter] font-normal z-9999">
         <Input
           value={searchValue}
           onInputChange={handleChange}
@@ -93,10 +94,11 @@ const Search = () => {
           animate={show ? "open" : "closed"}
           variants={variants}
           ref={ref}
-          className={`h-96 w-[100%] pl-9 pr-4 py-2 z-20 absolute top-[36px] overflow-auto bg-[#ccccfa] dark:bg-dark-191 rounded-b-xl ${
+          className={`h-96 w-[100%] pl-9 pr-4 py-2 absolute z-9999 top-[36px] overflow-auto bg-[#ccccfa] dark:bg-dark-191 rounded-b-xl ${
             show ? "opacity-100" : "opacity-0"
           }`}
         >
+          {isLoading && <Spinner/>}
           {isSuccess
             ? show && (
               <FilteredCoinList
@@ -105,7 +107,7 @@ const Search = () => {
                 currencySymbol={currencySymbol}
               />
             )
-            : null}
+            : <NotificationCard isSuccess={false} text="Error fetching data"/>}
         </motion.ul>
       </div>
     </Suspense>

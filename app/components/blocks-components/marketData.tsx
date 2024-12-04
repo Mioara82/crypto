@@ -17,8 +17,8 @@ const MarketData = () => {
   );
 
   return (
-    <div className="relative z-0">
-      <Suspense fallback={<NotificationCard text="Loading data" isSuccess={!isSuccess} />}>
+    <div className="relative">
+      <Suspense fallback={<NotificationCard text="Loading data" isSuccess={false} />}>
         {isSuccess && (
           <div >
             <NotificationCard text="Market data loaded" isSuccess ={isSuccess} />

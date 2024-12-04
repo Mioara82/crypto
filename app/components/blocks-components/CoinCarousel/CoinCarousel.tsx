@@ -103,8 +103,9 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative z-99">
       <Suspense fallback={<CarouselSkeleton />}>
+        <div className="z-0 relative">
         <Slider {...settings}>
           {list.map((coin: CoinProps) => {
             return (
@@ -125,6 +126,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
             );
           })}
         </Slider>
+        </div>
       </Suspense>
     </div>
   );

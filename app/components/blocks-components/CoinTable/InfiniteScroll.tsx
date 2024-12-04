@@ -1,33 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Coin } from "@/lib/types/types";
 import Spinner from "../../UI-components/Spinner";
-import { TableRow } from "./TableRow";
+import TableHeaders from "./TableHeaders";
 import CoinDetails from "./CoinDetails";
 import BackToTopButton from "./BackToTopButton";
 
 interface InfiniteCoinScrollProps {
-  sortBy: { key: string; direction: string };
-  handleSortInTable: any;
   fetchMoreData: () => void;
   isSuccess: boolean;
+  isLoading: boolean;
+  isError: boolean;
   isFetching: boolean;
-  sortedData: Coin[];
-  startIndex: number;
+  coins: any;
 }
 
 export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
-  sortBy,
-  handleSortInTable,
   fetchMoreData,
   isSuccess,
+  isLoading,
+  isError,
   isFetching,
-  sortedData,
-  startIndex,
+  coins,
 }) => {
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: string;
+  }>({
+    key: "",
+    direction: "asc",
+  });
+  const handleSort = (value: string) => {
+    setSortConfig((prev) => ({
+      key: value,
+      direction:
+        prev.key === value && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  const sortedData = isSuccess
+    ? coins?.slice().sort((a: any, b: any) => {
+        const aValue = a[sortConfig.key] ?? "";
+        const bValue = b[sortConfig.key] ?? "";
+        if (sortConfig.key === "name") {
+          return sortConfig.direction === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        } else {
+          return sortConfig.direction === "asc"
+            ? aValue - bValue
+            : bValue - aValue;
+        }
+      })
+    : coins;
   return (
     <InfiniteScroll
-      dataLength={20000}
+      dataLength={sortedData.length || 0}
       next={fetchMoreData}
       hasMore={true}
       loader={<Spinner />}
@@ -35,20 +63,22 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
     >
       <table className="table-auto flex flex-col w-full h-auto overflow-y-auto text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
         <tbody>
-          <TableRow
-            sort={sortBy.key}
-            order={sortBy.direction}
-            handleSort={() => handleSortInTable(sortBy.key)}
+          <TableHeaders
+            sortValue={sortConfig.key}
+            direction={sortConfig.direction}
+            handleSort={handleSort}
           />
+          {isLoading && <Spinner />}
           {isSuccess &&
-            sortedData &&
-            sortedData?.map((coin: Coin, index) => (
+            sortedData.map((coin: Coin, index: number) => (
               <CoinDetails
                 key={coin.id}
                 isFetching={isFetching}
                 coin={coin}
                 index={index}
-                startIndex={startIndex}
+                isSuccess={isSuccess}
+                isLoading={isLoading}
+                isError={isError}
               />
             ))}
         </tbody>
