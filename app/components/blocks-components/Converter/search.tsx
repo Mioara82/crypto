@@ -13,10 +13,10 @@ const SearchCoin = ({
   direction,
 }: {
   list: CoinSearchProps[] | [];
-  coin: CoinSearchProps | undefined;
+  coin?: CoinSearchProps | undefined;
   //if I pass the id to the handleSelectedCoin it throws an error 'id' is defined but never used.
   handleSelectedCoin: any;
-  direction: string;
+  direction?: string;
 }) => {
   const ref = useRef(null);
   const [show, setShow] = useState(false);

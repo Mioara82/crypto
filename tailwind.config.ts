@@ -12,6 +12,7 @@ const config: Config = {
         green: "#00B1A7",
         red: "#FE2264",
         linearGradient: "#6161D680",
+        portfolioButton:"#6161D6",
         purple: "#849DFF",
         orange: "#F7931A",
         light: "FFFFFF",
@@ -44,6 +45,7 @@ const config: Config = {
         hover: "#232336",
         chartTextColor: "#D1D1D1",
         chartDateColor: "#B9B9BA",
+        buttonBorder:"#7878FA",
         "191": "#191925",
         "chart-100": "#B9B9BA",
         "chart-200": "#C27721",
@@ -79,6 +81,7 @@ const config: Config = {
       },
       width:{
         "63":"253px",
+        "221":"884px"
       },
       height:{
         "15":"60px",
