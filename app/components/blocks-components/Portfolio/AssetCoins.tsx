@@ -12,20 +12,12 @@ const AssetCoins = () => {
     (state: RootState) => state.portfolioSlice.portfolioCoins
   );
 
-  const uniqueCoinsObj: any = {};
-
-  const uniqueCoins = coins.reduce(
-    (acc: PortfolioCoin[], coin: PortfolioCoin) => {
-      if (!acc.some((c) => c.id === coin.id)) {
-        acc.push(coin);
-      }
-      return acc;
-    },
-    []
-  );
-  uniqueCoins.forEach(
-    (coin: PortfolioCoin) => (uniqueCoinsObj[coin.name] = coin)
-  );
+  const uniqueCoinsObj = coins.reduce((acc: any, coin: PortfolioCoin) => {
+    if (!acc[coin.id]) {
+      acc[coin.name] = coin;
+    }
+    return acc;
+  }, {});
 
   const hasCoins = coins && coins.length > 0;
 
