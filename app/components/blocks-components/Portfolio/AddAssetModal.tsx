@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
-import Input from "../components/UI-components/input";
-import Button from "../components/UI-components/Button";
-import { useGetSearchDataQuery } from "@/lib/api";
+import Input from "../../UI-components/input";
+import Button from "../../UI-components/Button";
+import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import {
-  addPortfolioCoin,
-  addHistoricData,
-} from "@/lib/features/portfolioSlice";
+import { addCoin } from "@/lib/features/portfolioSlice";
 
 interface FormProps {
   coinName: string;
@@ -25,7 +22,11 @@ const AddAssetModal = ({
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName
   );
-  const { currentData, isSuccess } = useGetSearchDataQuery(currency);
+
+  const { currentData, isSuccess } = useGetCoinListWithMarketDataQuery({
+    currency,
+  });
+ 
   const [formData, setFormData] = useState<FormProps>({
     coinName: "",
     purchasedAmount: 0,
@@ -55,19 +56,17 @@ const AddAssetModal = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedCoin = currentData.find((c: any) => c.name === coinName);
+    const selectedCoin = currentData?.find((c: any) => c.name === coinName);
     if (selectedCoin) {
       dispatch(
-        addPortfolioCoin({
-          id: selectedCoin.id,
-          name: selectedCoin.name,
-        })
-      );
-      dispatch(
-        addHistoricData({
-          name: selectedCoin.name,
-          purchaseAmount: Number(purchasedAmount),
-          purchasedDate: purchasedDate,
+        addCoin({
+          id: selectedCoin.id || "",
+          image: selectedCoin.image || "",
+          name: selectedCoin.name || "",
+          symbol: selectedCoin.symbol || "",
+          currentPrice: selectedCoin.currentPrice || 0,
+          purchaseAmount: purchasedAmount || 0,
+          purchasedDate: purchasedDate || "",
         })
       );
       setFormData({
@@ -75,15 +74,20 @@ const AddAssetModal = ({
         purchasedAmount: 0,
         purchasedDate: "",
       });
+      handleModalDisplay();
     } else {
       setMessage("Please select a coin");
     }
   };
-  const filteredList = currentData?.filter((coin: any) =>
-    coin.name.toLowerCase().includes(searchValue)
-  );
+  const hasCoins = currentData && currentData.length > 0;
+  const filteredList = hasCoins
+    ? currentData.filter((coin: any) =>
+        coin.name.toLowerCase().includes(searchValue)
+      )
+    : [];
+
   return (
-    <div className="w-221 h-96 flex flex-col gap-8 absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 border border-light-primary p-12 rounded-2xl">
+    <div className="w-221 h-96 flex flex-col gap-8 z-40 blur-none absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 border border-light-primary p-12 rounded-2xl">
       <div className="flex justify-between">
         <span>Select coins</span>
         <div

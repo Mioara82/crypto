@@ -4,6 +4,8 @@ import {
   CoinDetailsProps,
   ChartDetails,
   CoinsTableDetails,
+  CoinHistoryData,
+  PortfolioCoinProps,
 } from "./types/apiInterfaces";
 
 const apiKey: string = process.env.COINGECKO_API_KEY || "";
@@ -21,7 +23,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails","CoinsTableDetails"],
+  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails", "CoinsTableDetails"],
   endpoints: (builder) => ({
     getSearchData: builder.query({
       query: (currency) => `/coins/markets/?vs_currency=${currency}`,
@@ -49,20 +51,20 @@ export const api = createApi({
           name: response.name,
           description: response.description,
           links: {
-            homepage: response.links.homepage[0], 
-            blockchain_site_2: response.links.blockchain_site[1], 
+            homepage: response.links.homepage[0],
+            blockchain_site_2: response.links.blockchain_site[1],
             blockchain_site_3: response.links.blockchain_site[2],
-            blockchair:response.links.blockchain_site[3]   
+            blockchair: response.links.blockchain_site[3],
           },
           image: response.image,
           currentPrice: response.market_data.current_price,
-          profit:response.market_data.price_change_24h,
+          profit: response.market_data.price_change_24h,
           ath: response.market_data.ath,
-          athDate:response.market_data.ath_date,
+          athDate: response.market_data.ath_date,
           atl: response.market_data.atl,
-          atlDate:response.market_data.atl_date,
+          atlDate: response.market_data.atl_date,
           marketCap: response.market_data.market_cap,
-          marketCapChange:response.market_data.market_cap_change_24h,
+          marketCapChange: response.market_data.market_cap_change_24h,
           fullyDilutedValuation: response.market_data.fully_diluted_valuation,
           totalVolume: response.market_data.total_volume,
           priceChangePercentage:
@@ -100,7 +102,8 @@ export const api = createApi({
           symbol: coin.symbol,
           currentPrice: coin.current_price,
           priceChangePercentage1h: coin.price_change_percentage_1h_in_currency,
-          priceChangePercentage24h: coin.price_change_percentage_24h_in_currency,
+          priceChangePercentage24h:
+            coin.price_change_percentage_24h_in_currency,
           priceChangePercentage7d: coin.price_change_percentage_7d_in_currency,
           circulatingSupply: coin.circulating_supply,
           totalSupply: coin.total_supply,
@@ -108,6 +111,34 @@ export const api = createApi({
           totalVolume: coin.total_volume,
           sparkline: coin.sparkline_in_7d,
         }));
+      },
+    }),
+    getCoinListWithMarketData: builder.query({
+      query: ({ currency }) => `coins/markets?vs_currency=${currency}`,
+      transformResponse: (response: PortfolioCoinProps[]) => {
+        if (!response) {
+          throw new Error("No data received");
+        }
+        return response.map((coin) => ({
+          id: coin.id,
+          image: coin.image,
+          name: coin.name,
+          symbol: coin.symbol,
+          currentPrice: coin.current_price,
+        }));
+      },
+    }),
+    getHistoricalCoinsData: builder.query({
+      query: ({ id, date }) =>
+        `coins/${id}/history?date=${date}&localization=true`,
+      transformResponse: (response: CoinHistoryData) => {
+        if (!response) {
+          throw new Error("No data received");
+        }
+        return {
+          id: response.id,
+          historicPrice: response.market_data.current_price,
+        };
       },
     }),
   }),
@@ -119,4 +150,6 @@ export const {
   useGetCoinDataQuery,
   useGetChartDataQuery,
   useGetCoinsTableDataQuery,
+  useGetCoinListWithMarketDataQuery,
+  useGetHistoricalCoinsDataQuery,
 } = api;
