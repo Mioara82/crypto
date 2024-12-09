@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Coin } from "@/lib/types/types";
 import Spinner from "../../UI-components/Spinner";
@@ -23,6 +23,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
   isFetching,
   coins,
 }) => {
+  const isInitialLoad = useRef(true);
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: string;
@@ -53,10 +54,14 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
         }
       })
     : coins;
+    const handleFetchMoreData = () => {
+      if(isInitialLoad.current === true) isInitialLoad.current = false;
+      fetchMoreData();
+    };
   return (
     <InfiniteScroll
       dataLength={sortedData.length || 0}
-      next={fetchMoreData}
+      next={handleFetchMoreData}
       hasMore={true}
       loader={<Spinner />}
       endMessage={<p className="text-center">No more data to show</p>}
@@ -68,7 +73,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
             direction={sortConfig.direction}
             handleSort={handleSort}
           />
-          {isLoading && <Spinner />}
+          {isInitialLoad.current && isLoading && <Spinner />}
           {isSuccess &&
             sortedData.map((coin: Coin, index: number) => (
               <CoinDetails
