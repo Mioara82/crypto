@@ -52,6 +52,10 @@ export function formatDateAndTime(millisecondsFromNow: number) {
   return formattedDateTime;
 }
 
+export function formatHistoricDate(date: any) {
+  return date.split("-").reverse().join("-");
+}
+
 export function checkIfIsInteger(number: number | null) {
   if (number === null) {
     return "";
@@ -106,7 +110,7 @@ export const getDisplayFormats = (days: number) => {
       },
       stepSize: 2,
     };
-  } 
+  }
 };
 
 export function formatTimestampToDate(timestamp: number) {

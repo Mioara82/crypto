@@ -20,7 +20,9 @@ const config: Config = {
         "chart-graph-200": "rgba(116, 116, 250, 0.6)",
         brigthBlue:"#02a4ff",
         cyan:"#4da1ff",
-        azure:"#4dffdf"
+        azure:"#4dffdf",
+        indigo:"#3A3978",
+        turqoise:"#01F1E3"
       },
       light: {
         primary: "#FFFFFF",
@@ -74,6 +76,7 @@ const config: Config = {
       },
       maxWidth: {
         custom: "90rem",
+        "324":"1296px"
       },
       padding: {
         "3.5": "18px",

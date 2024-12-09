@@ -1,66 +1,45 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CoinProps {
+export interface PortfolioCoin {
   id: string;
+  image: string;
   name: string;
-}
-export interface HistoricDataProps {
-  purchasedDate: string;
-  purchaseAmount: number;
-}
-
-export interface PortfolioCoinData {
-  CoinProps?: CoinProps;
-  historicData?: HistoricDataProps;
-}
-interface PortfolioCoinsData {
-  portfolioCoins: {
-    [key: string]: PortfolioCoinData;
-  };
+  symbol: string;
+  currentPrice: number;
+  purchasedDate?: string;
+  purchaseAmount?: number;
 }
 
-const initialState: PortfolioCoinsData = {
-  portfolioCoins: {},
+export interface PortfolioCoinsState {
+  portfolioCoins: PortfolioCoin[];
+}
+
+const initialState: PortfolioCoinsState = {
+  portfolioCoins: [],
 };
-
-const portfolioCoins = createSlice({
-  name: "portfolioCoinsSlice",
+const portfolioSlice = createSlice({
+  name: "portfolioCoins",
   initialState,
   reducers: {
-    addPortfolioCoin(state, action) {
-      const {
-        id,
-        name,
-      } = action.payload;
-      state.portfolioCoins[name] = {
-        ...state.portfolioCoins[name],
-        CoinProps: {
-          id: id || "",
-          name: name || "",
-        },
-      };
+    addCoin(state, action: PayloadAction<PortfolioCoin>) {
+      state.portfolioCoins.push(action.payload);
     },
-    addHistoricData(state, action) {
-      const { name, purchaseAmount, purchasedDate} =
-        action.payload;
-      state.portfolioCoins[name] = {
-        ...state.portfolioCoins[name],
-        historicData: {
-          purchasedDate: purchasedDate || "",
-          purchaseAmount: purchaseAmount || 0,
-        },
-      };
+    removeCoin(state, action: PayloadAction<string>) {
+      state.portfolioCoins = state.portfolioCoins.filter(
+        (coin) => coin.id !== action.payload
+      );
     },
-    deletePortfolioCoin(state, action) {
-      const { name } = action.payload;
-      if (name) {
-        if (state.portfolioCoins[name]) {
-          delete state.portfolioCoins[name];
-        }
+    updateCoin(state, action: PayloadAction<PortfolioCoin>) {
+      const index = state.portfolioCoins.findIndex(
+        (coin) => coin.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.portfolioCoins[index] = action.payload;
       }
     },
   },
 });
 
-export const { addPortfolioCoin,addHistoricData, deletePortfolioCoin } = portfolioCoins.actions;
-export default portfolioCoins.reducer;
+export const { addCoin, removeCoin, updateCoin } = portfolioSlice.actions;
+
+export default portfolioSlice.reducer;
