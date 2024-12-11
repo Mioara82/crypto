@@ -26,15 +26,18 @@ const portfolioSlice = createSlice({
     },
     removeCoin(state, action: PayloadAction<string>) {
       state.portfolioCoins = state.portfolioCoins.filter(
-        (coin) => coin.id !== action.payload
+        (coin:PortfolioCoin) => coin.id !== action.payload,
       );
     },
     updateCoin(state, action: PayloadAction<PortfolioCoin>) {
       const index = state.portfolioCoins.findIndex(
-        (coin) => coin.id === action.payload.id
+        (coin:PortfolioCoin) => coin.id === action.payload.id,
       );
       if (index !== -1) {
-        state.portfolioCoins[index] = action.payload;
+        state.portfolioCoins[index] = {
+          ...state.portfolioCoins[index],
+          ...action.payload,
+        };
       }
     },
   },

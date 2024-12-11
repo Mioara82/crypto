@@ -7,11 +7,10 @@ const ProgressBar = (props: any) => {
     <div
       className={`relative ${props.data ? "w-[53px]" : "w-full"} ${
         props.gradient ? "h-[16px]" : "h-[6px]"
-      } rounded-sm`}
-      style={{ background: props.colorTwo }}
+      } rounded-sm bg-skeleton200 dark:bg-${props.colorTwo}`}
     >
       <div
-        className="absolute top-0 left-0 h-[6px] rounded-sm bg-common-purple"
+        className="absolute left-0 top-0 h-[6px] rounded-sm bg-common-purple"
         style={{
           width: `${computedValue}%`,
           background: `${props.gradient ? colorGradient : props.color}`,
