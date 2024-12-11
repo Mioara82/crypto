@@ -115,6 +115,8 @@ const config: Config = {
         fadeOutLeft:"fadeOutLeft 1s ease-in-out"
       },
       backgroundImage: {
+        portfolioGradientLight:"linear-gradient(to right, #F2F3E2,#B9E0EE)",
+        portfolioGradientDark:"linear-gradient(to right, #43434B,#110744)",
         customGradient:
           "linear-gradient(180deg, rgba(116, 116, 250, 0.6) 0%, rgba(116, 116, 250, 0.01) 100%)",
         customGradientP3:

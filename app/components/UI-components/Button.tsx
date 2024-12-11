@@ -5,12 +5,14 @@ interface ButtonProps {
   isActive?: boolean;
   onButtonClick: any;
   feature: string;
+  disabled?: boolean;
 }
 const Button: React.FC<ButtonProps> = ({
   text,
   isActive,
   onButtonClick,
   feature,
+  disabled,
 }) => {
   const variants = {
     open: {
@@ -34,18 +36,21 @@ const Button: React.FC<ButtonProps> = ({
       variants={variants}
       className={`w-60 ${
         feature === "large"
-          ? "ml-auto dark:bg-common-portfolioButton/50 hover:dark:bg-common-purple border rounded-md border-t-dark-buttonBorder border-l-dark-buttonBorder border-r-dark-buttonBorder border-b-dark-buttonBorder/5"
+          ? "ml-auto rounded-md border border-b-dark-buttonBorder/5 border-l-dark-buttonBorder border-r-dark-buttonBorder border-t-dark-buttonBorder bg-light-lightBg/80 text-light-darkText shadow-dark-buttonBorder hover:bg-common-purple dark:bg-common-portfolioButton/50 dark:text-dark-text hover:dark:bg-common-purple dark:hover:text-dark-darkBg"
           : ""
-      } h-11 text-center rounded-md py-3 px-4 border-1 border-solid drop-shadow-md ${
+      } border-1 z-0 h-11 rounded-md border-solid px-4 py-3 text-center drop-shadow-md ${
         isActive
-          ? "bg-common-linearGradient shadow-indigo-500/50"
+          ? "shadow-indigo-500/50 bg-common-linearGradient"
           : "bg-light-primary dark:bg-[#232336]"
-      }
-     ${
-       isActive
-         ? "text-light-primary"
-         : "text-light-secondaryTextColor dark:text-dark-text"
-     } cursor-pointer`}
+      } ${
+        isActive
+          ? "text-light-primary"
+          : "text-light-secondaryTextColor dark:text-dark-text"
+      } ${
+        disabled
+          ? "cursor-not-allowed border-none bg-light-primary hover:bg-light-primary dark:bg-skeleton200 hover:dark:bg-skeleton200"
+          : "shadow-indigo-500/50 cursor-pointer bg-common-linearGradient"
+      }`}
       onClick={onButtonClick}
     >
       {text}
