@@ -82,6 +82,10 @@ export interface ChartDetails {
   total_volumes: number[][];
 }
 
+export interface HistoricPrices {
+  prices:number[][];
+}
+
 export interface CoinsTableDetails {
   id: string;
   image: string;
@@ -116,4 +120,17 @@ interface HistoryMarketData {
 export interface CoinHistoryData {
   id: string;
   market_data: HistoryMarketData;
+}
+
+export interface CoinHistoryResponse {
+  id: string;
+  market_data: {
+    current_price: number;
+  };
+}
+
+export interface HistoricPriceData {
+  date: string;
+  id: string;
+  historicPrice: number;
 }
