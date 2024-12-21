@@ -15,7 +15,7 @@ const ButtonGroup = React.memo(function ButtonGroup() {
           text="Coins"
           isActive={isActive === 0}
           onButtonClick={() => handleActiveButton(0)}
-          feature="nav"
+          feature="large"
         />
       </Link>
       <Link href="/Converter" passHref>
@@ -23,7 +23,7 @@ const ButtonGroup = React.memo(function ButtonGroup() {
           text="Converter"
           isActive={isActive === 1}
           onButtonClick={() => handleActiveButton(1)}
-          feature="nav"
+          feature="large"
         />
       </Link>
     </div>

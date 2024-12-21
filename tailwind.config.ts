@@ -34,6 +34,7 @@ const config: Config = {
         secondaryTextColor: "#424286",
         lightTextColor: "#D1D1D1",
         darkText: "#191932",
+        lilac:"#EBEBFD",
         
       },
       dark: {
