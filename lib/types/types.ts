@@ -38,5 +38,25 @@ export interface Coin {
   sparkline: any;
 }
 
+export interface FormProps {
+  coinName: string | "";
+  startDate: string | "";
+  endDate: string | "";
+  interval: number | 0;
+  growRate?: number | 0;
+  intervalInvestment?: number | 0;
+  initialInvestment: number | 0;
+}
+
+export interface HistoricData {
+  date: string;
+  historicPrice: number;
+}
+
+export interface CoinConfigProps {
+  id: string;
+  historicData: HistoricData[];
+}
+
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];

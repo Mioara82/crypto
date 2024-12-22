@@ -64,6 +64,14 @@ export function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 
+export function formatDateToDDMMYYYY(date: any) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 export function checkIfIsInteger(number: number | null) {
   if (number === null) {
     return "";
@@ -138,6 +146,7 @@ function uppercaseLetter(letter: string) {
 }
 
 export function capitaliseString(string: string) {
+  if (!string) return "";
   return string
     .split("")
     .map((el) => (el === "_" ? " " : el))
@@ -199,3 +208,112 @@ export function handleCoinDateDisplay(date: Date | number, days: number) {
       }).format(date);
   }
 }
+
+export const getDisplayCoin = (value: string, list: any) => {
+  if(!list && list.length === 0){
+    return {name:"Bitcoin"};
+  }
+  return list.find((coin: any) => {
+    if (value === "") {
+      return coin.name.toLowerCase() === "bitcoin";
+    } else {
+      return coin.name.toLowerCase() === value.toLowerCase();
+    }
+  });
+};
+
+export function calculateTotalInvestmentPerGrowth(
+  initial: number,
+  growRate: number,
+  interval: number,
+  start: string,
+  end: string,
+):number {
+  let totalAmount:number = Number(initial);
+  const differenceInDays:number = getInvestmentDuration(start, end);
+  for (let i = 1; i <= differenceInDays; i+=interval) {
+    totalAmount += (totalAmount * growRate) / 100;
+  }
+  return Number(totalAmount.toFixed());
+}
+
+export function calculateTotalInvestmentPerInvestmentAdded(
+  initial: number,
+  additional: number,
+  interval: number,
+  start: string,
+  end: string,
+):number {
+  let totalAmount:number = Number(initial);
+  const differenceInDays = getInvestmentDuration(start, end);
+  for (let i = 1; i <= differenceInDays; i += interval) {
+    totalAmount += Number(additional);
+  }
+  return Number(totalAmount);
+}
+
+export function convertDateToTimestamp(date: string) {
+  const newDate = new Date(date.split(" ").join("T"));
+  return newDate.getTime() / 1000;
+}
+
+export const generatePurchaseDates = (
+  startDate: string,
+  endDate: string,
+  interval: number,
+): number[] => {
+  const purchaseTimestamps: number[] = [];
+  const startTimestamp = new Date(startDate).getTime();
+  const endTimestamp = new Date(endDate).getTime();
+
+  let currentTimestamp = startTimestamp;
+
+  while (currentTimestamp <= endTimestamp) {
+    purchaseTimestamps.push(currentTimestamp);
+    currentTimestamp += interval * 24 * 60 * 60 * 1000;
+  }
+
+  return purchaseTimestamps;
+};
+
+export function getInvestmentDuration(start: string, end: string) {
+  const firstDate = new Date(start);
+  const lastDate = new Date(end);
+  const difference = lastDate.getTime() - firstDate.getTime();
+  const differenceInDays = Math.round((difference / 1000) * 3600 * 24);
+  return differenceInDays;
+}
+
+export const calculateCoinsWithRegularInvestments = (
+  pricesForPurchaseDates: number[],
+  initialInvestment: number,
+  intervalInvestment: number,
+  currentPrice: number,
+) => {
+  let totalCoins = 0;
+  pricesForPurchaseDates.forEach((price, index) => {
+    const investment = index === 0 ? initialInvestment : intervalInvestment;
+    const coinsPurchased = investment / price;
+    totalCoins += coinsPurchased;
+  });
+  const totalCoinsValue = Math.floor(totalCoins * currentPrice);
+  return totalCoinsValue;
+};
+
+export const calculateCoinsWithGrowthRate = (
+  pricesForPurchaseDates: number[],
+  initialInvestment: number,
+  growthRate: number,
+  currentPrice: number,
+) => {
+  let currentInvestment = initialInvestment;
+  let totalCoins = 0;
+  let totalCoinsValue = 0;
+  pricesForPurchaseDates.forEach((price) => {
+    const coinsPurchased = currentInvestment / price;
+    totalCoins += coinsPurchased;
+    currentInvestment *= 1 + growthRate / 100;
+  });
+  totalCoinsValue = Math.floor(totalCoins * currentPrice);
+  return totalCoinsValue;
+};

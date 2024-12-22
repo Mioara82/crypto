@@ -10,7 +10,7 @@ import { addCoin, updateCoin } from "@/lib/features/portfolioSlice";
 import { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
-import { getCurrentDate } from "@/app/utils/formatHelpers";
+import { getCurrentDate, getDisplayCoin } from "@/app/utils/formatHelpers";
 
 interface FormProps {
   coinName: string | "";
@@ -160,17 +160,7 @@ const AddAssetModal = ({
       )
     : [];
 
-  const getDisplayCoin = (value: string) => {
-    return filteredList.find((coin: any) => {
-      if (value === "") {
-        return coin.name.toLowerCase() === "bitcoin";
-      } else {
-        return coin.name.toLowerCase() === value.toLowerCase();
-      }
-    });
-  };
-
-  const displayCoin = getDisplayCoin(coinName);
+  const displayCoin = getDisplayCoin(coinName, filteredList);
 
   return (
     <form className="absolute left-1/2 top-1/2 z-40 flex h-96 w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-portfolioGradientLight p-12 blur-none dark:bg-portfolioGradientDark">
