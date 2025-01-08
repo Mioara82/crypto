@@ -1,19 +1,23 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { FiX } from "react-icons/fi";
+import { IoBarChartOutline } from "react-icons/io5";
 import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import { useIsShown } from "@/lib/hooks/useIsShown";
 import { RootState } from "@/lib/store";
 import { FormProps } from "@/lib/types/types";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
+import CalculatorCoinList from "./CalculatorCoinList";
+import LineChart from "./Chart";
 import InfoCards from "./InfoCards";
 import Spinner from "../../UI-components/Spinner";
-
 import {
   capitaliseString,
+  formatString,
   calculateTotalInvestmentPerGrowth,
   calculateTotalInvestmentPerInvestmentAdded,
   convertDateToTimestamp,
@@ -23,11 +27,19 @@ import {
 } from "@/app/utils/formatHelpers";
 import { infoCardsDescription } from "@/app/utils/infoCardsDescription";
 
+interface FormOutputData {
+  historicPrices: number[];
+  historicDates: Date[];
+  totalAmount: number;
+  coinsValue: number | undefined;
+}
+
 const InvestmentCalculator = ({
   handleCalculatorDisplay,
 }: {
   handleCalculatorDisplay: () => void;
 }) => {
+  const chartRef = useRef(null);
   const listRef = useRef(null);
 
   const currency = useAppSelector(
@@ -44,15 +56,17 @@ const InvestmentCalculator = ({
   } = useGetCoinListWithMarketDataQuery({
     currency,
   });
-
+  const [show, handleIsShown] = useIsShown();
   const [formFeature, setFormFeature] = useState<string>("valueCost");
-  const [calculatedValues, setCalculatedValues] = useState<{
-    totalAmount: number;
-    coinsValue: number | undefined;
-  }>({
+  const [formOutputData, setFormOutputData] = useState<FormOutputData>({
+    historicPrices: [],
+    historicDates: [],
     totalAmount: 0,
     coinsValue: 0,
   });
+
+  const { historicPrices, historicDates, totalAmount, coinsValue } =
+    formOutputData;
   const [formData, setFormData] = useState<FormProps>({
     coinName: "",
     startDate: "",
@@ -85,7 +99,11 @@ const InvestmentCalculator = ({
     value: string,
     field: "growRate" | "intervalInvestment",
   ) => {
-    setCalculatedValues({ totalAmount: 0, coinsValue: 0 });
+    setFormOutputData((prev: FormOutputData) => ({
+      ...prev,
+      totalAmount: 0,
+      coinsValue: 0,
+    }));
     setFormFeature((prevFeature: string) => {
       if (value === "value") {
         return "valueCost";
@@ -192,8 +210,9 @@ const InvestmentCalculator = ({
     setShowDropdown(false);
     setSearchValue("");
   };
-
   useClickOutside(listRef, closeDropdown);
+  useClickOutside(chartRef, handleIsShown);
+
   const hasCoins = currentData && currentData.length > 0;
 
   const filteredList = hasCoins
@@ -202,6 +221,7 @@ const InvestmentCalculator = ({
       )
     : [];
 
+  //this function displays in UI the coin the user selects from the search dropdown
   const getDisplayCoin = (value: string, filteredList: any) => {
     if (!filteredList || filteredList.length === 0) {
       return { name: "Bitcoin" };
@@ -243,8 +263,8 @@ const InvestmentCalculator = ({
       const start = convertDateToTimestamp(startDate);
       const end = convertDateToTimestamp(endDate);
       const query = `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=${currency}&from=${start}&to=${end}&${apiKey}`;
+      setLoading(true);
       try {
-        setLoading(true);
         setError((prev: any) => ({
           ...prev,
           apiError: null,
@@ -257,29 +277,30 @@ const InvestmentCalculator = ({
         const historicPrices = data.prices;
         return historicPrices;
       } catch (error) {
-        setLoading(false);
         setError((prev: any) => ({
           ...prev,
           apiError: "Error retriving coin data",
         }));
+      } finally {
+        setLoading(false);
       }
     };
 
     const data = await getHistoricPrices({ id, currency, startDate, endDate });
+
+    if (!data) return;
 
     const convertedTimeStampsInData = data.map((entry: number[]) => ({
       timeStamp: entry[0],
       price: entry[1],
     }));
 
-    const purchaseTimestamps = generatePurchaseDates(
-      startDate,
-      endDate,
-      interval,
-    );
+    const purchaseTimestamps =
+      generatePurchaseDates(startDate, endDate, interval) || [];
 
     const pricesForPurchaseDates = purchaseTimestamps
       .map((purchaseTimestamp) => {
+        if (!convertedTimeStampsInData) return;
         const closestEntry = convertedTimeStampsInData.reduce(
           (closest: any, current: any) => {
             const closestDifference = Math.abs(
@@ -320,8 +341,13 @@ const InvestmentCalculator = ({
 
     const coinsValue = getTotalCoinsValue();
     const totalInvestments = getTotalInvestments();
+    const historicDatesArray = Array.isArray(purchaseTimestamps)
+      ? purchaseTimestamps.map((timestamp: number) => new Date(timestamp))
+      : [];
 
-    setCalculatedValues({
+    setFormOutputData({
+      historicDates: historicDatesArray,
+      historicPrices: pricesForPurchaseDates,
       totalAmount: totalInvestments,
       coinsValue: coinsValue,
     });
@@ -353,246 +379,266 @@ const InvestmentCalculator = ({
   const hasIntervalInvestmentFeature = formFeature === "dollarCost";
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div className="absolute left-1/2 top-1/2 z-40 flex w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-portfolioGradientLight p-12 blur-none dark:bg-portfolioGradientDark">
-          <div className="flex justify-between">
-            <p className="text-2xl font-medium text-light-secondaryTextColor dark:text-dark-text">
-              Investment calculator
-            </p>
-            <div
-              className="cursor-pointer rounded border-[1px] border-skeleton100 p-2 hover:border-common-portfolioButton dark:border-0 dark:bg-common-linearGradient dark:hover:border-[1px] dark:hover:border-common-brigthBlue"
-              onClick={handleCalculatorDisplay}
-            >
-              <FiX />
-            </div>
-          </div>
-          <div className="flex w-full justify-between gap-8">
-            <div className="flex h-11 w-48 items-center gap-2 rounded-lg bg-light-lilac pb-2 pl-2 pr-6 pt-2 text-base font-bold text-light-secondaryTextColor dark:bg-dark-lightBg dark:text-dark-text">
-              {isSearchLoading && <Spinner />}
-              {isSearchError && (
-                <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
-                  Error loading coin data
-                </p>
-              )}
-              {displayCoin ? (
-                <>
-                  <Image
-                    src={displayCoin.image}
-                    alt="coin image"
-                    width={24}
-                    height={24}
-                  />
-                  <p>{displayCoin.name}</p>
-                  <p>({capitaliseString(displayCoin.symbol)})</p>
-                </>
-              ) : (
-                <p>loading</p>
-              )}
-            </div>
-            <Input
-              type="text"
-              name="coinName"
-              value={coinName}
-              onInputChange={handleInputChange}
-              placeholder="Select coin"
-              className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
-            />
-            {showDropdown && isSuccess && (
-              <ul
-                ref={listRef}
-                className="absolute left-[18em] top-[90px] z-10 h-96 w-[34em] overflow-y-auto rounded-xl bg-[#ccccfa] py-2 pl-9 pr-4 dark:bg-dark-191"
+    <div>
+      <div
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ${show ? "z-0 blur-sm" : "blur-none"}`}
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="absolute left-1/2 top-1/2 z-10 flex w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-portfolioGradientLight p-12 blur-none dark:bg-portfolioGradientDark">
+            <div className="flex justify-between">
+              <p className="text-2xl font-medium text-light-secondaryTextColor dark:text-dark-text">
+                Investment calculator
+              </p>
+              <div
+                className="cursor-pointer rounded border-[1px] border-skeleton100 p-2 hover:border-common-portfolioButton dark:border-0 dark:bg-common-linearGradient dark:hover:border-[1px] dark:hover:border-common-brigthBlue"
+                onClick={handleCalculatorDisplay}
               >
+                <FiX />
+              </div>
+            </div>
+            <div className="flex w-full justify-between gap-8">
+              <div className="flex h-11 w-48 items-center gap-2 rounded-lg bg-light-lilac pb-2 pl-2 pr-6 pt-2 text-base font-bold text-light-secondaryTextColor dark:bg-dark-lightBg dark:text-dark-text">
                 {isSearchLoading && <Spinner />}
                 {isSearchError && (
                   <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
-                    Error loading coins data
+                    Error loading coin data
                   </p>
                 )}
-                {filteredList.map((coin: any) => (
-                  <li
-                    className="mb-2 flex items-center gap-2"
-                    key={coin.id}
-                    onClick={() => handleCoinSelection(coin.id)}
-                  >
+                {displayCoin ? (
+                  <div className="flex items-center justify-center gap-2 p-3">
                     <Image
-                      src={coin.image}
+                      src={displayCoin.image}
                       alt="coin image"
-                      width={20}
-                      height={20}
+                      width={24}
+                      height={24}
                     />
-                    <p className="text-sm">{coin.name}</p>
-                    <p className="text-xs opacity-40">
-                      <span className="mr-1">{currencySymbol}</span>
-                      {coin.currentPrice.toFixed(3)}
+                    <p className="text-nowrap">
+                      {formatString(displayCoin.name)}
                     </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="w-full">
-            <Button
-              text="Value Cost Averaging"
-              feature="xl"
-              isActive={isActive === 0}
-              onButtonClick={() => handleFormFeature("value", "growRate")}
-            />
-            <Button
-              text="Dollar Cost Averaging"
-              feature="xl"
-              isActive={isActive === 1}
-              onButtonClick={() =>
-                handleFormFeature("dollar", "intervalInvestment")
-              }
-            />
-          </div>
-          <div className="relative flex items-center gap-4">
-            <div className="relative">
-              <div className="absolute left-2 top-3">
-                <InfoCards
-                  value="startDate"
-                  text={infoCardsDescription.startDate.description}
-                />
+                    <p>({capitaliseString(displayCoin.symbol)})</p>
+                  </div>
+                ) : (
+                  <p>loading</p>
+                )}
               </div>
               <Input
-                type="date"
-                value={startDate}
-                name="startDate"
+                type="text"
+                name="coinName"
+                value={coinName}
                 onInputChange={handleInputChange}
-                className="h-9 w-60 pl-7 text-common-azure"
+                placeholder="Select coin"
+                className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
               />
+              {showDropdown && isSuccess && (
+                <div ref={listRef}>
+                  <CalculatorCoinList
+                    error={isSearchError}
+                    loading={isSearchLoading}
+                    list={filteredList}
+                    handleCoinSelection={handleCoinSelection}
+                    currencySymbol={currencySymbol}
+                  />
+                </div>
+              )}
             </div>
-            {error.dateError && error.dateError.length > 0 && (
-              <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
-                {error.dateError}
-              </p>
-            )}
-            <div className="relative">
-              <div className="absolute left-2 top-3">
-                <InfoCards
-                  value="endDate"
-                  text={infoCardsDescription.endDate.description}
+            <div className="flex max-w-full gap-3">
+              <div
+                className="flex w-24 cursor-pointer justify-center rounded-md bg-light-lilac p-2 text-light-secondaryTextColor hover:scale-125 dark:bg-dark-darkBg dark:text-common-azure"
+                onClick={handleIsShown}
+              >
+                <IoBarChartOutline size="25" />
+              </div>
+              <div className="ml-auto flex justify-around gap-2">
+                <Button
+                  text="Value Cost Averaging"
+                  feature="xl"
+                  isActive={isActive === 0}
+                  onButtonClick={() => handleFormFeature("value", "growRate")}
+                />
+                <Button
+                  text="Dollar Cost Averaging"
+                  feature="xl"
+                  isActive={isActive === 1}
+                  onButtonClick={() =>
+                    handleFormFeature("dollar", "intervalInvestment")
+                  }
                 />
               </div>
-              <Input
-                type="date"
-                value={endDate}
-                name="endDate"
-                onInputChange={handleInputChange}
-                className="h-9 w-60 pl-7 text-common-azure"
-              />
             </div>
-          </div>
-          <div className="rounded-xl bg-light-lightBg p-4 dark:bg-dark-darkBg">
-            <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-              <p>Contribution interval, days</p>
-              <InfoCards
-                value="interval"
-                text={infoCardsDescription.interval.description}
-              />
-              <Input
-                type="number"
-                onInputChange={handleInputChange}
-                name="interval"
-                value={interval}
-                className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
-                placeholder="Minimum 1"
-              />
-            </div>
-            <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-              <p>Initial investment, {currencySymbol}</p>
-              <div>
-                <InfoCards
-                  value="initialInvestment"
-                  text={infoCardsDescription.initialInvestment.description}
-                />
+            <div className="relative flex items-center gap-4">
+              <div className="flex flex-col gap-2">
+                <p>Enter investment start date</p>
+                <div className="relative">
+                  <div className="absolute left-2 top-3">
+                    <InfoCards
+                      value="startDate"
+                      text={infoCardsDescription.startDate.description}
+                    />
+                  </div>
+                  <Input
+                    type="date"
+                    value={startDate}
+                    name="startDate"
+                    onInputChange={handleInputChange}
+                    className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-common-azure dark:bg-[#232336]"
+                  />
+                </div>
               </div>
-              <Input
-                type="number"
-                onInputChange={handleInputChange}
-                name="initialInvestment"
-                value={initialInvestment}
-                className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
-                placeholder="Minimum 1"
-              />
+              {error.dateError && error.dateError.length > 0 && (
+                <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
+                  {error.dateError}
+                </p>
+              )}
+              <div className="relative flex items-center gap-4">
+                <div className="flex flex-col gap-2">
+                  <p>Enter investment end date</p>
+                  <div className="relative">
+                    <div className="absolute left-2 top-3">
+                      <InfoCards
+                        value="endDate"
+                        text={infoCardsDescription.endDate.description}
+                      />
+                    </div>
+                    <Input
+                      type="date"
+                      value={endDate}
+                      name="endDate"
+                      onInputChange={handleInputChange}
+                      className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-common-azure dark:bg-[#232336]"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            {(isInitialLoad.current || hasGrowFeature) && (
+            <div className="rounded-xl bg-light-lightBg p-4 dark:bg-dark-darkBg">
               <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                <p>Grow rate per interval, %</p>
+                <p>Contribution interval, days</p>
                 <InfoCards
-                  value="growRate"
-                  text={infoCardsDescription.growRate.description}
+                  value="interval"
+                  text={infoCardsDescription.interval.description}
                 />
                 <Input
                   type="number"
                   onInputChange={handleInputChange}
-                  name="growRate"
-                  value={growRate || ""}
-                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
+                  name="interval"
+                  value={interval}
+                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
                   placeholder="Minimum 1"
                 />
               </div>
-            )}
-            {hasIntervalInvestmentFeature && (
               <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                <p>Investment added each interval</p>
-                <InfoCards
-                  value="intervalInvestment"
-                  text={infoCardsDescription.intervalInvestment.description}
-                />
+                <p>Initial investment, {currencySymbol}</p>
+                <div>
+                  <InfoCards
+                    value="initialInvestment"
+                    text={infoCardsDescription.initialInvestment.description}
+                  />
+                </div>
                 <Input
                   type="number"
                   onInputChange={handleInputChange}
-                  name="intervalInvestment"
-                  value={intervalInvestment || ""}
-                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
+                  name="initialInvestment"
+                  value={initialInvestment}
+                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
                   placeholder="Minimum 1"
                 />
               </div>
-            )}
+              {(isInitialLoad.current || hasGrowFeature) && (
+                <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                  <p>Grow rate per interval, %</p>
+                  <InfoCards
+                    value="growRate"
+                    text={infoCardsDescription.growRate.description}
+                  />
+                  <Input
+                    type="number"
+                    onInputChange={handleInputChange}
+                    name="growRate"
+                    value={growRate || ""}
+                    className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
+                    placeholder="Minimum 1"
+                  />
+                </div>
+              )}
+              {hasIntervalInvestmentFeature && (
+                <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                  <p>Investment added each interval</p>
+                  <InfoCards
+                    value="intervalInvestment"
+                    text={infoCardsDescription.intervalInvestment.description}
+                  />
+                  <Input
+                    type="number"
+                    onInputChange={handleInputChange}
+                    name="intervalInvestment"
+                    value={intervalInvestment || ""}
+                    className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
+                    placeholder="Minimum 1"
+                  />
+                </div>
+              )}
 
-            <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-              <p>Total amount, {currencySymbol}</p>
-              <InfoCards
-                value="totalAmount"
-                text={infoCardsDescription.totalAmount.description}
-              />
-              {loading && <Spinner />}
-              {error.apiError && (
-                <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
-                  {error.apiError}
+              <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                <p>Total amount, {currencySymbol}</p>
+                <InfoCards
+                  value="totalAmount"
+                  text={infoCardsDescription.totalAmount.description}
+                />
+                {loading && <Spinner />}
+                {error.apiError && (
+                  <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
+                    {error.apiError}
+                  </p>
+                )}
+                <p className="ml-auto">
+                  <span className="mr-1">{currencySymbol}</span>
+                  {totalAmount}
                 </p>
-              )}
-              <p className="ml-auto">{calculatedValues.totalAmount}</p>
-            </div>
-            <div className="relative flex items-center gap-3 pl-4 pr-4 pt-4">
-              <p>Coins value, {currencySymbol}</p>
-              <InfoCards
-                value="coinsValue"
-                text={infoCardsDescription.coinsValue.description}
-              />
-              {loading && <Spinner />}
-              {error.apiError && (
-                <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
-                  {error.apiError}
+              </div>
+              <div className="relative flex items-center gap-3 pl-4 pr-4 pt-4">
+                <p>Coins value, {currencySymbol}</p>
+                <InfoCards
+                  value="coinsValue"
+                  text={infoCardsDescription.coinsValue.description}
+                />
+                {loading && <Spinner />}
+                {error.apiError && (
+                  <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
+                    {error.apiError}
+                  </p>
+                )}
+                <p className="ml-auto">
+                  <span className="mr-1">{currencySymbol}</span>
+                  {coinsValue}
                 </p>
-              )}
-              <p className="ml-auto">{calculatedValues.coinsValue}</p>
+              </div>
             </div>
+            <button
+              type="submit"
+              disabled={isButtonDisabled}
+              className={`h-11 w-full self-center rounded-md border-[1px] border-solid px-4 py-3 text-center drop-shadow-md ${
+                isButtonDisabled
+                  ? "cursor-not-allowed border-none bg-light-primary text-light-secondaryTextColor hover:bg-light-primary dark:bg-skeleton200 dark:text-dark-text hover:dark:bg-skeleton200"
+                  : "shadow-indigo-500/50 cursor-pointer bg-light-secondaryTextColor hover:bg-light-primary dark:bg-common-linearGradient hover:dark:bg-common-azure"
+              }`}
+            >{`Calculate ${formFeature === "valueCost" ? "VCA" : "DCA"}`}</button>
           </div>
-          <button
-            type="submit"
-            disabled={isButtonDisabled}
-            className={`h-11 w-full self-center rounded-md border-[1px] border-solid px-4 py-3 text-center drop-shadow-md ${
-              isButtonDisabled
-                ? "cursor-not-allowed border-none bg-light-primary text-light-secondaryTextColor hover:bg-light-primary dark:bg-skeleton200 dark:text-dark-text hover:dark:bg-skeleton200"
-                : "shadow-indigo-500/50 cursor-pointer bg-light-secondaryTextColor hover:bg-light-primary dark:bg-common-linearGradient hover:dark:bg-common-azure"
-            }`}
-          >{`Calculate ${formFeature === "valueCost" ? "VCA" : "DCA"}`}</button>
+        </form>
+      </div>
+      {show && (
+        <div
+          ref={chartRef}
+          className="absolute left-1/2 top-1/2 z-40 w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl p-4 blur-none"
+        >
+          <LineChart
+            historicDates={historicDates}
+            historicPrices={historicPrices}
+            coin={displayCoin}
+            currencySymbol={currencySymbol}
+          />
         </div>
-      </form>
-    </>
+      )}
+    </div>
   );
 };
 
