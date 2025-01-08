@@ -4,11 +4,11 @@ import { coinTableColors } from "../colours";
 
 export const createLineChartData = (
   labels: any,
-  timestamps:any,
+  timestamps: any,
   coinOne: { id?: string } | null,
   coinOnePrices: number[],
   coinTwo: { id?: string } | null,
-  coinTwoPrices: number[]
+  coinTwoPrices: number[],
 ): ChartData<"line"> => {
   const datasets: any = [];
 
@@ -57,7 +57,7 @@ export const createLineChartData = (
   }
 
   return {
-    labels:timestamps,
+    labels: timestamps,
     datasets,
   };
 };
@@ -67,9 +67,8 @@ export const createBarChartData = (
   coinOne: { id?: string } | null,
   coinOneVolumes: number[],
   coinTwo: { id?: string } | null,
-  coinTwoVolumes: number[]
+  coinTwoVolumes: number[],
 ): ChartData<"bar"> => {
-
   const datasets: any = [];
 
   if (coinOne) {
@@ -122,7 +121,7 @@ export const createBarChartData = (
 
 export const ConverterChartData = (
   labels: any,
-  conversionRates: any
+  conversionRates: any,
 ): ChartData<"line"> => ({
   labels,
   datasets: [
@@ -141,7 +140,7 @@ export const ConverterChartData = (
           0,
           chartArea.bottom,
           0,
-          chartArea.top
+          chartArea.top,
         );
 
         gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
@@ -156,25 +155,63 @@ export const ConverterChartData = (
   ],
 });
 
-export const TableChartData = (time:any,index:number,data:any) =>{
-  return{
-  labels: time.map((hour:any) => formatDateAndTime(167 - hour)),
-  datasets: [
-    {
-      fill: true,
-      tension: 0.75,
-      label: "$",
-      data: data,
-      borderColor: coinTableColors[index % 10],
-      borderWidth: 1.5,
-      pointRadius: 0,
-      backgroundColor: (context: any) => {
-        const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 380);
-        gradient.addColorStop(0, coinTableColors[index % 10]);
-        gradient.addColorStop(0.15, "rgba(120, 120, 250, 0)");
-        return gradient;
+export const TableChartData = (time: any, index: number, data: any) => {
+  return {
+    labels: time.map((hour: any) => formatDateAndTime(167 - hour)),
+    datasets: [
+      {
+        fill: true,
+        tension: 0.75,
+        label: "$",
+        data: data,
+        borderColor: coinTableColors[index % 10],
+        borderWidth: 1.5,
+        pointRadius: 0,
+        backgroundColor: (context: any) => {
+          const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 380);
+          gradient.addColorStop(0, coinTableColors[index % 10]);
+          gradient.addColorStop(0.15, "rgba(120, 120, 250, 0)");
+          return gradient;
+        },
       },
-    },
-  ],
+    ],
+  };
 };
+
+export const InvestmentChartData = (
+  historicDates: Date[],
+  historicPrices: number[],
+) => {
+  return {
+    labels: historicDates.map((date) => date.toLocaleDateString()),
+    datasets: [
+      {
+        label: "Price over time",
+        data: historicPrices,
+        borderColor: "#7878FA",
+        backgroundColor: (context: ScriptableContext<"line">) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) {
+            return undefined;
+          }
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.bottom,
+            0,
+            chartArea.top,
+          );
+          gradient.addColorStop(0, "rgba(116, 116, 242, 0.01)");
+          gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
+          return gradient;
+        },
+        borderWidth: 2,
+        categoryPercentage: 0.75,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        tension: 0.3,
+        fill: true,
+      },
+    ],
+  };
 };

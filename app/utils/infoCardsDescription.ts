@@ -3,7 +3,8 @@ export const infoCardsDescription = {
     description: "Start date and time of investments",
   },
   endDate: {
-    description: "End date and time of investments",
+    description:
+      "End date and time of investments. No more than 1 year from start date.",
   },
   interval: {
     description: "The number of days between each investment",
