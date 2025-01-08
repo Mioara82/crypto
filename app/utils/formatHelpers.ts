@@ -18,6 +18,13 @@ export function roundNumber(number: number) {
   return Math.round(number).toFixed(2);
 }
 
+export function formatString(str: string) {
+  if (str.length > 8) {
+    return str.slice(0, 8).concat("..");
+  }
+  return str;
+}
+
 export function formatLabelDate() {
   const date = new Date();
   const year = date.getFullYear();
@@ -209,9 +216,16 @@ export function handleCoinDateDisplay(date: Date | number, days: number) {
   }
 }
 
+export function formatInvestmentChartDate(date: Date | number) {
+  return Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+  }).format(date);
+}
+
 export const getDisplayCoin = (value: string, list: any) => {
-  if(!list && list.length === 0){
-    return {name:"Bitcoin"};
+  if (!list && list.length === 0) {
+    return { name: "Bitcoin" };
   }
   return list.find((coin: any) => {
     if (value === "") {
@@ -228,10 +242,10 @@ export function calculateTotalInvestmentPerGrowth(
   interval: number,
   start: string,
   end: string,
-):number {
-  let totalAmount:number = Number(initial);
-  const differenceInDays:number = getInvestmentDuration(start, end);
-  for (let i = 1; i <= differenceInDays; i+=interval) {
+): number {
+  let totalAmount: number = Number(initial);
+  const differenceInDays: number = getInvestmentDuration(start, end);
+  for (let i = 1; i <= differenceInDays; i += interval) {
     totalAmount += (totalAmount * growRate) / 100;
   }
   return Number(totalAmount.toFixed());
@@ -243,8 +257,8 @@ export function calculateTotalInvestmentPerInvestmentAdded(
   interval: number,
   start: string,
   end: string,
-):number {
-  let totalAmount:number = Number(initial);
+): number {
+  let totalAmount: number = Number(initial);
   const differenceInDays = getInvestmentDuration(start, end);
   for (let i = 1; i <= differenceInDays; i += interval) {
     totalAmount += Number(additional);
