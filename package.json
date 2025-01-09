@@ -18,6 +18,7 @@
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^3.0.1",
+    "chartjs-plugin-crosshair": "^2.0.0",
     "framer-motion": "^11.2.4",
     "next": "^14.0.0",
     "next-themes": "^0.3.0",
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.8.0",
+    "@types/chartjs-plugin-crosshair": "^1.1.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

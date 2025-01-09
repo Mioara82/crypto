@@ -8,6 +8,7 @@ import ButtonGroup from "./components/UI-components/ButtonGroup";
 import ChartsContainer from "./components/blocks-components/Charts/ChartsContainer";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
+import SelectedCoins from "./components/blocks-components/SelectedCoins";
 import TableSkeleton from "./components/UI-components/Skeleton/TableSkeleton";
 
 const CoinCarousel = lazy(
@@ -45,6 +46,7 @@ export default function Home() {
             ) : null}
           </div>
         </Suspense>
+        <SelectedCoins/>
         <ChartsContainer currency={currency} days={selectedFilter.period} />
         <ChartFilterTabs />
         <Suspense fallback={<TableSkeleton />}>

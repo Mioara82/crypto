@@ -6,6 +6,53 @@ import {
   formatTimestampToDate,
 } from "../formatHelpers";
 
+const crosshair = {
+  line: {
+    color: "#01F1E3",
+    width: 0.5,
+  },
+  sync: {
+    enabled: false,
+  },
+  zoom: {
+    enabled: false,
+  },
+  snap: {
+    enabled: true,
+  },
+  callbacks: {
+    afterDraw: (chart: any) => {
+      const {
+        ctx,
+        chartArea: { top, left, bottom, right },
+      } = chart;
+      const activePoint = chart.tooltip.dataPoints?.[0];
+
+      if (activePoint) {
+        const x = activePoint.element.x;
+        const y = activePoint.element.y;
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.moveTo(x, top);
+        ctx.lineTo(x, bottom);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.stroke();
+        if (x >= right && x <= left) {
+          ctx.beginPath();
+          ctx.moveTo(left, y);
+          ctx.lineTo(right, y);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    },
+  },
+};
+
 export const createChartOptions = (
   coinOnePrices: number[],
   coinTwoPrices: number[],
@@ -33,13 +80,8 @@ export const createChartOptions = (
       },
       tooltip: {
         enabled: true,
-        usePointStyle: true,
-        backgroundColor: "rgba(0, 50, 0, 0)",
-        caretSize: 5,
-        caretPadding: 1,
         mode: "index",
         intersect: false,
-        padding: 8,
         callbacks: {
           label: (tooltipItems: any) => {
             const { datasetIndex, dataIndex } = tooltipItems;
@@ -60,9 +102,11 @@ export const createChartOptions = (
           },
         },
       },
+      crosshair,
     },
     interaction: {
       mode: "index",
+      intersect: false,
     },
     scales: {
       x: {
@@ -72,7 +116,6 @@ export const createChartOptions = (
         },
         grid: {
           display: false,
-          color: "rgba(0,0,0,0)",
         },
         ticks: {
           autoSkip: true,
@@ -85,16 +128,15 @@ export const createChartOptions = (
       },
       y: {
         type: chartType,
-        display: false,
+        display:true,
         grid: {
           display: false,
         },
         ticks: {
-          display: false,
+          display: false
         },
       },
     },
-    // eslint-disable-next-line semi
   };
 };
 
@@ -131,7 +173,7 @@ export const createBarChartOptions = (
     tooltip: {
       enabled: true,
       usePointStyle: true,
-      backgroundColor: "rgba(0, 50, 0, 0)",
+      backgroundColor: "rgba(0, 0, 0, 0)",
       caretSize: 5,
       caretPadding: 1,
       mode: "index",
@@ -158,6 +200,7 @@ export const createBarChartOptions = (
         title: (tooltipItems) => tooltipItems[0].label,
       },
     },
+    crosshair,
   },
   interaction: {
     mode: "index",
@@ -189,12 +232,11 @@ export const createBarChartOptions = (
     y: {
       type: chartType,
       beginAtZero: true,
-      display: false,
       grid: {
         display: false,
       },
       ticks: {
-        display: false,
+        display: false
       },
     },
   },
@@ -223,7 +265,7 @@ export const createConverterChartOptions = (
       tooltip: {
         enabled: true,
         usePointStyle: true,
-        backgroundColor: "rgba(0, 50, 0, 0)",
+        backgroundColor: "rgba(0, 0, 0, 80)",
         caretSize: 5,
         caretPadding: 1,
         mode: "index",
@@ -242,6 +284,7 @@ export const createConverterChartOptions = (
           },
         },
       },
+      crosshair,
     },
     interaction: {
       mode: "index",
@@ -377,6 +420,7 @@ export const InvestmentChartOptions = (currencySymbol: string) => {
       legend: {
         display: false,
       },
+      crosshair,
     },
   };
 };
