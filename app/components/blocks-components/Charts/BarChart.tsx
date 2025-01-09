@@ -1,5 +1,6 @@
 "use-client";
 import React, { useState, useMemo } from "react";
+import CrosshairPlugin from "chartjs-plugin-crosshair";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,6 +22,7 @@ import {
   formatLabelDate,
   formatMarketCap,
   handleCoinDateDisplay,
+  calculateNumberOfBars
 } from "@/app/utils/formatHelpers";
 import { createBarChartOptions } from "@/app/utils/ChartUtils/chartOptions";
 import { createBarChartData } from "@/app/utils/ChartUtils/chartData";
@@ -35,7 +37,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Filler,
-  Legend
+  Legend,
+  CrosshairPlugin
 );
 
 const BarChart = ({
@@ -81,18 +84,20 @@ const BarChart = ({
   const [displayVolumeOne, setDisplayVolumeOne] = useState<number>(0);
   const [displayVolumeTwo, setDisplayVolumeTwo] = useState<number>(0);
 
+  const numberOfBars = calculateNumberOfBars(days);
+
   const labels =
     coinOneData?.totalVolumes?.map((volume: any) =>
       handleCoinDateDisplay(new Date(volume[0]), days)
-    ) || [];
+    ).slice(0, numberOfBars) || [];
 
   const timestamps =
-    coinOneData?.totalVolumes?.map((volume: any) => volume[0]) || [];
+    coinOneData?.totalVolumes?.map((volume: any) => volume[0]).slice(0, numberOfBars) || [];
 
   const coinOneVolumes =
-    coinOneData?.totalVolumes?.map((volume: any) => volume[1]) || [];
+    coinOneData?.totalVolumes?.map((volume: any) => volume[1]).slice(0, numberOfBars) || [];
   const coinTwoVolumes =
-    coinTwoData?.totalVolumes?.map((volume: any) => volume[1]) || [];
+    coinTwoData?.totalVolumes?.map((volume: any) => volume[1]).slice(0, numberOfBars) || [];
 
   const options = useMemo(
     () =>

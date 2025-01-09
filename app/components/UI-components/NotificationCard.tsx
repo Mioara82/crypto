@@ -16,29 +16,30 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
       {isSuccess ? (
         <div>
           {isVisible ? (
-            <div
-              className="absolute z-4 flex justify-center w-63 h-15 top-4 right-5 border-1 rounded-md 
-               border-t-common-green border-l-common-green border-r-common-green border-b-common-green/5 py-3.5 px-4.5 bg-[#00B1A780] animate-fadeInRight"
-            >
+            <div className="z-4 border-1 absolute right-5 top-4 flex h-15 w-63 animate-fadeInRight justify-center rounded-md border-b-common-green/5 border-l-common-green border-r-common-green border-t-common-green bg-[#00B1A780] px-4.5 py-3.5">
               <Image
                 src="/notificationIcons/check.svg"
                 alt="check icon"
                 width={20}
                 height={20}
               />
-              <p className="text-base m-auto">{text} </p>
+              <p className="m-auto text-base">{text} </p>
             </div>
           ) : null}
         </div>
       ) : (
-        <div className="absolute z-4 flex justify-center w-63 h-15 top-4 right-5 rounded-md border-1 py-3.5 px-4.5 bg-[#FE226480] border-t-common-red border-b-common-red/5 animate-fadeInRight">
-          <Image
-            src="/notificationIcons/error.svg"
-            alt="error icon red"
-            width={20}
-            height={20}
-          />
-          <p className="text-base m-auto">{text}</p>
+        <div>
+          {isVisible ? (
+            <div className="z-4 border-1 absolute right-5 top-4 flex h-15 w-63 animate-fadeInRight justify-center rounded-md border-b-common-red/5 border-t-common-red bg-[#FE226480] px-4.5 py-3.5">
+              <Image
+                src="/notificationIcons/error.svg"
+                alt="error icon red"
+                width={20}
+                height={20}
+              />
+              <p className="m-auto text-base">{text}</p>
+            </div>
+          ) : null}
         </div>
       )}
     </div>

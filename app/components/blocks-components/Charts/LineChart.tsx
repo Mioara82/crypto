@@ -1,5 +1,5 @@
 "use-client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,7 @@ import {
   TimeScale,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
+import CrosshairPlugin from "chartjs-plugin-crosshair";
 import { Line } from "react-chartjs-2";
 import {
   formatLabelDate,
@@ -38,7 +39,8 @@ ChartJS.register(
   Tooltip,
   Filler,
   Legend,
-  TimeScale
+  TimeScale,
+  CrosshairPlugin,
 );
 
 const LineChart = ({
@@ -64,26 +66,20 @@ const LineChart = ({
 }) => {
   const defaultCoinOne = { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
 
-  const {
-    data: coinOneData,
-    isError: isErrorOne,
-  } = useGetChartDataQuery({
+  const { data: coinOneData, isError: isErrorOne } = useGetChartDataQuery({
     id: coinOne?.id || defaultCoinOne.id,
     currency,
     days,
   });
 
-  const {
-    data: coinTwoData,
-    isError: isErrorTwo,
-  } = useGetChartDataQuery({
+  const { data: coinTwoData, isError: isErrorTwo } = useGetChartDataQuery({
     id: coinTwo?.id,
     currency,
     days,
   });
 
   const currencySymbol = useAppSelector(
-    (state: RootState) => state.currency.symbol
+    (state: RootState) => state.currency.symbol,
   );
 
   const today = formatLabelDate();
@@ -91,9 +87,13 @@ const LineChart = ({
   const [displayPriceOne, setDisplayPriceOne] = useState<number>(0);
   const [displayPriceTwo, setDisplayPriceTwo] = useState<number>(0);
 
+  useEffect(() => {
+    setDisplayPriceOne(coinOne.currentPrice);
+  }, [coinOne]);
+
   const labels =
     coinOneData?.prices?.map((price: any) =>
-      handleCoinDateDisplay(price[0], days)
+      handleCoinDateDisplay(price[0], days),
     ) || [];
 
   const timestamps = coinOneData?.prices?.map((price: any) => price[0] || []);
@@ -116,7 +116,7 @@ const LineChart = ({
         setDisplayDate,
         setDisplayPriceOne,
         setDisplayPriceTwo,
-        chartType
+        chartType,
       ),
     [
       coinOnePrices,
@@ -129,7 +129,7 @@ const LineChart = ({
       setDisplayPriceOne,
       setDisplayPriceTwo,
       chartType,
-    ]
+    ],
   );
 
   const chartData = useMemo(
@@ -140,9 +140,9 @@ const LineChart = ({
         coinOne,
         coinOnePrices,
         coinTwo,
-        coinTwoPrices
+        coinTwoPrices,
       ),
-    [labels, timestamps, coinOne, coinOnePrices, coinTwo, coinTwoPrices]
+    [labels, timestamps, coinOne, coinOnePrices, coinTwo, coinTwoPrices],
   );
 
   useChart(options, chartData);
@@ -152,15 +152,12 @@ const LineChart = ({
       {isLinear && (
         <>
           {isErrorOne && (
-            <NotificationCard
-              text="Error loading data"
-              isSuccess={false}
-            />
+            <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex flex-col justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+          <div className="flex flex-col justify-start bg-light-primary p-6 dark:bg-dark-darkBg">
             <div>
               <div className="flex flex-col justify-start gap-6">
-                <p className="text-light-darkText dark:text-dark-chartTextColor text-xl leading-6">
+                <p className="text-xl leading-6 text-light-darkText dark:text-dark-chartTextColor">
                   {coinOneName} {coinOne.symbol}
                 </p>
                 <p className="text-2.5xl font-bold">
@@ -181,12 +178,9 @@ const LineChart = ({
       {isLogarithmic && (
         <>
           {(isErrorOne || isErrorTwo) && (
-            <NotificationCard
-              text="Error loading data"
-              isSuccess={false}
-            />
+            <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex flex-col h-full justify-start dark:bg-dark-darkBg bg-light-primary p-6">
+          <div className="flex h-full flex-col justify-start bg-light-primary p-6 dark:bg-dark-darkBg">
             <div className="h-14">
               <p className="text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
                 {displayDate || today}
@@ -195,9 +189,9 @@ const LineChart = ({
             <div>
               <Line options={options} data={chartData} />
             </div>
-            <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-common-linearGradient"></div>
+                <div className="h-4 w-4 bg-common-linearGradient"></div>
                 <div>{coinOneName}</div>
                 <div>
                   {currencySymbol}{" "}
@@ -205,7 +199,7 @@ const LineChart = ({
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-common-chart-graph-100"></div>
+                <div className="h-4 w-4 bg-common-chart-graph-100"></div>
                 <div>{coinTwoName}</div>
                 <div>
                   {currencySymbol}{" "}

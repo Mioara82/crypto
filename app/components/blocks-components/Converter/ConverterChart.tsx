@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useMemo } from "react";
+import CrosshairPlugin from "chartjs-plugin-crosshair";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,7 +31,8 @@ ChartJS.register(
   Tooltip,
   Filler,
   Legend,
-  TimeScale
+  TimeScale,
+  CrosshairPlugin
 );
 const ConverterChart = () => {
   const currency = useAppSelector(

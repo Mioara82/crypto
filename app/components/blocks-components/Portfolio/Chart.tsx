@@ -1,4 +1,5 @@
 import React from "react";
+import CrosshairPlugin from "chartjs-plugin-crosshair";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,6 +34,7 @@ ChartJS.register(
   PointElement,
   Tooltip,
   Legend,
+  CrosshairPlugin
 );
 
 interface LineChartProps {

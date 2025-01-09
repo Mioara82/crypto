@@ -86,6 +86,20 @@ export function checkIfIsInteger(number: number | null) {
   return Number.isInteger(number) ? number : number.toFixed(2);
 }
 
+export const calculateNumberOfBars = (days: number) => {
+  if (days === 1) {
+    return 24;
+  } else if (days === 7) {
+    return 96;
+  } else if (days === 14) {
+    return 14 * 12;
+  } else if (days === 30) {
+    return 30;
+  } else {
+    return 60;
+  }
+};
+
 export const getDisplayFormats = (days: number) => {
   if (days === 1) {
     return {
@@ -143,6 +157,19 @@ export function formatTimestampToDate(timestamp: number) {
   const day = date.getDate();
   return `${month} ${day}, ${year}`;
 }
+
+export const formatTimestampToDateAndTime = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return date.toLocaleString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
 
 export function calculateProgress(unitOne: any, unitTwo: any) {
   return Math.floor((unitOne / unitTwo) * 100);
