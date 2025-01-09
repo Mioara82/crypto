@@ -88,6 +88,7 @@ const LineChart = ({
   const [displayPriceTwo, setDisplayPriceTwo] = useState<number>(0);
 
   useEffect(() => {
+    if(!coinOne) return;
     setDisplayPriceOne(coinOne.currentPrice);
   }, [coinOne]);
 
