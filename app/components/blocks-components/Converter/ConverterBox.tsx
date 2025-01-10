@@ -122,7 +122,9 @@ const ConverterBox = () => {
             </p>
           </div>
         </div>
+       
         <ConverterIcon handleDirection={handleDirection} />
+      
       </div>
     </>
   );

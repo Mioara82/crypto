@@ -28,7 +28,7 @@ const ChartsContainer = ({
 
   return (
     <>
-      <div className="flex justify-center w-maxWidth gap-10 p-4">
+      <div className="flex justify-center w-maxWidth gap-5">
         <Chart
           chartType={chartType}
           currency={currency}

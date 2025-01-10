@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { findHighlighted } from "@/app/utils/searchFormatter";
 
 interface CoinDescriptionProps {
   onCoinClick: () => void;
   currencySymbol: string;
   coin: CoinProps;
+  searchedValue:string;
 }
 
 export interface CoinProps {
@@ -19,7 +21,9 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
   coin,
   onCoinClick,
   currencySymbol,
+  searchedValue
 }) => {
+
   return (
     <Link
       href={`/CoinDetails/${coin.id}`}
@@ -31,7 +35,7 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
         {coin.symbol}
       </p>
       <p className="basis-1/2 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor">
-        {coin.name}
+        {findHighlighted(coin.name, searchedValue)}
       </p>
       <p className="basis-1/6 text-light-secondaryTextColor/80  dark:text-dark-chartTextColor text-end mr-1">
         {currencySymbol.startsWith("https://") ? (

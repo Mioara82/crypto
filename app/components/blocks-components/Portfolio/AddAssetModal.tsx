@@ -10,7 +10,9 @@ import { addCoin, updateCoin } from "@/lib/features/portfolioSlice";
 import { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
+import Dropdown from "../../UI-components/Dropdown";
 import { getCurrentDate, getDisplayCoin } from "@/app/utils/formatHelpers";
+import { findHighlighted } from "@/app/utils/searchFormatter";
 
 interface FormProps {
   coinName: string | "";
@@ -198,10 +200,7 @@ const AddAssetModal = ({
               className="rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
             />
             {showDropdown && isSuccess && (
-              <ul
-                ref={listRef}
-                className="absolute left-[18em] top-[90px] z-10 h-96 w-[34em] overflow-y-auto rounded-xl bg-[#ccccfa] py-2 pl-9 pr-4 dark:bg-dark-191"
-              >
+              <Dropdown ref={listRef} show={showDropdown} feature="portfolio">
                 {filteredList.map((coin: any) => (
                   <li
                     className="mb-2 flex items-center gap-2"
@@ -214,14 +213,14 @@ const AddAssetModal = ({
                       width={20}
                       height={20}
                     />
-                    <p className="text-sm">{coin.name}</p>
+                    <p className="text-sm">{findHighlighted(coin.name,searchValue)}</p>
                     <p className="text-xs opacity-40">
                       <span className="mr-1">{currencySymbol}</span>
                       {coin.currentPrice.toFixed(3)}
                     </p>
                   </li>
                 ))}
-              </ul>
+              </Dropdown>
             )}
             <Input
               type="number"
