@@ -13,6 +13,7 @@ import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import CalculatorCoinList from "./CalculatorCoinList";
 import LineChart from "./Chart";
+import Dropdown from "../../UI-components/Dropdown";
 import InfoCards from "./InfoCards";
 import Spinner from "../../UI-components/Spinner";
 import {
@@ -396,7 +397,7 @@ const InvestmentCalculator = ({
                 <FiX />
               </div>
             </div>
-            <div className="flex w-full justify-between gap-8">
+            <div className="relative flex w-full justify-between gap-8">
               <div className="flex h-11 w-48 items-center gap-2 rounded-lg bg-light-lilac pb-2 pl-2 pr-6 pt-2 text-base font-bold text-light-secondaryTextColor dark:bg-dark-lightBg dark:text-dark-text">
                 {isSearchLoading && <Spinner />}
                 {isSearchError && (
@@ -430,15 +431,16 @@ const InvestmentCalculator = ({
                 className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
               />
               {showDropdown && isSuccess && (
-                <div ref={listRef}>
+                <Dropdown ref={listRef} show={showDropdown} feature="investment">
                   <CalculatorCoinList
                     error={isSearchError}
                     loading={isSearchLoading}
                     list={filteredList}
                     handleCoinSelection={handleCoinSelection}
                     currencySymbol={currencySymbol}
+                    searchValue={searchValue}
                   />
-                </div>
+                </Dropdown>
               )}
             </div>
             <div className="flex max-w-full gap-3">

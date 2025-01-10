@@ -63,7 +63,7 @@ const config: Config = {
       },
      
         skeleton300:"#495057",
-        skeleton200:"#6c757d",
+        skeleton200:"#CEC3C1",
         skeleton100:"#adb5bd",
       
     },
@@ -96,6 +96,9 @@ const config: Config = {
           "1":"1px"
         }
       },
+      boxShadow: {
+        "custom": "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      },
       keyframes: {
         wave: {
           "0%": { backgroundPosition: "200% 0" },
@@ -111,7 +114,7 @@ const config: Config = {
         },
       },
       animation: {
-        wave: "wave 1s linear infinite",
+        wave: "wave 5s linear infinite",
         fadeInRight:"fadeInRight 1s ease-in-out",
         fadeOutLeft:"fadeOutLeft 1s ease-in-out"
       },

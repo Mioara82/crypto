@@ -1,4 +1,5 @@
 import React from "react";
+import { CiCirclePlus } from "react-icons/ci";
 
 export function ArrowLeft() {
   return (
@@ -8,7 +9,7 @@ export function ArrowLeft() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-[18px] h-[18px]"
+      className="h-[18px] w-[18px]"
     >
       <path
         strokeLinecap="round"
@@ -27,7 +28,7 @@ export function StackIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"
@@ -40,19 +41,8 @@ export function StackIcon() {
 
 export function PlusIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="#6161d650"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="#7878fa"
-      className="w-6 h-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-      />
-    </svg>
+    <div className="shadow-custom rounded-full bg-common-portfolioButton text-light-primary">
+      <CiCirclePlus size={22} />
+    </div>
   );
 }
