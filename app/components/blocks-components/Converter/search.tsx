@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Suspense } from "react";
 import Image from "next/image";
 import Spinner from "../../UI-components/Spinner";
+import Dropdown from "../../UI-components/Dropdown";
 import { ArrowIcon } from "@/app/icons/arrowIcon";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { CoinSearchProps } from "@/lib/types/apiInterfaces";
@@ -58,12 +59,7 @@ const SearchCoin = ({
           </div>
         )}
         {show ? (
-          <ul
-            ref={ref}
-            className={`h-96 w-64 pl-9 pr-4 py-2 z-20 absolute top-10 -left-4 overflow-auto bg-[#ccccfa] dark:bg-dark-191 rounded-b-xl ${
-              show ? "opacity-100" : "opacity-0"
-            }`}
-          >
+          <Dropdown ref={ref} show={show}>
             {list.map((c) => (
               <li key={c.id} className="flex gap-2 mb-2 items-center cursor-pointer" onClick={() => handleCoinSearch(c.id)}>
                 <Image
@@ -77,7 +73,7 @@ const SearchCoin = ({
                 </div>
               </li>
             ))}
-          </ul>
+          </Dropdown>
         ) : null}
         <ArrowIcon handleClick={handleDropdownDisplay} />
       </div>
