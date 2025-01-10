@@ -58,8 +58,8 @@ const CoinsTable = () => {
     }
   }, [data, isSuccess]);
 
-  const handleSortChange = (e: any) => {
-    setSortQuery(e.target.value);
+  const handleSortChange = (value:string) => {
+    setSortQuery(value);
     setCoins(null);
     setCurrentPage(1);
   };
