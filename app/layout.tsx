@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   title: "Crypto App",
   description:
     "cryptocurrency exchange to securely buy, sell, trade, store, and stake crypto",
+  viewport: {
+    width: "device-width",
+    height: "device-height",
+    initialScale: 1,
+    maximumScale: 1,
+    minimumScale: 1,
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} rounded-[20px] bg-light-primary dark:bg-dark-primaryBg`}>
+      <body
+        className={`${spaceGrotesk.className} rounded-[20px] bg-light-primary dark:bg-dark-primaryBg`}
+      >
         <ThemeProvider>
           <StoreProvider>
             <GlobalNavbar />

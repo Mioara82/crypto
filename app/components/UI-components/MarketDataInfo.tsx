@@ -26,11 +26,11 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
   return (
     <>
       <nav
-        className="flex justify-around m-0 flex-nowrap
+        className="w-full mx-auto flex md:justify-around md:m-0 md:flex-nowrap
          bg-light-darkBg dark:bg-[#191925]
-        py-4 rounded-t-md max-w-1440"
+        py-4 rounded-t-md"
       >
-        <div className="flex gap-8 text-xs ">
+        <div className="flex gap-8 text-xs justify-between">
           <div className="inline-flex justify-items-center gap-2">
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
               <Image
@@ -68,7 +68,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               {formatMarketCap(data.totalMarketCap[currency])}
             </div>
           </div>
-          <div className="inline-flex justify-items-center items-center gap-2">
+          <div className="hidden md:inline-flex justify-items-center items-center gap-2">
             <div className="text-light-primary">
               {currencySymbol.startsWith("https://") ? (
                 <Image
@@ -87,8 +87,8 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             </div>
             <ProgressBar value={5} color="#ffffff" colorTwo="#ffffff60" data="marketData"/>
           </div>
-
-          <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
+              <div>
+          <div className="hidden lg:inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
             <Image
               src="/currency/bitcoin.svg"
               alt="bitcoin symbol"
@@ -98,8 +98,8 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
             <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" data="marketData" colorTwo="#ffffff60" />
           </div>
-
-          <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
+          </div>
+          <div className="hidden lg:inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
             <Image
               src="/currency/ethereum.svg"
               alt="ethereum symbol"

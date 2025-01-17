@@ -69,7 +69,7 @@ const Search = () => {
           name="searchInput"
           type="text"
           placeholder="Search..."
-          className={`border-1 z-50 w-[356px] rounded-md bg-light-lightBg py-2 pl-9 pr-4 text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor ${show ? "rounded-b-none" : "rounded-xl"}`}
+          className={`w-24 border-1 z-50 pl-4 md:w-[356px] rounded-md bg-light-lightBg py-2 md:pl-9 md:pr-4 text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor ${show ? "rounded-b-none" : "rounded-xl"}`}
         />
         <Dropdown ref={ref} show={show}>
           {isLoading && <Spinner />}

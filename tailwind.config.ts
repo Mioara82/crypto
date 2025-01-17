@@ -12,17 +12,17 @@ const config: Config = {
         green: "#00B1A7",
         red: "#FE2264",
         linearGradient: "#6161D680",
-        portfolioButton:"#6161D6",
+        portfolioButton: "#6161D6",
         purple: "#849DFF",
         orange: "#F7931A",
         light: "FFFFFF",
         "chart-graph-100": "rgba(231, 114, 255, 0.6)",
         "chart-graph-200": "rgba(116, 116, 250, 0.6)",
-        brigthBlue:"#02a4ff",
-        cyan:"#4da1ff",
-        azure:"#4dffdf",
-        indigo:"#3A3978",
-        turqoise:"#01F1E3"
+        brigthBlue: "#02a4ff",
+        cyan: "#4da1ff",
+        azure: "#4dffdf",
+        indigo: "#3A3978",
+        turqoise: "#01F1E3",
       },
       light: {
         primary: "#FFFFFF",
@@ -34,8 +34,7 @@ const config: Config = {
         secondaryTextColor: "#424286",
         lightTextColor: "#D1D1D1",
         darkText: "#191932",
-        lilac:"#EBEBFD",
-        
+        lilac: "#EBEBFD",
       },
       dark: {
         primaryBg: "#13121A",
@@ -48,7 +47,7 @@ const config: Config = {
         hover: "#232336",
         chartTextColor: "#D1D1D1",
         chartDateColor: "#B9B9BA",
-        buttonBorder:"#7878FA",
+        buttonBorder: "#7878FA",
         "191": "#191925",
         "chart-100": "#B9B9BA",
         "chart-200": "#C27721",
@@ -61,11 +60,10 @@ const config: Config = {
         "chart-900": "#F06142",
         "chart-910": "#5082CF",
       },
-     
-        skeleton300:"#495057",
-        skeleton200:"#CEC3C1",
-        skeleton100:"#adb5bd",
-      
+
+      skeleton300: "#495057",
+      skeleton200: "#CEC3C1",
+      skeleton100: "#adb5bd",
     },
     extend: {
       fontFamily: {
@@ -77,27 +75,27 @@ const config: Config = {
       },
       maxWidth: {
         custom: "90rem",
-        "324":"1296px"
+        "324": "1296px",
       },
       padding: {
         "3.5": "18px",
         "4.5": "22px",
       },
-      width:{
-        "63":"253px",
-        "221":"884px"
+      width: {
+        "63": "253px",
+        "221": "884px",
       },
-      height:{
-        "15":"60px",
-        "150":"600px"
+      height: {
+        "15": "60px",
+        "150": "600px",
       },
-      border:{
-        width:{
-          "1":"1px"
-        }
+      border: {
+        width: {
+          "1": "1px",
+        },
       },
       boxShadow: {
-        "custom": "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+        custom: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       },
       keyframes: {
         wave: {
@@ -115,12 +113,12 @@ const config: Config = {
       },
       animation: {
         wave: "wave 5s linear infinite",
-        fadeInRight:"fadeInRight 1s ease-in-out",
-        fadeOutLeft:"fadeOutLeft 1s ease-in-out"
+        fadeInRight: "fadeInRight 1s ease-in-out",
+        fadeOutLeft: "fadeOutLeft 1s ease-in-out",
       },
       backgroundImage: {
-        portfolioGradientLight:"linear-gradient(to right, #F2F3E2,#B9E0EE)",
-        portfolioGradientDark:"linear-gradient(to right, #43434B,#110744)",
+        portfolioGradientLight: "linear-gradient(to right, #F2F3E2,#B9E0EE)",
+        portfolioGradientDark: "linear-gradient(to right, #43434B,#110744)",
         customGradient:
           "linear-gradient(180deg, rgba(116, 116, 250, 0.6) 0%, rgba(116, 116, 250, 0.01) 100%)",
         customGradientP3:
@@ -141,6 +139,13 @@ const config: Config = {
             lineHeight: "28px",
           },
         ],
+      },
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
       },
     },
   },
