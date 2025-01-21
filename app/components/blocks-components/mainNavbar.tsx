@@ -14,7 +14,7 @@ const Navbar = () => {
   };
   return (
     <div className="z-999">
-      <div className="w-full px-6 max-w-1296 relative mx-auto flex gap-2 justify-between md:gap-6 md:px-[72px] py-4">
+      <div className="w-full px-6 max-w-1296 relative mx-auto flex gap-2 justify-between md:gap-6 md:px-[72px] md:py-4">
         <Logo />
         <div className="flex w-24 gap-2 md:w-[265px] md:gap-6">
           <HomeButton isActive={isActive===0} handleClick={()=>handleActiveButton(0)} />

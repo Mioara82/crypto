@@ -17,7 +17,7 @@ const PortfolioButton = ({
         <div>
         <Link
           href="/Portfolio"
-          className="text-sm md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
+          className="text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
         >
           Portfolio
         </Link>
@@ -27,7 +27,7 @@ const PortfolioButton = ({
         <div>
           <Link
             href="/Portfolio"
-            className={`${isActive ? " text-light-darkBg dark:text-dark-buttonBorder" : ""} md:block hover:cursor-fancy m-0 p-0 text-base leading-[20.42px]`}
+            className={`${isActive ? " text-light-darkBg dark:text-dark-buttonBorder" : ""} text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]`}
           >
             Portfolio
           </Link>

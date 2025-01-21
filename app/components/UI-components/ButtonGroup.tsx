@@ -9,7 +9,7 @@ const ButtonGroup = React.memo(function ButtonGroup() {
     setIsActive((prev) => (prev === value ? null : value));
   };
   return (
-    <div className="flex justify-start w-[506px] h-[53px] rounded-md p-1">
+    <div className="flex justify-center gap-1 md:justify-start md:w-[506px] h-[53px] rounded-md p-1">
       <Link href="/" passHref>
         <Button
           text="Coins"

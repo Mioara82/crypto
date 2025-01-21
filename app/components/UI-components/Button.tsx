@@ -36,9 +36,9 @@ const Button: React.FC<ButtonProps> = ({
       variants={variants}
       className={`${
         feature === "large"
-          ? "ml-auto w-60 rounded-md border border-b-dark-buttonBorder/5 border-l-dark-buttonBorder border-r-dark-buttonBorder border-t-dark-buttonBorder bg-light-lightBg/80 text-light-darkText shadow-dark-buttonBorder hover:bg-common-purple dark:bg-common-portfolioButton/50 dark:text-dark-text hover:dark:bg-common-purple dark:hover:text-dark-darkBg"
+          ? "ml-auto w-28 rounded-md border border-b-dark-buttonBorder/5 border-l-dark-buttonBorder border-r-dark-buttonBorder border-t-dark-buttonBorder bg-light-lightBg/80 text-sm text-light-darkText shadow-dark-buttonBorder hover:bg-common-purple dark:bg-common-portfolioButton/50 dark:text-dark-text hover:dark:bg-common-purple dark:hover:text-dark-darkBg md:w-60 md:text-base"
           : "w-80"
-      } border-1 z-0 h-11 rounded-md border-solid px-4 py-3 text-center drop-shadow-md ${
+      } border-1 z-0 h-11 rounded-md border-solid p-1 text-center drop-shadow-md md:px-4 md:py-3 ${
         disabled
           ? "cursor-not-allowed border-none bg-light-primary text-light-secondaryTextColor hover:bg-light-primary dark:bg-skeleton200 dark:text-dark-text hover:dark:bg-skeleton200"
           : `shadow-indigo-500/50 cursor-pointer ${

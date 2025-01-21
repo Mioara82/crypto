@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Logo = () => {
   return (
-    <div className="flex w-[171px] items-center gap-2">
+    <div className="hidden md:flex md:w-[171px] md:items-center md:gap-2">
       <Image
         src="/logo.svg"
         alt="a symbol of a chain link"

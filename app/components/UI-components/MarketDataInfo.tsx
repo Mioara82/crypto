@@ -26,12 +26,12 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
   return (
     <>
       <nav
-        className="w-full mx-auto flex md:justify-around md:m-0 md:flex-nowrap
+        className="w-full mx-auto flex gap-2 justify-around m-0 flex-nowrap
          bg-light-darkBg dark:bg-[#191925]
         py-4 rounded-t-md"
       >
-        <div className="flex gap-8 text-xs justify-between">
-          <div className="inline-flex justify-items-center gap-2">
+        <div className="flex gap-8 text-xs justify-between items-center">
+          <div className="inline-flex items-center gap-2">
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
               <Image
                 src="/market/coin.svg"
@@ -39,7 +39,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 width={14}
                 height={14}
               />
-              Coins
+              <span>Coins</span>
             </div>
             <div className="text-light-primary">{data.coinData}</div>
           </div>
@@ -52,12 +52,12 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 width={14}
                 height={14}
               />
-              Exchange
+               <span>Exchange</span>
             </div>
             <div className="text-light-primary">{data.exchange}</div>
           </div>
 
-          <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
+          <div className="hidden md:inline-flex items-center md:gap-1 text-light-lightTextColor">
             <Image
               src="/market/arrow.svg"
               alt="a coloured arrow"

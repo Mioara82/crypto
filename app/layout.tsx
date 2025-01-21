@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
@@ -7,17 +8,18 @@ import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
+export const viewport:Viewport = {
+  colorScheme:"dark",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: "Crypto App",
   description:
     "cryptocurrency exchange to securely buy, sell, trade, store, and stake crypto",
-  viewport: {
-    width: "device-width",
-    height: "device-height",
-    initialScale: 1,
-    maximumScale: 1,
-    minimumScale: 1,
-  },
 };
 
 export default function RootLayout({

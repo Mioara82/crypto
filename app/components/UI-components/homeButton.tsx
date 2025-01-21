@@ -17,7 +17,7 @@ const HomeButton = ({
         <div>
         <Link
           href="/"
-          className="text-sm md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
+          className="text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
         >
           Home
         </Link>
