@@ -30,7 +30,7 @@ const CurrencySelector = () => {
 
   const handleCurrencyChange = (currency: Currency) => {
     dispatch(setCurrency(currency));
-    closeDropdown();
+    handleDropdownDisplay();
   };
 
   useClickOutside(ref, closeDropdown);
@@ -41,7 +41,8 @@ const CurrencySelector = () => {
 
   return (
     <div
-      className="flex-col relative w-[108px] gap-2 z-40"
+    ref={ref}
+      className="w-20 flex-col relative md:w-[108px] gap-2 z-40"
       onClick={handleDropdownDisplay}
     >
       {currencyList && (

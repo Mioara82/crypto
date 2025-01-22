@@ -1,9 +1,9 @@
 import React from "react";
 
-const HomeIcon = () => {
+const HomeIcon = ({isActive}:{isActive:boolean}) => {
   return (
     <svg
-      className="fill-light-darkBg dark:fill-dark-text"
+      className={`w-4 h-4 md:w-6 md:h-6 ${isActive ? "dark:fill-dark-buttonBorder fill-light-darkBg" : "fill-light-darkBg dark:fill-dark-text"}`}
       width="24"
       height="24"
       viewBox="0 0 24 24"

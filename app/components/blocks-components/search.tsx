@@ -3,6 +3,7 @@ import { useGetSearchDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useDebounce } from "@/lib/hooks/useDebounce";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { RootState } from "@/lib/store";
 import FilteredCoinList from "../UI-components/FilteredCoinList";
 import Input from "../UI-components/input";
@@ -13,6 +14,7 @@ import { CoinSearchProps } from "@/lib/types/apiInterfaces";
 
 const Search = () => {
   const ref = useRef(null);
+  const isMobile = useIsMobile();
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName,
   );
@@ -62,16 +64,16 @@ const Search = () => {
     >
       <div className="z-9999 relative flex items-center justify-center gap-3 font-[Inter] font-normal">
         <Input
-          value={searchValue}
+          value={`${isMobile ? "" : searchValue}`}
           onInputChange={handleChange}
           onInputBlur={handleOnBlur}
           show={show}
           name="searchInput"
           type="text"
-          placeholder="Search..."
-          className={`border-1 z-50 w-[356px] rounded-md bg-light-lightBg py-2 pl-9 pr-4 text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor ${show ? "rounded-b-none" : "rounded-xl"}`}
+          placeholder={`${isMobile ? "" : "Search coins"}`}
+          className={`border-1 relative z-50 w-8 rounded-md bg-light-lightBg py-1 pl-4 text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor md:w-60 md:py-2 md:pl-9 md:pr-4 lg:w-[356px] ${show ? "rounded-b-none" : "rounded-xl"}`}
         />
-        <Dropdown ref={ref} show={show}>
+        <Dropdown ref={ref} show={show} feature="search">
           {isLoading && <Spinner />}
           {isSuccess ? (
             show && (

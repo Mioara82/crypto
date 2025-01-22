@@ -26,12 +26,12 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
   return (
     <>
       <nav
-        className="flex justify-around m-0 flex-nowrap
+        className="w-full mx-auto flex gap-2 justify-around m-0 flex-nowrap
          bg-light-darkBg dark:bg-[#191925]
-        py-4 rounded-t-md max-w-1440"
+        py-4 rounded-t-md"
       >
-        <div className="flex gap-8 text-xs ">
-          <div className="inline-flex justify-items-center gap-2">
+        <div className="flex gap-8 text-xs justify-between items-center">
+          <div className="inline-flex items-center gap-2">
             <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
               <Image
                 src="/market/coin.svg"
@@ -39,7 +39,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 width={14}
                 height={14}
               />
-              Coins
+              <span>Coins</span>
             </div>
             <div className="text-light-primary">{data.coinData}</div>
           </div>
@@ -52,12 +52,12 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 width={14}
                 height={14}
               />
-              Exchange
+               <span>Exchange</span>
             </div>
             <div className="text-light-primary">{data.exchange}</div>
           </div>
 
-          <div className="inline-flex justify-items-center gap-1 text-light-lightTextColor">
+          <div className="hidden md:inline-flex items-center md:gap-1 text-light-lightTextColor">
             <Image
               src="/market/arrow.svg"
               alt="a coloured arrow"
@@ -68,7 +68,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               {formatMarketCap(data.totalMarketCap[currency])}
             </div>
           </div>
-          <div className="inline-flex justify-items-center items-center gap-2">
+          <div className="hidden md:inline-flex justify-items-center items-center gap-2">
             <div className="text-light-primary">
               {currencySymbol.startsWith("https://") ? (
                 <Image
@@ -87,8 +87,8 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             </div>
             <ProgressBar value={5} color="#ffffff" colorTwo="#ffffff60" data="marketData"/>
           </div>
-
-          <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
+              <div>
+          <div className="hidden lg:inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
             <Image
               src="/currency/bitcoin.svg"
               alt="bitcoin symbol"
@@ -98,8 +98,8 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
             <ProgressBar value={data.btcMarketCapPercentage} color="#F7931A" data="marketData" colorTwo="#ffffff60" />
           </div>
-
-          <div className="inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
+          </div>
+          <div className="hidden lg:inline-flex justify-items-center items-center gap-[5px] text-light-lightTextColor">
             <Image
               src="/currency/ethereum.svg"
               alt="ethereum symbol"

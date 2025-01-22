@@ -19,7 +19,7 @@ const ThemeSwitch = () => {
   return (
     <div>
       <button
-        className="border-1 rounded-md p-3 gap-1 border-light-primary/5 bg-light-lightBg dark:bg-dark-191"
+        className="p-2 border-1 rounded-md md:p-3 gap-1 border-light-primary/5 bg-light-lightBg dark:bg-dark-191"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "light" ? <FiMoon /> : <FiSun />}
