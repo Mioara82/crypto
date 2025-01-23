@@ -68,45 +68,63 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
 
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: list.length > 5,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow: Math.min(list.length, 6),
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
       {
+        breakpoint: 1300,
+        settings: {
+          slidesToShow: Math.min(list.length,5),
+          slidesToScroll: 2,
+          infinite: list.length > 5,
+          dots: true,
+        },
+      },
+      {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.min(list.length,4),
           slidesToScroll: 3,
-          infinite: true,
+          infinite: list.length > 4,
           dots: true,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToShow: Math.min(list.length,2),
+          slidesToScroll: 1,
+          initialSlide: 1,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: Math.min(list.length,2),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 320,
+        settings: {
+          slidesToShow: Math.min(list.length,1),
           slidesToScroll: 1,
         },
       },
     ],
   };
 
+  const hasSingleSlide = list.length === 1;
+
   return (
-    <div className="w-full relative z-99">
+    <div className={`w-full relative z-99 ${hasSingleSlide ? "single-slide-wrapper" : ""}`}>
       <Suspense fallback={<CarouselSkeleton />}>
         <div className="z-0 relative">
-        <Slider {...settings}>
+        <Slider className={`${hasSingleSlide ? "single-slide" : ""}`} {...settings}>
           {list.map((coin: CoinProps) => {
             return (
               <CoinDetail

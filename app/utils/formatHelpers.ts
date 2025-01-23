@@ -18,6 +18,10 @@ export function roundNumber(number: number) {
   return Math.round(number).toFixed(2);
 }
 
+export function roundTo4Decimals(number: number) {
+  return Math.round(number * 10000) / 10000;
+}
+
 export function formatString(str: string) {
   if (str.length > 8) {
     return str.slice(0, 8).concat("..");
