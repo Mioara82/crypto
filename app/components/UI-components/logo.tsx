@@ -9,7 +9,7 @@ const Logo = () => {
         width={36}
         height={21}
       />
-      <div className="hidden font-[Inter] md:text-[21px] md:font-bold md:leading-[1.6rem] lg:block">
+      <div className="hidden font-[Inter] xl:block xl:text-base xl:font-bold xl:leading-[1.6rem]">
         Logoipsm
       </div>
     </div>

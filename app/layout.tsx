@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk} from "next/font/google";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";

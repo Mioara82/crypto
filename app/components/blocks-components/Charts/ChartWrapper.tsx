@@ -5,5 +5,5 @@ interface ChartWrapperProps {
 }
 
 export const ChartWrapper: React.FC<ChartWrapperProps> = ({ children }) => (
-  <div className="w-full p-6 rounded-xl relative">{children}</div>
+  <div className="w-full p-2 lg:p-6 rounded-xl relative">{children}</div>
 );

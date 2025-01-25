@@ -21,9 +21,9 @@ export const queriesAPI = [
 
 const CoinsTable = () => {
   const currency = useAppSelector((state: RootState) =>
-    state.currency.currencyName.toLowerCase()
+    state.currency.currencyName.toLowerCase(),
   );
-  
+
   const [sortQuery, setSortQuery] = useState(queriesAPI[1]);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -53,38 +53,38 @@ const CoinsTable = () => {
   useEffect(() => {
     if (isSuccess && data) {
       setCoins((prevCoins) =>
-        prevCoins && currentPage > 1 ? [...prevCoins, ...data] : data
+        prevCoins && currentPage > 1 ? [...prevCoins, ...data] : data,
       );
     }
   }, [data, isSuccess]);
 
-  const handleSortChange = (value:string) => {
+  const handleSortChange = (value: string) => {
     setSortQuery(value);
     setCoins(null);
     setCurrentPage(1);
   };
 
   return (
-    <div className="relative overscroll-none w-full">
-      <div className="w-full flex justify-center items-center">
-        <div className="flex justify-center items-center gap-5 mr-auto">
+    <div className="relative w-full overscroll-none">
+      <div className="flex w-full items-center justify-center">
+        <div className="mr-auto flex items-center justify-center gap-5">
           <CirclesIcon />
           <TableTitle value={sortQuery} handleSortChange={handleSortChange} />
         </div>
       </div>
       {isSuccess && coins && coins?.length > 0 ? (
         <>
-        <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
-        <InfiniteCoinScroll
-          fetchMoreData={fetchMoreData}
-          isSuccess={isSuccess}
-          isFetching={isFetching}
-          isLoading={isLoading}
-          isError={isError}
-          coins={coins}
-        />
+          <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
+          <InfiniteCoinScroll
+            fetchMoreData={fetchMoreData}
+            isSuccess={isSuccess}
+            isFetching={isFetching}
+            isLoading={isLoading}
+            isError={isError}
+            coins={coins}
+          />
         </>
-      ):(
+      ) : (
         <>
           <NotificationCard isSuccess={false} text="Failed loading data" />
           <TableSkeleton />

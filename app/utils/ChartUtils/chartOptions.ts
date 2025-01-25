@@ -68,6 +68,8 @@ export const createChartOptions = (
 ): ChartOptions<"line"> => {
   return {
     responsive: true,
+    maintainAspectRatio:false,
+    aspectRatio:3/4,
     layout: {
       padding: 20,
     },
@@ -154,6 +156,8 @@ export const createBarChartOptions = (
   chartType: "linear" | "logarithmic",
 ): ChartOptions<"bar"> => ({
   responsive: true,
+  maintainAspectRatio:false,
+  aspectRatio:3/4,
   layout: {
     padding: 20,
   },
@@ -252,6 +256,7 @@ export const createConverterChartOptions = (
   return {
     responsive: true,
     maintainAspectRatio: false,
+    aspectRatio:3/4,
     layout: {
       padding: 20,
     },
