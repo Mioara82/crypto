@@ -1,33 +1,31 @@
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import HomeIcon from "@/app/icons/homeIcon";
 
-const HomeButton = ({
-  isActive,
-  handleClick,
-}: {
-  isActive: boolean;
-  handleClick: () => void;
-}) => {
+const HomeButton = () => {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
+  const isActive = pathname === "/";
   return (
-    <div className="flex w-[110px] items-center gap-2" onClick={handleClick}>
+    <div className="flex w-[110px] items-center gap-2">
       <HomeIcon isActive={isActive} />
-      {isMobile && !isActive && (
-        <div>
-        <Link
-          href="/"
-          className="text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
-        >
-          Home
-        </Link>
-      </div>
-      )}
-      {!isMobile && (
+      {isMobile ? (
+        !isActive ? (
+          <div>
+            <Link
+              href="/"
+              className="hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] md:block md:text-base"
+            >
+              Home
+            </Link>
+          </div>
+        ) : null
+      ) : (
         <div>
           <Link
             href="/"
-            className={`${isActive ? " text-light-darkBg dark:text-dark-buttonBorder" : ""} md:block hover:cursor-fancy m-0 p-0 text-base leading-[20.42px]`}
+            className={`${isActive ? "text-light-darkBg dark:text-dark-buttonBorder" : ""} hover:cursor-fancy m-0 p-0 text-base leading-[20.42px] md:block`}
           >
             Home
           </Link>
