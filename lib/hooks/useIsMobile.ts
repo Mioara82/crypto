@@ -1,37 +1,21 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-const useWindowSize = (): number | null => {
-  const [windowWidth, setWindowWidth] = useState<number | null>(null);
-  const timerRef = useRef(0);
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  const debounce = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => handleResize(), 500);
-    }
-  };
+const getIsMobile = () => window.innerWidth <= 750;
+
+export const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(getIsMobile());
 
   useEffect(() => {
-    window.addEventListener("resize", () => debounce);
-    handleResize();
+    const onResize = () => {
+      setIsMobile(getIsMobile());
+    };
+
+    window.addEventListener("resize", onResize);
+
     return () => {
-      window.removeEventListener("resize", () => debounce);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
-  return windowWidth;
-};
 
-export const useIsMobile = (breakpoint = 768) => {
-  const width = useWindowSize();
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  //used useLayoutEffect instead of useEffect as this hook allows for DOM measurements and
-  //runs synchronously, allowing DOM to be updated before the browser paints
-  useLayoutEffect(() => {
-    if (width !== null) {
-      setIsMobile(width <= breakpoint);
-    }
-  }, [width, breakpoint]);
   return isMobile;
 };
