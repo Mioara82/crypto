@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,32 +14,6 @@
     rgba(120, 120, 255, 0) 100%
   );
   border-image-slice: 1;
-}
-
-.single-slide-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.single-slide .slick-list {
-  display: flex !important;
-  justify-content: center !important;
-  width: fit-content !important;
-  max-width: 100% !important;
-  padding: 0 !important;
-}
-
-.single-slide .slick-track {
-  display: flex !important;
-  justify-content: center !important;
-  margin: 0 !important;
-}
-
-.single-slide .slick-slide {
-  display: flex !important;
-  justify-content: center !important;
 }
 
 @supports (color: color(display-p3 0.471 0.471 0.98)) {
