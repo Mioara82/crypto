@@ -53,7 +53,7 @@ interface CoinCarouselProps {
 
 const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
   const selectedCoins = useAppSelector(
-    (state: RootState) => state.chartCoins.chartCoins
+    (state: RootState) => state.chartCoins.chartCoins,
   );
 
   const dispatch = useAppDispatch();
@@ -61,7 +61,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
     name: string,
     id: string,
     symbol: string,
-    current_price: number
+    current_price: number,
   ) => {
     dispatch(handleChartCoin({ name, id, symbol, current_price }));
   };

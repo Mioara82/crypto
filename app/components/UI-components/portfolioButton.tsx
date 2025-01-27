@@ -1,39 +1,36 @@
 import PortfolioIcon from "@/app/icons/portfolioIcon";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
-const PortfolioButton = ({
-  isActive,
-  handleClick,
-}: {
-  isActive: boolean;
-  handleClick: () => void;
-}) => {
+const PortfolioButton = () => {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
+  const isActive = pathname === "/Portfolio";
   return (
-    <div className="flex items-center gap-2" onClick={handleClick}>
+    <div className="flex items-center gap-2">
       <PortfolioIcon isActive={isActive} />
-      {isMobile && !isActive && (
-        <div>
-        <Link
-          href="/Portfolio"
-          className="text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]"
-        >
-          Portfolio
-        </Link>
-      </div>
-      )}
-      {!isMobile && (
+      {isMobile ? (
+        !isActive ? (
+          <div>
+            <Link
+              href="/Portfolio"
+              className="hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] md:block md:text-base"
+            >
+              Portfolio
+            </Link>
+          </div>
+        ) : null
+      ) : (
         <div>
           <Link
             href="/Portfolio"
-            className={`${isActive ? " text-light-darkBg dark:text-dark-buttonBorder" : ""} text-xs md:block hover:cursor-fancy m-0 p-0 md:text-base leading-[20.42px]`}
+            className={`${isActive ? "text-light-darkBg dark:text-dark-buttonBorder" : ""} hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] md:block md:text-base`}
           >
             Portfolio
           </Link>
         </div>
       )}
-     
     </div>
   );
 };

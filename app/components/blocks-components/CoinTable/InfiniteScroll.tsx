@@ -60,7 +60,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
     };
   return (
     <InfiniteScroll
-      dataLength={sortedData.length || 0}
+      dataLength={10000}
       next={handleFetchMoreData}
       hasMore={true}
       loader={<Spinner />}

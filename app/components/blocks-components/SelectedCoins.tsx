@@ -17,7 +17,7 @@ const CoinUI = ({
 }) => {
   return (
     <>
-      <div className="flex items-center justify-between gap-2 rounded-md bg-common-linearGradient px-4 py-2 dark:bg-dark-darkBg">
+      <div className="flex text-sm md:text-base items-center justify-between gap-2 rounded-md bg-common-linearGradient px-4 py-2 dark:bg-dark-darkBg">
         <h4>{capitaliseString(name)}</h4>
         <div
           className="dark:text-common-brigthBlue text-common-indigo hover:border-[1px] hover:border-dotted hover:border-light-tableTextColor hover:dark:border-dark-chartDateColor cursor-pointer rounded-full p-1"
@@ -42,7 +42,7 @@ const SelectedCoins = () => {
 
   return (
     <div className="ml-4">
-      <h4 className="mb-4">Your selected coins</h4>
+      <h4 className="mb-4 text-sm md:text-base">Your selected coins</h4>
       <div className="flex items-center justify-start gap-4">
         {(coinOne as ChartCoinData) && (
           <CoinUI name={coinOneName} handleDeleteCoin={handleDeleteCoin} />

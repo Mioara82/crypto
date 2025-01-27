@@ -18,7 +18,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: url,
-    mode: "cors",
+    mode: "no-cors",
     credentials: "same-origin",
     prepareHeaders(headers) {
       headers.set("x-cg-demo-api-key", apiKey);

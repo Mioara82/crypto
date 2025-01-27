@@ -32,12 +32,12 @@ const CoinDetails = ({
   isSuccess: boolean;
 }) => {
   const currencySymbol = useAppSelector(
-    (state: RootState) => state.currency.symbol
+    (state: RootState) => state.currency.symbol,
   );
   return (
     <>
-      <tr key={coin.id} className="h-[77px] dark:bg-[#191925] bg-light-primary">
-        <td className="p-4 ">{index + 1}</td>
+      <tr key={coin.id} className="h-[77px] bg-light-primary dark:bg-[#191925]">
+        <td className="p-4">{index + 1}</td>
         <td>
           {isError && (
             <NotificationCard isSuccess={false} text="Error fetching data" />
@@ -47,10 +47,18 @@ const CoinDetails = ({
           ) : (
             <div className="flex gap-4">
               <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
-              <Image src={coin.image} width={24} height={24} alt="Coin icon" />
-              <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
-                {coin.name}({coin.symbol}){isFetching ? "..." : ""}
-              </Link>
+              <Image
+                className="max-w-6"
+                src={coin.image}
+                width={24}
+                height={24}
+                alt="Coin icon"
+              />
+              <div className="max-w-[30px]">
+                <Link href={`/CoinDetails/${coin.id}`} className="text-[17px]">
+                  {coin.name}({coin.symbol}){isFetching ? "..." : ""}
+                </Link>
+              </div>
             </div>
           )}
         </td>
@@ -129,14 +137,14 @@ const CoinDetails = ({
                 {currencySymbol}
                 {formatMarketCap(coin.circulatingSupply)}
               </span>
-              <span className="text-xs ml-auto">
+              <span className="ml-auto text-xs">
                 {currencySymbol}
                 {formatMarketCap(coin.totalSupply)}
               </span>
             </div>
             <ProgressBar
               value={Math.round(
-                (coin.circulatingSupply / coin.totalSupply) * 100
+                (coin.circulatingSupply / coin.totalSupply) * 100,
               )}
               color={coinTableColors[index % 10]}
               colorTwo={hexToRgba(coinTableColors[index % 10], 0.4)}

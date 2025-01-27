@@ -29,7 +29,7 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
   const isMobile = useIsMobile();
   return (
     <div
-      className={`flex w-48 xs:w-40 cursor-pointer flex-wrap justify-center rounded-md py-2 lg:w-52 2xl:w-60 ${
+      className={`flex w-60 xs:w-40 cursor-pointer flex-wrap justify-center rounded-md py-2 lg:w-52 2xl:w-60 ${
         isActive
           ? "bg-common-linearGradient"
           : "bg-light-primary dark:bg-dark-191"

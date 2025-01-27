@@ -88,7 +88,7 @@ const LineChart = ({
   const [displayPriceTwo, setDisplayPriceTwo] = useState<number>(0);
 
   useEffect(() => {
-    if(!coinOne) return;
+    if (!coinOne) return;
     setDisplayPriceOne(coinOne.currentPrice);
   }, [coinOne]);
 
@@ -183,28 +183,40 @@ const LineChart = ({
           )}
           <div className="flex h-full flex-col justify-start bg-light-primary p-6 dark:bg-dark-darkBg">
             <div className="h-14">
-              <p className="text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+              <p className="text-sm md:text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
                 {displayDate || today}
               </p>
             </div>
-            <div>
+            <div className="h-40 lg:h-auto">
               <Line options={options} data={chartData} />
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className="h-4 w-4 bg-common-linearGradient"></div>
-                <div>{coinOneName}</div>
-                <div>
-                  {currencySymbol}{" "}
-                  {(displayPriceOne || coinOne.currentPrice).toFixed(2)}
+              <div className="flex flex-col items-center md:flex-row md:gap-2">
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4"></div>
+                  <div className="text-xs md:text-base">{coinOneName}</div>
+                </div>
+                <div className="hidden lg:flex">
+                  <span className="text-xs md:text-base">
+                    {currencySymbol}{" "}
+                  </span>
+                  <span className="text-xs md:text-base">
+                    {(displayPriceOne || coinOne.currentPrice).toFixed(2)}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="h-4 w-4 bg-common-chart-graph-100"></div>
-                <div>{coinTwoName}</div>
-                <div>
-                  {currencySymbol}{" "}
-                  {(displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
+              <div className="flex flex-col md:flex-row items-center md:gap-2">
+              <div className="flex items-center gap-1">
+                <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"></div>
+                <div className="text-xs md:text-base">{coinTwoName}</div>
+                </div>
+                <div className="hidden lg:flex">
+                  <span className="text-xs md:text-base">
+                    {currencySymbol}{" "}
+                  </span>
+                  <span className="text-xs md:text-base">
+                    {(displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>

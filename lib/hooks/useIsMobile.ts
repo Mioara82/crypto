@@ -1,25 +1,32 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef,useCallback } from "react";
 
 const useWindowSize = (): number | null => {
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
-  const timerRef = useRef(0);
+  const timerRef = useRef<number>(0);
+
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
-  const debounce = () => {
+
+  const debounce = useCallback(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => handleResize(), 500);
     }
-  };
+    timerRef.current = window.setTimeout(() => handleResize(), 500);
+  }, [handleResize]);
 
   useEffect(() => {
-    window.addEventListener("resize", () => debounce);
+    window.addEventListener("resize", debounce);
     handleResize();
+    
     return () => {
-      window.removeEventListener("resize", () => debounce);
+      window.removeEventListener("resize", debounce);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
     };
-  }, []);
+  }, [debounce]);
+
   return windowWidth;
 };
 

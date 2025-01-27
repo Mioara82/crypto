@@ -22,6 +22,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
                 alt="check icon"
                 width={20}
                 height={20}
+                style={{ width: "auto", height: "auto" }}
               />
               <p className="m-auto text-base">{text} </p>
             </div>
@@ -36,6 +37,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
                 alt="error icon red"
                 width={20}
                 height={20}
+                style={{ width: "auto", height: "auto" }}
               />
               <p className="m-auto text-base">{text}</p>
             </div>
