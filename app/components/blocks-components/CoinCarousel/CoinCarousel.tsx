@@ -78,7 +78,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
       {
         breakpoint: 1300,
         settings: {
-          slidesToShow: Math.min(list.length, 5),
+          slidesToShow: Math.min(list.length,5),
           slidesToScroll: 2,
           infinite: list.length > 5,
           dots: true,
@@ -87,7 +87,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: Math.min(list.length, 4),
+          slidesToShow: Math.min(list.length,4),
           slidesToScroll: 3,
           infinite: list.length > 4,
           dots: true,
@@ -96,7 +96,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: Math.min(list.length, 2),
+          slidesToShow: Math.min(list.length,2),
           slidesToScroll: 1,
           initialSlide: 1,
         },
@@ -104,43 +104,46 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: Math.min(list.length, 2),
+          slidesToShow: Math.min(list.length,2),
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 375,
+        breakpoint: 320,
         settings: {
-          slidesToShow: Math.min(list.length, 1),
+          slidesToShow: Math.min(list.length,1),
           slidesToScroll: 1,
         },
       },
     ],
   };
+
+  const hasSingleSlide = list.length === 1;
+
   return (
-    <div className="z-99 relative flex w-full justify-center">
+    <div className={`w-full relative z-99 ${hasSingleSlide ? "single-slide-wrapper" : ""}`}>
       <Suspense fallback={<CarouselSkeleton />}>
-        <div className="relative z-0">
-          <Slider {...settings}>
-            {list.map((coin: CoinProps) => {
-              return (
-                <CoinDetail
-                  key={coin.id}
-                  handleSelectedCoin={() =>
-                    handleSelected(
-                      coin.name,
-                      coin.id,
-                      coin.symbol,
-                      coin.current_price,
-                    )
-                  }
-                  coin={coin}
-                  currency={currency}
-                  isActive={!!selectedCoins[coin.name.toLowerCase()]}
-                />
-              );
-            })}
-          </Slider>
+        <div className="z-0 relative">
+        <Slider className={`${hasSingleSlide ? "single-slide" : ""}`} {...settings}>
+          {list.map((coin: CoinProps) => {
+            return (
+              <CoinDetail
+                key={coin.id}
+                handleSelectedCoin={() =>
+                  handleSelected(
+                    coin.name,
+                    coin.id,
+                    coin.symbol,
+                    coin.current_price
+                  )
+                }
+                coin={coin}
+                currency={currency}
+                isActive={!!selectedCoins[coin.name.toLowerCase()]}
+              />
+            );
+          })}
+        </Slider>
         </div>
       </Suspense>
     </div>

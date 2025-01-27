@@ -16,6 +16,32 @@
   border-image-slice: 1;
 }
 
+.single-slide-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.single-slide .slick-list {
+  display: flex !important;
+  justify-content: center !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+.single-slide .slick-track {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.single-slide .slick-slide {
+  display: flex !important;
+  justify-content: center !important;
+}
+
 @supports (color: color(display-p3 0.471 0.471 0.98)) {
   .custom-gradient-border {
     border-image-source: linear-gradient(
