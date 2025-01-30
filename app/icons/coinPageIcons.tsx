@@ -9,7 +9,7 @@ export function ArrowLeft() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="h-[18px] w-[18px]"
+      className="h-4 w-4 hover:fill-common-red"
     >
       <path
         strokeLinecap="round"
@@ -41,7 +41,7 @@ export function StackIcon() {
 
 export function PlusIcon() {
   return (
-    <div className="shadow-custom rounded-full bg-common-portfolioButton text-light-primary">
+    <div className="rounded-full bg-common-portfolioButton text-light-primary shadow-custom">
       <CiCirclePlus size={22} />
     </div>
   );

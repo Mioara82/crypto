@@ -38,11 +38,11 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <div className="w-full lg:w-maxWidth-custom m-0 mx-[72px] mb-2 flex-col bg-light-primaryBg dark:bg-dark-primaryBg lg:flex">
+    <div className="m-0 mb-2 w-full flex-col overscroll-none bg-light-primaryBg px-12 dark:bg-dark-primaryBg lg:flex">
       {isSuccess && data ? (
         <>
           <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
-          <div className="flex flex-col gap-[40px]">
+          <div className="mt-4 flex flex-col gap-10">
             <div>
               <div className="mb-4 flex flex-wrap items-center gap-4">
                 <Link href="/">
@@ -52,8 +52,8 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   Portfolio / Your {data.name} summary
                 </p>
               </div>
-              <div className="w-full justify-center flex flex-col gap-8 lg:flex-row lg:justify-start">
-                <div className="w-full lg:justify-left flex lg:w-2/5 flex-col gap-8 px-8 py-10 dark:bg-dark-darkBg">
+              <div className="flex w-full flex-col justify-center gap-8 lg:flex-row lg:justify-start">
+                <div className="lg:justify-left flex w-full flex-col gap-8 px-8 py-10 dark:bg-dark-darkBg lg:w-2/5">
                   <div className="flex gap-6 pb-4">
                     <Image
                       src={data.image.large}
@@ -148,11 +148,15 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   </div>
                 </div>
                 <div className="flex w-3/5 flex-col gap-6">
-                  <div className="hidden lg:block lg:text-sm">{data.description.en}</div>
-                  <div className="w-full flex flex-col lg:flex-row lg:flex-wrap gap-2">
+                  <div className="hidden lg:block lg:text-sm">
+                    {data.description.en}
+                  </div>
+                  <div className="flex w-full flex-col gap-2 lg:flex-row lg:flex-wrap">
                     <div className="flex items-center justify-center gap-4 rounded-md px-4 py-6 dark:bg-dark-darkBg">
                       <a href={data.links.blockchain_site_2}>
-                        <p className="text-xs sm:text-sm">{formatLink(data.links.blockchain_site_2)}</p>
+                        <p className="text-xs sm:text-sm">
+                          {formatLink(data.links.blockchain_site_2)}
+                        </p>
                       </a>
                       <StackIcon />
                     </div>

@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="w-maxWidth-custom flex h-full flex-col gap-10 overscroll-none bg-light-primaryBg dark:bg-dark-primaryBg xs:mx-8 md:mx-[72px]">
+      <main className="flex w-full max-w-screen-2xl flex-col justify-center gap-10 overflow-x-hidden overscroll-none bg-light-primaryBg dark:bg-dark-primaryBg xs:mx-8 md:mx-[72px]">
         <ButtonGroup />
         <p className="ml-3 text-light-secondaryTextColor dark:text-dark-chartTextColor">
           Select the currency to view statistics
@@ -48,7 +48,9 @@ export default function Home() {
         </Suspense>
         <SelectedCoins />
         <ChartsContainer currency={currency} days={selectedFilter.period} />
-        <ChartFilterTabs />
+        <div>
+          <ChartFilterTabs />
+        </div>
         <Suspense fallback={<TableSkeleton />}>
           <CoinsTable />
         </Suspense>

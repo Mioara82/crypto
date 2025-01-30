@@ -1,5 +1,6 @@
 "use-client";
 import React, { useState, useEffect, useMemo } from "react";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,6 +20,7 @@ import { Line } from "react-chartjs-2";
 import {
   formatLabelDate,
   handleCoinDateDisplay,
+  capitaliseString,
 } from "@/app/utils/formatHelpers";
 import { createChartOptions } from "@/app/utils/ChartUtils/chartOptions";
 import { createLineChartData } from "@/app/utils/ChartUtils/chartData";
@@ -26,8 +28,10 @@ import { useGetChartDataQuery } from "@/lib/api";
 import { useChart } from "@/lib/hooks/useChart";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import NotificationCard from "../../UI-components/NotificationCard";
+import ButtonWrapper from "./ButtonWrapper";
 import { RootState } from "@/lib/store";
 import { Currency } from "@/lib/features/currencySlice";
+import { DisplayProps } from "./Chart";
 
 ChartJS.register(
   CategoryScale,
@@ -53,6 +57,8 @@ const LineChart = ({
   chartType,
   isLinear,
   isLogarithmic,
+  showChart,
+  handleChartDisplayOnMobile,
 }: {
   coinOne: any;
   coinTwo: any | null;
@@ -63,7 +69,10 @@ const LineChart = ({
   chartType: "linear" | "logarithmic";
   isLinear: any;
   isLogarithmic: any;
+  showChart: DisplayProps;
+  handleChartDisplayOnMobile: () => void;
 }) => {
+  const isMobile = useIsMobile();
   const defaultCoinOne = { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
 
   const { data: coinOneData, isError: isErrorOne } = useGetChartDataQuery({
@@ -155,23 +164,32 @@ const LineChart = ({
           {isErrorOne && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex flex-col justify-start bg-light-primary p-6 dark:bg-dark-darkBg">
+          <div className="relative flex flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
             <div>
               <div className="flex flex-col justify-start gap-6">
-                <p className="text-xl leading-6 text-light-darkText dark:text-dark-chartTextColor">
-                  {coinOneName} {coinOne.symbol}
+                <p className="text-base leading-6 text-light-darkText dark:text-dark-chartTextColor 2xl:text-xl">
+                  {capitaliseString(coinOneName)} ({coinOne.symbol})
                 </p>
-                <p className="text-2.5xl font-bold">
+                <p className="text-sm font-bold md:text-base 2xl:text-2.5xl">
                   {currencySymbol}
                   {displayPriceOne.toFixed(2) || coinOne.currentPrice}
                 </p>
               </div>
-              <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+              <p className="hidden font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor sm:text-xs md:text-base">
                 {displayDate || today}
               </p>
             </div>
+
             <div>
-              <Line options={options} data={chartData} />
+              <div className="h-56 sm:h-64 md:h-72 lg:h-96">
+                <Line options={options} data={chartData} />
+              </div>
+              {isMobile && showChart.prev && (
+                <ButtonWrapper
+                  handleChartDisplayOnMobile={handleChartDisplayOnMobile}
+                  showChart={showChart}
+                />
+              )}
             </div>
           </div>
         </>
@@ -181,15 +199,21 @@ const LineChart = ({
           {(isErrorOne || isErrorTwo) && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex h-full flex-col justify-start bg-light-primary p-6 dark:bg-dark-darkBg">
+          <div className="relative flex h-full flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
             <div className="h-14">
-              <p className="text-sm md:text-xl font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor">
+              <p className="text-sm font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
                 {displayDate || today}
               </p>
             </div>
-            <div className="h-40 lg:h-auto">
+            <div className="h-56 sm:h-64 md:h-72 lg:h-96">
               <Line options={options} data={chartData} />
             </div>
+            {isMobile && showChart.prev && (
+              <ButtonWrapper
+                handleChartDisplayOnMobile={handleChartDisplayOnMobile}
+                showChart={showChart}
+              />
+            )}
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
@@ -205,10 +229,10 @@ const LineChart = ({
                   </span>
                 </div>
               </div>
-              <div className="flex flex-col md:flex-row items-center md:gap-2">
-              <div className="flex items-center gap-1">
-                <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"></div>
-                <div className="text-xs md:text-base">{coinTwoName}</div>
+              <div className="flex flex-col items-center md:flex-row md:gap-2">
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"></div>
+                  <div className="text-xs md:text-base">{coinTwoName}</div>
                 </div>
                 <div className="hidden lg:flex">
                   <span className="text-xs md:text-base">

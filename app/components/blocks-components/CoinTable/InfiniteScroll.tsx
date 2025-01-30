@@ -54,41 +54,53 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
         }
       })
     : coins;
-    const handleFetchMoreData = () => {
-      if(isInitialLoad.current === true) isInitialLoad.current = false;
-      fetchMoreData();
-    };
+  const handleFetchMoreData = () => {
+    if (isInitialLoad.current === true) isInitialLoad.current = false;
+    fetchMoreData();
+  };
   return (
-    <InfiniteScroll
-      dataLength={10000}
-      next={handleFetchMoreData}
-      hasMore={true}
-      loader={<Spinner />}
-      endMessage={<p className="text-center">No more data to show</p>}
-    >
-      <table className="table-auto flex flex-col w-full h-auto overflow-y-auto text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor border-separate border-spacing-y-5 space-y-2">
-        <tbody>
-          <TableHeaders
-            sortValue={sortConfig.key}
-            direction={sortConfig.direction}
-            handleSort={handleSort}
-          />
-          {isInitialLoad.current && isLoading && <Spinner />}
-          {isSuccess &&
-            sortedData.map((coin: Coin, index: number) => (
-              <CoinDetails
-                key={coin.id}
-                isFetching={isFetching}
-                coin={coin}
-                index={index}
-                isSuccess={isSuccess}
-                isLoading={isLoading}
-                isError={isError}
-              />
-            ))}
-        </tbody>
-      </table>
-      <BackToTopButton />
-    </InfiniteScroll>
+    <div id="scrollableDiv" className="h-full overflow-y-auto">
+      <InfiniteScroll
+        dataLength={10000}
+        next={handleFetchMoreData}
+        hasMore={true}
+        loader={
+          (isInitialLoad.current || isLoading || isFetching) && <Spinner />
+        }
+        endMessage={<p className="text-center">No more data to show</p>}
+        scrollableTarget="scrollableDiv"
+        scrollThreshold={0.8}
+      >
+        <table className="w-full">
+          <tbody>
+            <TableHeaders
+              sortValue={sortConfig.key}
+              direction={sortConfig.direction}
+              handleSort={handleSort}
+            />
+            {isInitialLoad.current && isLoading && (
+              <tr>
+                <td colSpan={9} className="text-center">
+                  <Spinner />
+                </td>
+              </tr>
+            )}
+            {isSuccess &&
+              sortedData.map((coin: Coin, index: number) => (
+                <CoinDetails
+                  key={coin.id}
+                  isFetching={isFetching}
+                  coin={coin}
+                  index={index}
+                  isSuccess={isSuccess}
+                  isLoading={isLoading}
+                  isError={isError}
+                />
+              ))}
+          </tbody>
+        </table>
+        <BackToTopButton />
+      </InfiniteScroll>
+    </div>
   );
 };

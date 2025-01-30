@@ -6,19 +6,23 @@ import { handleSelectedFilter } from "@/lib/features/converterSlice";
 import { RootState } from "@/lib/store";
 
 const ChartFilterTabs = () => {
-const selectedFilter = useAppSelector((state:RootState)=>state.converter.selectedFilter);
-const dispatch = useAppDispatch();
-const handleFilter = (id:number) => {
-  dispatch(handleSelectedFilter({id}));
-};
+  const selectedFilter = useAppSelector(
+    (state: RootState) => state.converter.selectedFilter,
+  );
+  const dispatch = useAppDispatch();
+  const handleFilter = (id: number) => {
+    dispatch(handleSelectedFilter({ id }));
+  };
 
   return (
-    <div className="w-[463px] h-[42px] bg-light-lightBg dark:bg-dark-hover rounded-md ">
-      <ul className="flex justify-around items-center p-1 gap-2">
+    <div className="m-0 h-[42px] max-w-[90%] rounded-md bg-light-lightBg pt-1 dark:bg-dark-hover sm:max-w-[70%] md:max-w-[60%] lg:max-w-[463px]">
+      <ul className="m-auto flex items-center justify-around">
         {chartFilter.map((title) => (
           <li
-            className={`text-sm text-light-secondaryTextColor dark:text-[#a7a7cc] text-center cursor-pointer px-5 py-2 rounded-md ${
-              selectedFilter.period && title.id === selectedFilter.id ? "dark:bg-[#6161d650]" : ""
+            className={`cursor-pointer rounded-md px-[1px] py-2 text-center text-xs text-light-secondaryTextColor dark:text-[#a7a7cc] md:text-sm ${
+              selectedFilter.period && title.id === selectedFilter.id
+                ? "border-[1px] border-common-azure"
+                : ""
             }`}
             key={title.id}
             onClick={() => handleFilter(title.id)}
