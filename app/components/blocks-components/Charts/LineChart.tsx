@@ -167,10 +167,10 @@ const LineChart = ({
           <div className="relative flex flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
             <div>
               <div className="flex flex-col justify-start gap-6">
-                <p className="text-base leading-6 text-light-darkText dark:text-dark-chartTextColor 2xl:text-xl">
+                <p className="text-base leading-6 text-light-darkText dark:text-dark-chartTextColor md:text-xl">
                   {capitaliseString(coinOneName)} ({coinOne.symbol})
                 </p>
-                <p className="text-sm font-bold md:text-base 2xl:text-2.5xl">
+                <p className="text-sm font-bold md:text-xl 2xl:text-2.5xl">
                   {currencySymbol}
                   {displayPriceOne.toFixed(2) || coinOne.currentPrice}
                 </p>
