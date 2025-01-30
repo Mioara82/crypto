@@ -75,7 +75,7 @@ const config: Config = {
       },
       maxWidth: {
         custom: "90rem",
-        "324": "1296px",
+        "324": "1336px",
       },
       padding: {
         "3.5": "18px",
@@ -97,6 +97,9 @@ const config: Config = {
       boxShadow: {
         custom: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       },
+      scale: {
+        "102": "1.02",
+      },
       keyframes: {
         wave: {
           "0%": { backgroundPosition: "200% 0" },
@@ -116,7 +119,7 @@ const config: Config = {
         fadeInRight: "fadeInRight 1s ease-in-out",
         fadeOutLeft: "fadeOutLeft 1s ease-in-out",
       },
-      backgroundImage: {
+      backgroundColor: {
         portfolioGradientLight: "linear-gradient(to right, #F2F3E2,#B9E0EE)",
         portfolioGradientDark: "linear-gradient(to right, #43434B,#110744)",
         customGradient:
@@ -141,7 +144,7 @@ const config: Config = {
         ],
       },
       screens: {
-        xs:"375px",
+        xs: "375px",
         sm: "640px",
         md: "768px",
         lg: "1024px",

@@ -14,7 +14,7 @@ export const TableTitle = ({
   const [show, handleIsShown] = useIsShown();
   const [selectedQuery, setSelectedQuery] = useState<string>(value);
   const listRef = useRef(null);
-  const filteredQueries = queriesAPI.filter((q:string) => q !== value);
+  const filteredQueries = queriesAPI.filter((q: string) => q !== value);
   const handleQueryChange = (v: string) => {
     setSelectedQuery(v);
     handleSortChange(v);
@@ -22,13 +22,21 @@ export const TableTitle = ({
   };
 
   return (
-    <div className="relative flex items-center gap-4 text-2xl">
-      TOP 50 <span className="text-lg">BY </span>
-      <div className="hover:cursor-pointer" onClick={handleIsShown}>{capitaliseString(selectedQuery)}</div>
+    <div className="relative flex items-center gap-4 text-base lg:text-lg 2xl:text-2xl">
+      TOP 50 <span className="text-sm md:text-base lg:text-lg">BY </span>
+      <div className="hover:cursor-pointer" onClick={handleIsShown}>
+        {capitaliseString(selectedQuery)}
+      </div>
       <Dropdown ref={listRef} show={show} feature="table dropdown">
         {show &&
           filteredQueries.map((q: string) => (
-            <li key={q} onClick={()=> handleQueryChange(q)} className="text-base hover:text-common-cyan hover:cursor-pointer">{capitaliseString(q)}</li>
+            <li
+              key={q}
+              onClick={() => handleQueryChange(q)}
+              className="text-base hover:cursor-pointer hover:text-common-cyan lg:text-lg 2xl:text-2xl"
+            >
+              {capitaliseString(q)}
+            </li>
           ))}
       </Dropdown>
     </div>

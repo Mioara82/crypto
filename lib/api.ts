@@ -1,7 +1,4 @@
-import {
-  createApi,
-  fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   MarketDataApi,
   CoinDetailsProps,
@@ -18,7 +15,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: url,
-    mode: "no-cors",
+    mode: "cors",
     credentials: "same-origin",
     prepareHeaders(headers) {
       headers.set("x-cg-demo-api-key", apiKey);
