@@ -40,6 +40,7 @@ const CoinsTable = () => {
   const [coins, setCoins] = useState<Coin[] | null>(data || null);
 
   const fetchMoreData = () => {
+    if(!isFetching || !isLoading)
     setCurrentPage((prevPage) => prevPage + 1);
   };
 

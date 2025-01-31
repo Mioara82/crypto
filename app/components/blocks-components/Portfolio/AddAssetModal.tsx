@@ -180,12 +180,14 @@ const AddAssetModal = ({
           <div className="relative w-2/5 rounded-lg dark:bg-dark-lightBg">
             {displayCoin && (
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-4">
-                <Image
-                  src={displayCoin.image}
-                  alt="coin image"
-                  width={48}
-                  height={48}
-                />
+                <div className="relative h-8 w-8">
+                  <Image
+                    src={displayCoin.image}
+                    alt="coin image"
+                    fill
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
                 <div>{displayCoin.name}</div>
               </div>
             )}
@@ -207,13 +209,17 @@ const AddAssetModal = ({
                     key={coin.id}
                     onClick={() => handleCoinSelection(coin.id)}
                   >
-                    <Image
-                      src={coin.image}
-                      alt="coin image"
-                      width={20}
-                      height={20}
-                    />
-                    <p className="text-sm">{findHighlighted(coin.name,searchValue)}</p>
+                    <div className="relative h-6 w-6">
+                      <Image
+                        src={coin.image}
+                        alt="coin image"
+                        fill
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
+                    <p className="text-sm">
+                      {findHighlighted(coin.name, searchValue)}
+                    </p>
                     <p className="text-xs opacity-40">
                       <span className="mr-1">{currencySymbol}</span>
                       {coin.currentPrice.toFixed(3)}

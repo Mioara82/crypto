@@ -105,14 +105,15 @@ const BarChart = ({
       ?.map((volume: any) => volume[0])
       .slice(0, numberOfBars) || [];
 
-  const coinOneVolumes =
-    coinOneData?.totalVolumes
-      ?.map((volume: any) => volume[1])
-      .slice(0, numberOfBars) || [];
-  const coinTwoVolumes =
-    coinTwoData?.totalVolumes
-      ?.map((volume: any) => volume[1])
-      .slice(0, numberOfBars) || [];
+  //refactored the way I declare the volumes for both coins. writing a reusable function improves
+  //readability and avoids code duplication
+  function getVolumes(volumes: number[][], num: number) {
+    return volumes.map((volume: number[]) => volume[1]).slice(0, num) || [];
+  }
+  const volumesOne = coinOneData?.totalVolumes || [];
+  const volumesTwo = coinTwoData?.totalVolumes || [];
+  const coinOneVolumes = getVolumes(volumesOne, numberOfBars);
+  const coinTwoVolumes = getVolumes(volumesTwo, numberOfBars);
 
   const options = useMemo(
     () =>
@@ -168,11 +169,11 @@ const BarChart = ({
           <div className="flex flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
             <div>
               <div className="flex flex-col justify-start gap-6">
-                <p className="text-xs leading-6 text-light-darkText dark:text-dark-chartTextColor md:text-base 2xl:text-xl">
+                <p className="text-xs leading-6 text-light-darkText dark:text-dark-chartTextColor md:text-xl">
                   Volume 24h
                 </p>
                 {coinOneVolumes && coinOneVolumes.length > 0 && (
-                  <p className="hidden font-bold sm:text-sm md:text-base 2xl:text-2.5xl">
+                  <p className="font-bold sm:text-sm md:text-xl 2xl:text-2.5xl">
                     {currencySymbol}
                     {formatMarketCap(displayVolumeOne || coinOneVolumes[1])}
                   </p>

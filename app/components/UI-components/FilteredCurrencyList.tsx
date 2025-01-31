@@ -22,7 +22,7 @@ const FilteredCurrencyList: React.FC<FilteredCurrencyListProps> = ({
   const isMobile = useIsMobile();
   return list.map((item: CurrencyProps) => (
     <li
-      className="m-0 py-2 flex justify-center bg-light-lightBg last:rounded-b-xl dark:bg-dark-191 md:gap-2 md:py-2"
+      className="m-0 flex justify-center bg-light-lightBg py-2 last:rounded-b-xl dark:bg-dark-191 md:gap-2 md:py-2"
       key={item.id}
       onClick={() => {
         onCurrencyChange(item.name as Currency);
@@ -31,7 +31,14 @@ const FilteredCurrencyList: React.FC<FilteredCurrencyListProps> = ({
       {isMobile ? null : (
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-light-secondaryTextColor p-1 dark:bg-dark-text">
           {item.symbol.startsWith("https://") ? (
-            <Image width={20} height={20} src={item.symbol} alt={item.name} />
+            <div className="relative h-5 w-5">
+              <Image
+                fill
+                style={{ objectFit: "contain" }}
+                src={item.symbol}
+                alt={item.name}
+              />
+            </div>
           ) : (
             <span className="m-0 mx-auto text-light-lightBg dark:text-dark-textDark">
               {item.symbol}
@@ -39,7 +46,7 @@ const FilteredCurrencyList: React.FC<FilteredCurrencyListProps> = ({
           )}
         </span>
       )}
-      <span className="text-xs md:text-sm text-light-secondaryTextColor dark:text-dark-text/[80]">
+      <span className="text-xs text-light-secondaryTextColor dark:text-dark-text/[80] md:text-sm">
         {item.name}
       </span>
       {isMobile ? null : <FiChevronDown />}

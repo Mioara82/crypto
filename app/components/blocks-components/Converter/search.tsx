@@ -38,21 +38,23 @@ const SearchCoin = ({
   return (
     <Suspense
       fallback={
-        <div className="flex justify-center p-3 gap-2">
+        <div className="flex justify-center gap-2 p-3">
           <Spinner />
           <p>Loading data, please wait...</p>
         </div>
       }
     >
-      <div className="flex gap-4 relative">
+      <div className="relative flex gap-4">
         {coin && (
           <div className="flex items-center gap-2">
-            <Image
-              width={20}
-              height={20}
-              src={coin.image}
-              alt="icon of the coin"
-            />
+            <div className="relative h-5 w-5">
+              <Image
+                fill
+                style={{ objectFit: "contain" }}
+                src={coin.image}
+                alt="icon of the coin"
+              />
+            </div>
             <div className="text-xl text-light-darkBg dark:text-dark-text">
               {coin.name} ({coin.symbol})
             </div>
@@ -61,13 +63,19 @@ const SearchCoin = ({
         {show ? (
           <Dropdown ref={ref} show={show}>
             {list.map((c) => (
-              <li key={c.id} className="flex gap-2 mb-2 items-center cursor-pointer" onClick={() => handleCoinSearch(c.id)}>
-                <Image
-                  width={14}
-                  height={14}
-                  src={c.image}
-                  alt="icon of the coin"
-                />{" "}
+              <li
+                key={c.id}
+                className="mb-2 flex cursor-pointer items-center gap-2"
+                onClick={() => handleCoinSearch(c.id)}
+              >
+                <div className="relative h-5 w-5">
+                  <Image
+                    fill
+                    style={{ objectFit: "contain" }}
+                    src={c.image}
+                    alt="icon of the coin"
+                  />
+                </div>
                 <div>
                   {c.name} ({c.symbol})
                 </div>

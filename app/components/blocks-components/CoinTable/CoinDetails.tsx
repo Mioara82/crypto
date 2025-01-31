@@ -39,7 +39,7 @@ const CoinDetails = ({
       <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
       <tr
         key={coin.id}
-        className="mb-2 flex h-[77px] w-full min-w-full items-center justify-around overflow-x-auto scroll-smooth rounded-lg from-dark-darkBg via-dark-lightBg to-dark-hover px-2 duration-200 hover:scale-102 hover:transform hover:cursor-pointer hover:shadow-2xl dark:bg-gradient-to-r md:justify-between"
+        className="mb-2 flex h-[77px] border-[1px] border-light-lightBg dark:border-none w-full min-w-full items-center justify-around overflow-x-auto scroll-smooth rounded-lg from-dark-darkBg via-dark-lightBg to-dark-hover px-2 duration-200 hover:scale-102 hover:transform hover:cursor-pointer hover:shadow-2xl dark:bg-gradient-to-r md:justify-between"
       >
         <td className="w-[20%] text-center sm:w-[5%]">{index + 1}</td>
         <td className="w-[50%] sm:w-[15%]">
@@ -50,13 +50,15 @@ const CoinDetails = ({
             <Spinner />
           ) : (
             <div className="flex xs:gap-2">
-              <Image
-                className="max-w-6"
-                src={coin.image}
-                width={24}
-                height={24}
-                alt="Coin icon"
-              />
+              <div className="relative h-6 w-6">
+                <Image
+                  className="max-w-6"
+                  src={coin.image}
+                  fill
+                  style={{ objectFit: "contain" }}
+                  alt="Coin icon"
+                />
+              </div>
               <div>
                 <Link
                   href={`/CoinDetails/${coin.id}`}
