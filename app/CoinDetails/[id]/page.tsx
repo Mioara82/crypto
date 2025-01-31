@@ -38,7 +38,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <div className="m-0 mb-2 w-full flex-col overscroll-none bg-light-primaryBg px-12 dark:bg-dark-primaryBg lg:flex">
+    <div className="m-0 mb-2 block w-full flex-col overscroll-none bg-light-primaryBg px-12 dark:bg-dark-primaryBg lg:flex">
       {isSuccess && data ? (
         <>
           <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
@@ -53,22 +53,24 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </p>
               </div>
               <div className="flex w-full flex-col justify-center gap-8 lg:flex-row lg:justify-start">
-                <div className="lg:justify-left flex w-full flex-col gap-8 px-8 py-10 dark:bg-dark-darkBg lg:w-2/5">
-                  <div className="flex gap-6 pb-4">
-                    <Image
-                      src={data.image.large}
-                      alt="coin icon"
-                      width={48}
-                      height={48}
-                    />
+                <div className="lg:justify-left flex w-full flex-col gap-4 rounded-lg px-8 py-10 dark:bg-dark-darkBg lg:w-2/5 lg:gap-8">
+                  <div className="flex items-center gap-6 pb-4">
+                    <div className="relative h-6 w-6 xs:h-7 xs:w-7 sm:h-8 md:w-8 lg:h-9 lg:w-9">
+                      <Image
+                        src={data.image.large}
+                        alt="coin icon"
+                        fill
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
                     <div>
-                      <p className="text-2xl">
+                      <p className="text-sm xs:text-base sm:text-xl lg:text-2xl">
                         {data.name}
                         <span>({data.symbol})</span>
                       </p>
                       <div className="flex gap-2">
                         <a href={data.links.homepage}>
-                          <p className="text-base">
+                          <p className="text-sm md:text-base">
                             {data.links.homepage.slice(7)}
                           </p>
                         </a>
@@ -76,9 +78,9 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-3 lg:gap-5">
                     <div className="flex items-end gap-4">
-                      <h3 className="text-4xl">
+                      <h3 className="text-sm sm:text-base lg:text-2xl xl:text-4xl">
                         {currencySymbol}
                         <span>
                           {formatNumber(data.currentPrice[currencyLowercased])}
@@ -97,11 +99,13 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                     </div>
                     <div>
                       <div className="flex items-center gap-4">
-                        <p className="text-xl">Profit: </p>
+                        <p className="text-sm md:text-base lg:text-xl">
+                          Profit:{" "}
+                        </p>
                         <span
                           className={`${
                             isPositive ? "text-[#077E77]" : "text-[#FE2264]"
-                          }`}
+                          } md text-sm`}
                         >
                           {currencySymbol}
                           {formatNumber(Math.ceil(data.profit))}
@@ -117,13 +121,15 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                       </div>
                       <div className="flex w-full flex-col">
                         <div className="flex items-end gap-4">
-                          <p className="text-xl">All time high:</p>
-                          <p className="ml-auto text-2xl">
+                          <p className="text-sm md:text-base lg:text-xl">
+                            All time high:
+                          </p>
+                          <p className="ml-auto text-sm md:text-base lg:text-2xl">
                             {currencySymbol}
                             {formatNumber(data.ath[currencyLowercased])}
                           </p>
                         </div>
-                        <p className="text-base text-dark-chartDateColor">
+                        <p className="text-xs text-dark-chartDateColor xs:text-sm lg:text-base">
                           {formatDate(data.athDate[currencyLowercased])}
                         </p>
                       </div>
@@ -134,21 +140,23 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                       </div>
                       <div className="flex w-full flex-col">
                         <div className="flex items-end gap-4">
-                          <p className="text-xl">All time low:</p>
-                          <p className="ml-auto text-2xl">
+                          <p className="text-sm md:text-base lg:text-xl">
+                            All time low:
+                          </p>
+                          <p className="ml-auto text-sm md:text-base lg:text-2xl">
                             {currencySymbol}
                             {formatNumber(data.atl[currencyLowercased])}
                           </p>
                         </div>
-                        <p className="text-base text-dark-chartDateColor">
+                        <p className="text-xs text-dark-chartDateColor xs:text-sm lg:text-base">
                           {formatDate(data.atlDate[currencyLowercased])}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex w-3/5 flex-col gap-6">
-                  <div className="hidden lg:block lg:text-sm">
+                <div className="flex w-full gap-2 xs:flex-col sm:flex-row md:flex-row lg:h-full lg:w-3/5 lg:flex-col">
+                  <div className="h-52 overflow-scroll overscroll-y-auto text-sm lg:h-full lg:overflow-hidden lg:overscroll-y-none">
                     {data.description.en}
                   </div>
                   <div className="flex w-full flex-col gap-2 lg:flex-row lg:flex-wrap">
@@ -162,13 +170,17 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                     </div>
                     <div className="flex items-center justify-center gap-4 rounded-md px-4 py-6 dark:bg-dark-darkBg">
                       <a href={data.links.blockchain_site_3}>
-                        <p>{formatLink(data.links.blockchain_site_3)}</p>
+                        <p className="text-xs sm:text-sm">
+                          {formatLink(data.links.blockchain_site_3)}
+                        </p>
                       </a>
                       <StackIcon />
                     </div>
                     <div className="flex items-center justify-center gap-4 rounded-md px-4 py-6 dark:bg-dark-darkBg">
                       <a href={data.links.blockchair}>
-                        <p>{formatLink(data.links.blockchair)}</p>
+                        <p className="text-xs sm:text-sm">
+                          {formatLink(data.links.blockchair)}
+                        </p>
                       </a>
                       <StackIcon />
                     </div>
@@ -177,12 +189,12 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
               </div>
             </div>
             <hr className="opacity-10"></hr>
-            <div className="flex w-full flex-wrap items-stretch justify-between gap-6">
-              <div className="flex w-1/3 shrink-0 grow basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg">
+            <div className="flex w-full flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-stretch sm:justify-between">
+              <div className="flex w-full shrink-0 grow basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg sm:w-1/3">
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p className="text-base">Total Volume</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">Total Volume</p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>
                       {formatNumber(data.totalVolume[currencyLowercased])}
                     </span>
@@ -191,8 +203,8 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p className="text-base">Volume 24h</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">Volume 24h</p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>
                       {currencySymbol}
                       {formatNumber(data.marketCapChange)}
@@ -201,8 +213,8 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p>Volume / Market</p>
-                  <p className="ml-auto">
+                  <p className="text-xs xs:text-base">Volume / Market</p>
+                  <p className="ml-auto text-xs xs:text-base">
                     {(
                       data.totalVolume[currencyLowercased] /
                       data.marketCap[currencyLowercased]
@@ -210,19 +222,19 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex w-1/3 shrink-0 grow basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg">
+              <div className="flex w-full shrink-0 grow basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg sm:w-1/3">
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p>Max supply</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">Max supply</p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>{formatNumber(data.maxSupply)}</span>
                     <span>{capitaliseString(data.symbol)}</span>
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p>Circulating Supply</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">Circulating Supply</p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>
                       {formatNumber(data.circulatingSupply.toFixed())}
                     </span>
@@ -240,7 +252,6 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                       <div className="text-xs">{100 - circulatingFromMax}%</div>
                     </div>
                   </div>
-
                   <ProgressBar
                     value={calculateProgress(
                       data.circulatingSupply,
@@ -251,11 +262,11 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   />
                 </div>
               </div>
-              <div className="flex w-1/2 shrink-0 grow-0 basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg">
+              <div className="flex w-full shrink-0 grow-0 basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg sm:w-[calc(50%_-_15px)]">
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p>Market Cap</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">Market Cap</p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>{currencySymbol}</span>
                     <span>
                       {formatNumber(data.marketCap[currencyLowercased])}
@@ -264,8 +275,10 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex items-start gap-3">
                   <PlusIcon />
-                  <p>Fully Diluted Valuation</p>
-                  <p className="ml-auto flex gap-2 text-xl">
+                  <p className="text-xs xs:text-base">
+                    Fully Diluted Valuation
+                  </p>
+                  <p className="ml-auto flex gap-2 text-xs xs:text-sm md:text-base lg:text-xl">
                     <span>{currencySymbol}</span>
                     <span>
                       {formatNumber(
@@ -281,7 +294,9 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
       ) : (
         <>
           <NotificationCard isSuccess={false} text="Error fetching data" />
-          <Spinner />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+            <Spinner />
+          </div>
         </>
       )}
     </div>

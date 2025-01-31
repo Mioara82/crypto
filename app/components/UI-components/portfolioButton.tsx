@@ -15,7 +15,7 @@ const PortfolioButton = () => {
           <div>
             <Link
               href="/Portfolio"
-              className="hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] md:block md:text-base"
+              className="hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] sm:text-sm md:block md:text-base"
             >
               Portfolio
             </Link>

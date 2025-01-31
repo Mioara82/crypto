@@ -42,13 +42,14 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
         <div>
           <p className="mr-1 basis-1/6 text-end text-light-secondaryTextColor/80 dark:text-dark-chartTextColor">
             {currencySymbol.startsWith("https://") ? (
-              <Image
-                width={20}
-                height={20}
-                src={currencySymbol}
-                alt="icon of the currency"
-                style={{ display: "inline-flex" }}
-              />
+              <div className="relative h-5 w-5">
+                <Image
+                  fill
+                  style={{ display: "inline-flex", objectFit: "contain" }}
+                  src={currencySymbol}
+                  alt="icon of the currency"
+                />
+              </div>
             ) : (
               <span>{currencySymbol}</span>
             )}

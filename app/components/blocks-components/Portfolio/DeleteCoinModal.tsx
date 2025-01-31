@@ -22,7 +22,14 @@ const DeleteCoinModal = ({
   return ReactDOM.createPortal(
     <div className="absolute left-1/2 top-1/2 z-40 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/60 bg-portfolioGradientLight p-12 filter-none dark:border-light-primary dark:bg-portfolioGradientDark">
       <div className="self-center">
-        <Image src={coinImage} alt="coin icon" width={48} height={48} />
+        <div className="relative h-12 w-12">
+          <Image
+            src={coinImage}
+            alt="coin icon"
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
       </div>
       <p className="m-0">
         By pressing Delete you will permanently delete this

@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} rounded-[20px] bg-light-primary dark:bg-dark-primaryBg`}
+        className={`${spaceGrotesk.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
       >
         <ThemeProvider>
           <StoreProvider>

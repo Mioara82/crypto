@@ -16,14 +16,21 @@ const CurrencyDetails: React.FC<CurrencyDetailsProps> = ({
   const isMobile = useIsMobile();
   return (
     <div
-      className={`w-20 border-1 border-white/[.05] flex items-center gap-2 ${
+      className={`border-1 border-white/[.05] flex w-20 items-center gap-2 ${
         show ? "rounded-t-xl" : "rounded-xl"
       } bg-light-lightBg px-4 py-2 dark:bg-dark-191`}
     >
-      {isMobile ? null :(
+      {isMobile ? null : (
         <span className="m-0 flex h-6 w-6 items-center justify-center rounded-full bg-light-secondaryTextColor p-1 dark:bg-dark-text">
           {currencySymbol.startsWith("https://") ? (
-            <Image width={24} height={24} src={currencySymbol} alt={currency} />
+            <div className="relative h-6 w-6">
+              <Image
+                fill
+                style={{ objectFit: "contain" }}
+                src={currencySymbol}
+                alt={currency}
+              />
+            </div>
           ) : (
             <span className="m-0 mx-auto text-light-lightBg dark:text-dark-textDark">
               {currencySymbol}
@@ -31,7 +38,7 @@ const CurrencyDetails: React.FC<CurrencyDetailsProps> = ({
           )}
         </span>
       )}
-      <span className="m-0 text-xs md:text-sm text-light-secondaryTextColor dark:text-dark-text/[80]">
+      <span className="m-0 text-xs text-light-secondaryTextColor dark:text-dark-text/[80] md:text-sm">
         {currency}
       </span>
       <FiChevronDown />

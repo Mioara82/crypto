@@ -59,7 +59,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
     fetchMoreData();
   };
   return (
-    <div id="scrollableDiv" className="h-full overflow-y-auto">
+    // <div id="scrollableDiv" className="overflow-y-auto">
       <InfiniteScroll
         dataLength={10000}
         next={handleFetchMoreData}
@@ -71,7 +71,7 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
         scrollableTarget="scrollableDiv"
         scrollThreshold={0.8}
       >
-        <table className="w-full">
+        <table className="w-full overflow-y-auto">
           <tbody>
             <TableHeaders
               sortValue={sortConfig.key}
@@ -101,6 +101,6 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
         </table>
         <BackToTopButton />
       </InfiniteScroll>
-    </div>
+    // </div>
   );
 };

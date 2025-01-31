@@ -407,12 +407,14 @@ const InvestmentCalculator = ({
                 )}
                 {displayCoin ? (
                   <div className="flex items-center justify-center gap-2 p-3">
+                    <div className="relative w-6 h-6">
                     <Image
                       src={displayCoin.image}
                       alt="coin image"
-                      width={24}
-                      height={24}
+                      fill
+                      style={{ objectFit: "contain" }}
                     />
+                    </div>
                     <p className="text-nowrap">
                       {formatString(displayCoin.name)}
                     </p>

@@ -57,7 +57,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             <div className="text-light-primary">{data.exchange}</div>
           </div>
 
-          <div className="hidden items-center text-light-lightTextColor md:inline-flex md:gap-1">
+          <div className="hidden items-center text-light-lightTextColor xs:inline-flex xs:gap-1">
             <div className="relative h-4 w-4">
               <Image
                 src="/market/arrow.svg"
@@ -70,7 +70,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
               {formatMarketCap(data.totalMarketCap[currency])}
             </div>
           </div>
-          <div className="hidden items-center justify-items-center gap-2 md:inline-flex">
+          <div className="hidden items-center justify-items-center gap-2 sm:inline-flex">
             <div className="text-light-primary">
               {currencySymbol.startsWith("https://") ? (
                 <Image

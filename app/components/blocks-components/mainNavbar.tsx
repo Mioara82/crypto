@@ -9,7 +9,7 @@ import CurrencySelector from "./currencySelector";
 const Navbar = () => {
   return (
     <div className="z-999">
-      <div className="max-w-1296 relative mx-auto flex w-full justify-between gap-2 px-6 py-2 md:gap-6 md:px-[72px] md:py-4">
+      <div className="max-w-1296 relative mx-auto flex w-full justify-between gap-2 px-6 py-2 md:gap-6 md:py-4">
         <Logo />
         <div className="flex w-24 gap-2 md:w-[265px] md:gap-6">
           <HomeButton />
