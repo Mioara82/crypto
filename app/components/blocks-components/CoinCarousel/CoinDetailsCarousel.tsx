@@ -29,19 +29,18 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
   const isMobile = useIsMobile();
   return (
     <div
-      className={`flex w-60 cursor-pointer flex-wrap justify-center rounded-md py-2 xs:w-40 lg:w-52 2xl:w-60 ${
-        isActive
-          ? "bg-common-purple"
-          : "bg-light-primary dark:bg-dark-191"
+      className={`m-auto flex w-60 cursor-pointer justify-center rounded-md py-2 sm:m-0 sm:w-48 lg:w-52 2xl:w-60 ${
+        isActive ? "bg-common-purple" : "bg-light-primary dark:bg-dark-191"
       }`}
       onClick={handleSelectedCoin}
     >
-      <div className="relative m-auto w-7 h-7">
+      <div className="relative m-auto h-7 w-7">
         <Image
           fill
           style={{ objectFit: "contain" }}
           src={coin.image}
           alt="coin image"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className="w-5/6 flex-col">
@@ -67,17 +66,17 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
             </span>
           )}
         </div>
-        <div className="flex flex-col gap-1 lg:flex-row">
+        <div className="flex flex-row items-center gap-2 xs:flex-col lg:flex-row">
           <div className="flex gap-1">
             <span
               className={`flex gap-1 text-base xs:text-xs sm:text-sm lg:text-base ${
-                isActive ? "text-[#FFFFFF70]" : "text-[#424286]"
+                isActive ? "text-[#FFFFFF70]" : "text-common-purple"
               }`}
             >
               {roundTo4Decimals(coin.current_price)}
             </span>
             <span
-              className={`text-base xs:text-xs sm:text-sm lg:text-base ${isActive ? "text-[#FFFFFF70]" : "text-[#424286]"}`}
+              className={`text-base xs:text-xs sm:text-sm lg:text-base ${isActive ? "text-[#FFFFFF70]" : "text-common-purple"}`}
             >
               {currency}
             </span>

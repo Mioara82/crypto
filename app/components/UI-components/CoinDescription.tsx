@@ -48,6 +48,7 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
                   style={{ display: "inline-flex", objectFit: "contain" }}
                   src={currencySymbol}
                   alt="icon of the currency"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             ) : (

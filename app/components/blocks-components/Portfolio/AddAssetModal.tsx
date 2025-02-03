@@ -165,7 +165,7 @@ const AddAssetModal = ({
   const displayCoin = getDisplayCoin(coinName, filteredList);
 
   return (
-    <form className="absolute left-1/2 top-1/2 z-40 flex h-96 w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-portfolioGradientLight p-12 blur-none dark:bg-portfolioGradientDark">
+    <form className="absolute left-1/2 top-1/2 z-40 flex h-96 w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg">
       <div className="relative h-full w-full">
         <div className="mb-2 flex justify-between">
           <span>Select coins</span>
@@ -186,6 +186,7 @@ const AddAssetModal = ({
                     alt="coin image"
                     fill
                     style={{ objectFit: "contain" }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <div>{displayCoin.name}</div>
@@ -215,6 +216,7 @@ const AddAssetModal = ({
                         alt="coin image"
                         fill
                         style={{ objectFit: "contain" }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
                     <p className="text-sm">

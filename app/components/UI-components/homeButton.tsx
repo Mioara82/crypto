@@ -9,13 +9,20 @@ const HomeButton = () => {
   const isActive = pathname === "/";
   return (
     <div className="flex w-[110px] items-center gap-2">
-      <HomeIcon isActive={isActive} />
+      {isMobile ? (
+        <Link href="/">
+          <HomeIcon isActive={isActive} />
+        </Link>
+      ) : (
+        <HomeIcon isActive={isActive} />
+      )}
+
       {isMobile ? (
         !isActive ? (
           <div>
             <Link
               href="/"
-              className="hover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] sm:text-sm md:block md:text-base"
+              className="shover:cursor-fancy m-0 p-0 text-xs leading-[20.42px] xs:block sm:text-sm md:text-base"
             >
               Home
             </Link>
