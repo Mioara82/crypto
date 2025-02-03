@@ -53,6 +53,7 @@ const SearchCoin = ({
                 style={{ objectFit: "contain" }}
                 src={coin.image}
                 alt="icon of the coin"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className="text-xl text-light-darkBg dark:text-dark-text">
@@ -74,6 +75,7 @@ const SearchCoin = ({
                     style={{ objectFit: "contain" }}
                     src={c.image}
                     alt="icon of the coin"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <div>

@@ -39,7 +39,7 @@ const CoinDetails = ({
       <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
       <tr
         key={coin.id}
-        className="mb-2 flex h-[77px] border-[1px] border-light-lightBg dark:border-none w-full min-w-full items-center justify-around overflow-x-auto scroll-smooth rounded-lg from-dark-darkBg via-dark-lightBg to-dark-hover px-2 duration-200 hover:scale-102 hover:transform hover:cursor-pointer hover:shadow-2xl dark:bg-gradient-to-r md:justify-between"
+        className="mb-2 flex h-[77px] w-full min-w-full items-center justify-around rounded-lg border-[1px] border-light-lightBg from-dark-darkBg via-dark-lightBg to-dark-hover px-2 duration-200 hover:scale-102 hover:transform hover:cursor-pointer hover:shadow-2xl dark:border-none dark:bg-gradient-to-r md:justify-between"
       >
         <td className="w-[20%] text-center sm:w-[5%]">{index + 1}</td>
         <td className="w-[50%] sm:w-[15%]">
@@ -57,6 +57,7 @@ const CoinDetails = ({
                   fill
                   style={{ objectFit: "contain" }}
                   alt="Coin icon"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div>

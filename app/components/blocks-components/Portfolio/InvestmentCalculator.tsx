@@ -385,7 +385,7 @@ const InvestmentCalculator = ({
         className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ${show ? "z-0 blur-sm" : "blur-none"}`}
       >
         <form onSubmit={handleSubmit}>
-          <div className="absolute left-1/2 top-1/2 z-10 flex w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-portfolioGradientLight p-12 blur-none dark:bg-portfolioGradientDark">
+          <div className="absolute left-1/2 top-1/2 z-10 flex w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg">
             <div className="flex justify-between">
               <p className="text-2xl font-medium text-light-secondaryTextColor dark:text-dark-text">
                 Investment calculator
@@ -407,13 +407,14 @@ const InvestmentCalculator = ({
                 )}
                 {displayCoin ? (
                   <div className="flex items-center justify-center gap-2 p-3">
-                    <div className="relative w-6 h-6">
-                    <Image
-                      src={displayCoin.image}
-                      alt="coin image"
-                      fill
-                      style={{ objectFit: "contain" }}
-                    />
+                    <div className="relative h-6 w-6">
+                      <Image
+                        src={displayCoin.image}
+                        alt="coin image"
+                        fill
+                        style={{ objectFit: "contain" }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
                     </div>
                     <p className="text-nowrap">
                       {formatString(displayCoin.name)}
@@ -433,7 +434,11 @@ const InvestmentCalculator = ({
                 className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
               />
               {showDropdown && isSuccess && (
-                <Dropdown ref={listRef} show={showDropdown} feature="investment">
+                <Dropdown
+                  ref={listRef}
+                  show={showDropdown}
+                  feature="investment"
+                >
                   <CalculatorCoinList
                     error={isSearchError}
                     loading={isSearchLoading}

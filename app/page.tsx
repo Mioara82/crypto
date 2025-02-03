@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex w-full max-w-screen-2xl flex-col justify-center gap-10 overflow-x-hidden overscroll-none dark:bg-dark-primaryBg xs:mx-8 md:mx-[72px]">
+      <main className="flex w-full max-w-screen-2xl flex-col justify-center gap-10 overflow-x-hidden overscroll-none dark:bg-dark-primaryBg xl:mx-[72px]">
         <ButtonGroup />
         <p className="ml-3 text-light-secondaryTextColor dark:text-dark-chartTextColor">
           Select the currency to view statistics

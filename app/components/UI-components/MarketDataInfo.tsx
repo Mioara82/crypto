@@ -35,6 +35,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                   alt="flashing symbol of a coin"
                   fill
                   style={{ objectFit: "contain" }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <span>Coins</span>
@@ -50,6 +51,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                   alt="two squares overlapping"
                   fill
                   style={{ objectFit: "contain" }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <span>Exchange</span>
@@ -64,6 +66,7 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
                 alt="a coloured arrow"
                 fill
                 style={{ objectFit: "contain" }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className="text-light-primary">
@@ -73,13 +76,15 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
           <div className="hidden items-center justify-items-center gap-2 sm:inline-flex">
             <div className="text-light-primary">
               {currencySymbol.startsWith("https://") ? (
-                <Image
-                  width={20}
-                  height={20}
-                  src={currencySymbol}
-                  alt="icon of the currency"
-                  style={{ display: "inline-flex" }}
-                />
+                <div className="relative h-5 w-5">
+                  <Image
+                    src={currencySymbol}
+                    alt="icon of the currency"
+                    fill
+                    style={{ objectFit: "contain" }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
               ) : (
                 currencySymbol
               )}
@@ -96,12 +101,15 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
           </div>
           <div>
             <div className="hidden items-center justify-items-center gap-[5px] text-light-lightTextColor lg:inline-flex">
-              <Image
-                src="/currency/bitcoin.svg"
-                alt="bitcoin symbol"
-                width={14}
-                height={14}
-              />
+              <div className="relative h-4 w-4">
+                <Image
+                  src="/currency/bitcoin.svg"
+                  alt="bitcoin symbol"
+                  fill
+                  style={{ objectFit: "contain" }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
               <div>{roundNumber(data.btcMarketCapPercentage)}%</div>
               <ProgressBar
                 value={data.btcMarketCapPercentage}
@@ -112,12 +120,15 @@ const MarketDataInfo: React.FC<MarketDataInfoProps> = ({
             </div>
           </div>
           <div className="hidden items-center justify-items-center gap-[5px] text-light-lightTextColor lg:inline-flex">
-            <Image
-              src="/currency/ethereum.svg"
-              alt="ethereum symbol"
-              width={14}
-              height={14}
-            />
+            <div className="relative h-4 w-4">
+              <Image
+                src="/currency/ethereum.svg"
+                alt="ethereum symbol"
+                fill
+                style={{ objectFit: "contain" }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
             <div>{roundNumber(data.ethMarketCapPercentage)}%</div>
             <ProgressBar
               value={data.ethMarketCapPercentage}

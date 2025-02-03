@@ -1,4 +1,4 @@
-export function formatMarketCap(marketCap: any) {
+export function formatMarketCap(marketCap: number) {
   const trillion = 1e12;
   const billion = 1e9;
   const million = 1e6;
@@ -10,7 +10,7 @@ export function formatMarketCap(marketCap: any) {
   } else if (marketCap >= million) {
     return (marketCap / million).toFixed(2) + "M";
   } else {
-    return marketCap;
+    return Number(marketCap).toFixed(0);
   }
 }
 

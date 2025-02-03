@@ -9,6 +9,7 @@ const Logo = () => {
           alt="a symbol of a chain link"
           fill
           style={{ objectFit: "contain" }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className="hidden font-[Inter] xl:block xl:text-base xl:font-bold xl:leading-[1.6rem]">

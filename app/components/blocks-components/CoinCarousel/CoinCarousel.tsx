@@ -34,6 +34,8 @@ const Arrow: React.FC<ArrowProps> = (props) => {
         borderRadius: "50%",
         textAlign: "center",
         zIndex: 99,
+        marginLeft: "28px",
+        marginRight: "28px",
       }}
       onClick={onClick}
     >
@@ -96,13 +98,13 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: Math.min(list.length, 3),
+          slidesToShow: Math.min(list.length, 2),
           slidesToScroll: 1,
           initialSlide: 1,
         },
       },
       {
-        breakpoint: 320,
+        breakpoint: 400,
         settings: {
           slidesToShow: Math.min(list.length, 1),
           slidesToScroll: 1,

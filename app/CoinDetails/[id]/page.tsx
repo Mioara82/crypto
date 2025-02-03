@@ -36,7 +36,6 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
     data?.circulatingSupply,
     data?.maxSupply,
   );
-
   return (
     <div className="m-0 mb-2 block w-full flex-col overscroll-none bg-light-primaryBg px-12 dark:bg-dark-primaryBg lg:flex">
       {isSuccess && data ? (
@@ -53,7 +52,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </p>
               </div>
               <div className="flex w-full flex-col justify-center gap-8 lg:flex-row lg:justify-start">
-                <div className="lg:justify-left flex w-full flex-col gap-4 rounded-lg px-8 py-10 dark:bg-dark-darkBg lg:w-2/5 lg:gap-8">
+                <div className="lg:justify-left flex w-full flex-col gap-4 rounded-lg px-8 py-10 shadow-md dark:bg-dark-darkBg dark:drop-shadow-md lg:w-2/5 lg:gap-8">
                   <div className="flex items-center gap-6 pb-4">
                     <div className="relative h-6 w-6 xs:h-7 xs:w-7 sm:h-8 md:w-8 lg:h-9 lg:w-9">
                       <Image
@@ -61,16 +60,17 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                         alt="coin icon"
                         fill
                         style={{ objectFit: "contain" }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
                     <div>
-                      <p className="text-sm xs:text-base sm:text-xl lg:text-2xl">
+                      <p className="text-xs xs:text-base sm:text-xl lg:text-2xl">
                         {data.name}
                         <span>({data.symbol})</span>
                       </p>
                       <div className="flex gap-2">
                         <a href={data.links.homepage}>
-                          <p className="text-sm md:text-base">
+                          <p className="text-xs xs:text-base md:text-base">
                             {data.links.homepage.slice(7)}
                           </p>
                         </a>
@@ -91,7 +91,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                         <p
                           className={`${
                             isPositive ? "text-[#077E77]" : "text-[#FE2264]"
-                          }`}
+                          } text-xs sm:text-sm`}
                         >
                           {data.priceChangePercentage.toFixed(2)}
                         </p>
@@ -156,7 +156,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                   </div>
                 </div>
                 <div className="flex w-full gap-2 xs:flex-col sm:flex-row md:flex-row lg:h-full lg:w-3/5 lg:flex-col">
-                  <div className="h-52 overflow-scroll overscroll-y-auto text-sm lg:h-full lg:overflow-hidden lg:overscroll-y-none">
+                  <div className="h-52 overflow-scroll overscroll-y-auto text-xs sm:text-sm lg:h-full lg:overflow-hidden lg:overscroll-y-none">
                     {data.description.en}
                   </div>
                   <div className="flex w-full flex-col gap-2 lg:flex-row lg:flex-wrap">
