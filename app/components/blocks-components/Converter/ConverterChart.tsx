@@ -32,16 +32,16 @@ ChartJS.register(
   Filler,
   Legend,
   TimeScale,
-  CrosshairPlugin
+  CrosshairPlugin,
 );
 const ConverterChart = () => {
   const currency = useAppSelector(
-    (state: RootState) => state.currency.currencyName
+    (state: RootState) => state.currency.currencyName,
   );
   const coinOne = useAppSelector((state: RootState) => state.converter.coinOne);
   const coinTwo = useAppSelector((state: RootState) => state.converter.coinTwo);
   const selectedFilter = useAppSelector(
-    (state: RootState) => state.converter.selectedFilter
+    (state: RootState) => state.converter.selectedFilter,
   );
   const days = selectedFilter.period;
   const { data: dataOne } = useGetChartDataQuery({
@@ -80,35 +80,37 @@ const ConverterChart = () => {
         coinOne,
         coinTwo,
         setDisplayRate,
-        days
+        days,
       ),
-    [conversionRates, coinOne, coinTwo, setDisplayRate, days]
+    [conversionRates, coinOne, coinTwo, setDisplayRate, days],
   );
 
   const chartData = useMemo(
     () => ConverterChartData(labels, conversionRates),
-    [labels, conversionRates]
+    [labels, conversionRates],
   );
 
   useChart(options, chartData);
 
   return (
-    <div className=" dark:bg-dark-darkBg bg-light-primary p-6">
+    <div className="bg-light-primary p-6 dark:bg-dark-darkBg">
       <div>
-        <div className="flex gap-3">
-          <p className="flex gap-2">
+        <div className="mb-2 flex items-center gap-3">
+          <p className="flex gap-2 text-sm md:text-lg">
             {coinOne.name}
             <span>({capitaliseString(coinOne.symbol)})</span>
           </p>
-          <p>to</p>
-          <p className="flex gap-3">
+          <p className="text-xs md:text-base">to</p>
+          <p className="flex gap-3 text-sm md:text-lg">
             {coinTwo.name}
             <span>({capitaliseString(coinTwo.symbol)})</span>
           </p>
         </div>
-        <div>Conversion rate: {displayRate.toFixed(2)}</div>
+        <div className="text-sm opacity-60 md:text-lg">
+          Conversion rate: {displayRate.toFixed(2)}
+        </div>
       </div>
-      <div className="h-96 w-full flex-grow">
+      <div className="h-56 w-full flex-grow sm:h-64 md:h-72 lg:h-96">
         <Line options={options} data={chartData} />
       </div>
     </div>

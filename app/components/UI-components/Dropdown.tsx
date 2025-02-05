@@ -29,14 +29,8 @@ const Dropdown = React.forwardRef<
       animate={show ? "open" : "closed"}
       variants={variants}
       ref={ref}
-      className={`z-50 absolute 
-        ${feature === "currency list" ? "top-[40px] w-[108px] overflow-hidden" : ""} 
-        ${feature === "portfolio" ? "left-3/5 top-[90px] h-96 w-3/5 overflow-y-auto py-2 pl-9 pr-4" : "top-[36px] w-full"} 
-        ${feature === "table dropdown" ? "h-44" : ""}
-        ${feature === "investment" ? "left-[25%] top-[20%] w-3/4 py-2 pl-9 pr-4 mt-2" : "w-60"}
-        ${feature === "search" ? "left-0 max-h-40 min-w-40 top-[40px] md:w-full md:h-96" : ""}
-        overflow-auto rounded-b-xl bg-[#ccccfa] dark:bg-dark-191 border-[1px] border-common-cyan
-        ${show ? "opacity-100" : "opacity-0"
+      className={`absolute z-50 ${feature === "currency list" ? "top-[40px] w-[108px] overflow-hidden" : ""} ${feature === "portfolio" ? "left-3/5 top-[90px] h-96 w-3/5 overflow-y-auto py-2 pl-9 pr-4" : "top-[36px] w-full"} ${feature === "dropdown table" ? "h-44" : ""} ${feature === "investment" ? "left-[25%] top-[20%] mt-2 w-3/4 py-2 pl-9 pr-4" : "w-60"} ${feature === "search" ? "left-0 top-[40px] max-h-40 min-w-40 md:h-96 md:w-full" : ""} ${feature === "converter" ? "left-0 top-[40px] h-52 w-full" : ""} overflow-auto rounded-b-xl border-[1px] border-common-cyan bg-[#ccccfa] dark:bg-dark-191 ${
+        show ? "opacity-100" : "opacity-0"
       }`}
     >
       {children}

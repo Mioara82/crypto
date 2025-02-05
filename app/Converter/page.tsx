@@ -8,7 +8,7 @@ import ChartFilterTabs from "../components/UI-components/ChartFilterTabs";
 
 export default function Converter() {
   return (
-    <div className="h-auto overscroll-none flex flex-col w-maxWidth-custom mx-[72px] gap-10 bg-light-primaryBg dark:bg-dark-primaryBg">
+    <div className="w-maxWidth-custom mx-6 mb-6 flex h-auto flex-col gap-10 overscroll-none bg-light-primaryBg dark:bg-dark-primaryBg md:mx-[72px]">
       <ButtonGroup />
       <ConverterHeading />
       <ConverterBox />

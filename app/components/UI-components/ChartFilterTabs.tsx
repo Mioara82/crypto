@@ -15,7 +15,7 @@ const ChartFilterTabs = () => {
   };
 
   return (
-    <div className="m-auto h-[42px] max-w-[90%] rounded-md bg-light-lightBg pt-1 dark:bg-dark-hover sm:max-w-[70%] md:max-w-[60%] lg:max-w-[463px]">
+    <div className="h-[42px] max-w-[60%] rounded-md bg-light-lightBg pt-1 dark:bg-dark-191 sm:max-w-[70%] md:max-w-[60%] lg:max-w-[463px]">
       <ul className="m-auto flex items-center justify-around">
         {chartFilter.map((title) => (
           <li
