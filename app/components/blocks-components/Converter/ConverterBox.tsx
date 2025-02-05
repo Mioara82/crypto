@@ -20,10 +20,10 @@ const ConverterBox = () => {
   const coinOne = useAppSelector((state: RootState) => state.converter.coinOne);
   const coinTwo = useAppSelector((state: RootState) => state.converter.coinTwo);
   const currency = useAppSelector(
-    (state: RootState) => state.currency.currencyName
+    (state: RootState) => state.currency.currencyName,
   );
   const currencySymbol = useAppSelector(
-    (state: RootState) => state.currency.symbol
+    (state: RootState) => state.currency.symbol,
   );
   const dispatch = useAppDispatch();
   const { currentData } = useGetSearchDataQuery(currency);
@@ -32,15 +32,15 @@ const ConverterBox = () => {
   const exchangeValue =
     parseFloat(
       ((quantityValue * coinOne.current_price) / coinTwo.current_price).toFixed(
-        2
-      )
+        2,
+      ),
     ) || 0;
 
   const handleDirection = () => {
     dispatch(swapCoins());
     setDirection(direction === "left" ? "right" : "left");
     setQuantityValue((prev) =>
-      prev === quantityValue ? exchangeValue : quantityValue
+      prev === quantityValue ? exchangeValue : quantityValue,
     );
   };
 
@@ -52,21 +52,21 @@ const ConverterBox = () => {
   const handleSelectedCoin = (coinId: string, direction: string) => {
     if (direction === "left") {
       dispatch(
-        setCoinOne(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
+        setCoinOne(coinsList.find((c: ConverterCoinProps) => c.id === coinId)),
       );
     } else {
       dispatch(
-        setCoinTwo(coinsList.find((c: ConverterCoinProps) => c.id === coinId))
+        setCoinTwo(coinsList.find((c: ConverterCoinProps) => c.id === coinId)),
       );
     }
   };
 
   return (
     <>
-      <div className="w-full flex gap-6 justify-center items-center relative">
-        <div className="flex flex-col basis-2/4 dark:bg-dark-lightBg bg-light-primary p-6 gap-10 rounded-2xl">
-          <h5>You sell</h5>
-          <div className="flex gap-5 h-6 justify-between items-center">
+      <div className="relative flex w-full flex-col items-center justify-center gap-6 md:flex-row">
+        <div className="flex min-w-full flex-col justify-center gap-10 rounded-2xl bg-light-primary p-6 shadow-2xl dark:bg-dark-lightBg md:min-w-[50%] md:basis-2/4">
+          <h5 className="font-light">You sell</h5>
+          <div className="flex h-6 items-center justify-between gap-5">
             <Suspense fallback={<Spinner />}>
               <SearchCoin
                 list={coinsList}
@@ -77,16 +77,17 @@ const ConverterBox = () => {
             </Suspense>
             <div>
               <Input
-                className="box-border w-12 rounded-md dark:bg-dark-lightBg bg-light-primary "
+                className="box-border w-24 rounded-md bg-light-primary dark:bg-dark-lightBg"
                 type="number"
                 placeholder={quantityValue}
                 value={quantityValue}
                 onInputChange={handleInputChange}
-                onInputBlur={handleInputChange}
+                onBlur={handleInputChange}
+                feature="converter"
               />
             </div>
           </div>
-          <div className="border-t">
+          <div className="border-t pt-3 opacity-60">
             <p>
               1 {coinOne.symbol} ={" "}
               <span>
@@ -96,8 +97,8 @@ const ConverterBox = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col justify-center basis-2/4 dark:bg-dark-lightBg bg-light-primary p-6 gap-10 rounded-2xl">
-          <h5>You buy</h5>
+        <div className="flex min-w-full flex-col justify-center gap-10 rounded-2xl bg-light-primary p-6 shadow-2xl dark:bg-dark-lightBg md:min-w-[50%] md:basis-2/4">
+          <h5 className="font-light">You buy</h5>
           <div className="flex gap-5">
             <div>
               {coinsList.length > 0 && (
@@ -112,7 +113,7 @@ const ConverterBox = () => {
             <p className="ml-auto">{exchangeValue.toFixed(2)}</p>
           </div>
 
-          <div className="border-t">
+          <div className="border-t pt-3 opacity-60">
             <p>
               1 {coinTwo.symbol} ={" "}
               <span>
@@ -122,9 +123,8 @@ const ConverterBox = () => {
             </p>
           </div>
         </div>
-       
+
         <ConverterIcon handleDirection={handleDirection} />
-      
       </div>
     </>
   );

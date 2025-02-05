@@ -56,13 +56,13 @@ const SearchCoin = ({
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
-            <div className="text-xl text-light-darkBg dark:text-dark-text">
+            <div className="text-base text-light-darkBg dark:text-dark-text md:text-xl">
               {coin.name} ({coin.symbol})
             </div>
           </div>
         )}
         {show ? (
-          <Dropdown ref={ref} show={show}>
+          <Dropdown ref={ref} show={show} feature="converter">
             {list.map((c) => (
               <li
                 key={c.id}
@@ -78,7 +78,7 @@ const SearchCoin = ({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
-                <div>
+                <div className="text-sm md:text-base">
                   {c.name} ({c.symbol})
                 </div>
               </li>

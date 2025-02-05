@@ -258,7 +258,7 @@ export const createConverterChartOptions = (
     maintainAspectRatio: false,
     aspectRatio: 3 / 4,
     layout: {
-      padding: 20,
+      padding: 8,
     },
     plugins: {
       legend: {
