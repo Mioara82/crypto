@@ -1,21 +1,15 @@
 import React from "react";
 import { useScrollButtonVisibility } from "@/lib/hooks/useIsScrollBottom";
 
-const BackToTopButton = () => {
+const BackToTopButton = ({ handleScroll }: { handleScroll: () => void }) => {
   const show = useScrollButtonVisibility();
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <>
       {show && (
         <div>
           <button
-            onClick={scrollToTop}
-            className="w-10 h-10 rounded-full fixed flex justify-center items-center bottom-10 left-[50%] z-50 bg-common-brigthBlue
-             dark:bg-common-cyan hover:bg-common-azure hover:dark:bg-common-azure hover:scale-125"
+            onClick={handleScroll}
+            className="fixed bottom-10 left-[50%] z-50 flex h-10 w-10 items-center justify-center rounded-full bg-light-lightBg hover:scale-125 hover:bg-common-azure dark:bg-light-darkBg hover:dark:bg-common-azure"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +17,7 @@ const BackToTopButton = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-6 h-6 "
+              className="h-6 w-6"
             >
               <path
                 strokeLinecap="round"
