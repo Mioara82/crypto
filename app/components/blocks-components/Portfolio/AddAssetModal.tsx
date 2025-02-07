@@ -5,6 +5,7 @@ import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { RootState } from "@/lib/store";
 import { addCoin, updateCoin } from "@/lib/features/portfolioSlice";
 import { PortfolioCoin } from "@/lib/features/portfolioSlice";
@@ -30,6 +31,7 @@ const AddAssetModal = ({
   editingCoinId: string | null;
 }) => {
   const listRef = useRef(null);
+  const isMobile = useIsMobile();
 
   const dispatch = useAppDispatch();
   const currency = useAppSelector(
@@ -163,12 +165,15 @@ const AddAssetModal = ({
     : [];
 
   const displayCoin = getDisplayCoin(coinName, filteredList);
+  const imageSize = isMobile ? 6 : 8;
 
   return (
-    <form className="absolute left-1/2 top-1/2 z-40 flex h-96 w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg">
+    <form className="absolute left-1/2 top-1/4 z-40 flex w-[85%] md:w-1/2 -translate-x-1/2  md:-translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg lg:h-96 lg:w-221">
       <div className="relative h-full w-full">
-        <div className="mb-2 flex justify-between">
-          <span>Select coins</span>
+        <div className="mb-4 flex items-center justify-between">
+          <span className="hidden text-sm md:block md:text-base">
+            Select coins
+          </span>
           <div
             className="flex cursor-pointer items-center rounded-full border border-light-primary p-2 hover:border-dark-buttonBorder"
             onClick={handleModalDisplay}
@@ -176,11 +181,11 @@ const AddAssetModal = ({
             <FiX />
           </div>
         </div>
-        <div className="flex h-full gap-8">
-          <div className="relative w-2/5 rounded-lg dark:bg-dark-lightBg">
+        <div className="flex h-3/4 flex-col gap-8 lg:flex-row">
+          <div className="hidden md:block md:relative w-full rounded-lg dark:bg-dark-lightBg bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:from-[#43434B] dark:to-[#110744] lg:w-2/5">
             {displayCoin && (
-              <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-4">
-                <div className="relative h-8 w-8">
+              <div className="flex flex-row items-center justify-center gap-4 p-3 lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:flex-col lg:p-0">
+                <div className={`relative h-${imageSize} w-${imageSize}`}>
                   <Image
                     src={displayCoin.image}
                     alt="coin image"
@@ -189,18 +194,22 @@ const AddAssetModal = ({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
-                <div>{displayCoin.name}</div>
+                <div className="flex flex-col items-center gap-2">
+                  <h5 className="text-xs opacity-20">Your selected coin</h5>
+                  <h4 className="text-sm md:text-base">{displayCoin.name}</h4>
+                </div>
               </div>
             )}
           </div>
-          <div className="z-0 flex h-full w-3/5 flex-col gap-4">
+          <div className="z-0 flex h-full w-full flex-col gap-4">
             <Input
               type="text"
               name="coinName"
+              feature="portfolio"
               value={coinName}
               onInputChange={handleInputChange}
               placeholder="Select coin"
-              className="rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
+              className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
             />
             {showDropdown && isSuccess && (
               <Dropdown ref={listRef} show={showDropdown} feature="portfolio">
@@ -233,15 +242,17 @@ const AddAssetModal = ({
             <Input
               type="number"
               name="purchasedAmount"
+              feature="portfolio"
               value={purchasedAmount}
               onInputChange={handleInputChange}
               placeholder="Purchased amount"
-              className="rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
+              className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
             />
             <div>
               <Input
                 type="date"
                 name="purchasedDate"
+                feature="portfolio"
                 value={purchasedDate}
                 onInputChange={handleInputChange}
                 placeholder="Purchased date"
@@ -253,7 +264,7 @@ const AddAssetModal = ({
                 </p>
               )}
             </div>
-            <div className="z-0 flex gap-2">
+            <div className="z-50 flex gap-2">
               <Button
                 feature="large"
                 text="Cancel"
@@ -261,7 +272,7 @@ const AddAssetModal = ({
               />
               <Button
                 feature="large"
-                text="Save and continue"
+                text="Save coin"
                 onButtonClick={handleSubmit}
                 disabled={isButtonDisabled}
               />

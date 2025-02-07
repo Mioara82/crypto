@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="z-1 relative">
       <input value={value} onChange={onInputChange} {...rest} />
-      {isMobile && feature !== "converter" && (
+      {isMobile && (feature !== "converter") && (feature !== "portfolio") && (
         <IconContext.Provider
           value={{
             className:

@@ -44,7 +44,7 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
             uniqueCoinsObj[coin.name].currentPrice > coin.currentPrice;
           return (
             <div key={coin.id}>
-              <div className="flex h-72 w-full rounded-xl bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:bg-gradient-to-r dark:from-[#43434B] dark:to-[#110744]">
+              <div className="flex h-72 w-full rounded-xl bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:from-[#43434B] dark:to-[#110744]">
                 <div className="flex w-1/5 flex-col items-center justify-center gap-2 p-6 dark:bg-dark-darkBg">
                   <div className="relative h-8 w-8 rounded-md">
                     <Image
