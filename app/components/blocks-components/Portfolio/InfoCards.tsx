@@ -23,7 +23,9 @@ const InfoCards = ({ value, text }: { value: string; text: string }) => {
           <GoQuestion />
         </div>
         {isOpen && info === value && (
-          <div className="absolute left-1/3 top-3 flex flex-wrap w-56 bg-common-green/50 text-xs text-light-primary text-left p-2 rounded-md m-0">
+          <div
+            className={`absolute left-0 ${value === "growRate" || value === "intervalInvestment" || value === "totalAmount" ? "-top-20" : "-top-6"} m-0 flex w-56 flex-wrap rounded-md bg-common-green/50 p-2 text-left text-xs text-light-primary`}
+          >
             {text}
           </div>
         )}

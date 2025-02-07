@@ -8,16 +8,19 @@ const DeleteCoinModal = ({
   coinId,
   name,
   coinImage,
+  closeModal,
 }: {
-  handleDeleteModalDisplay: () => void;
+  //used any type as it throws type error when i pass id as string;
+  handleDeleteModalDisplay: any;
   coinId: string;
   name: string;
   coinImage: string;
+  closeModal: () => void;
 }) => {
   const dispatch = useAppDispatch();
   const handleRemoveCoin = () => {
     dispatch(removeCoin(coinId));
-    handleDeleteModalDisplay();
+    handleDeleteModalDisplay(coinId);
   };
   return ReactDOM.createPortal(
     <div className="absolute left-1/2 top-1/2 z-40 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/60 bg-portfolioGradientLight p-12 filter-none dark:border-light-primary dark:bg-portfolioGradientDark">
@@ -42,12 +45,12 @@ const DeleteCoinModal = ({
       <div className="flex gap-5 self-center">
         <button
           className="rounded-md border-[1px] border-dark-buttonBorder p-2 hover:border-common-red dark:border-light-primary/20 dark:hover:border-common-red"
-          onClick={handleDeleteModalDisplay}
+          onClick={closeModal}
         >
           Cancel
         </button>
         <button
-          className="rounded-md border-[1px] border-dark-buttonBorder p-2 hover:border-none hover:bg-common-red/70 dark:border-light-primary/20"
+          className="rounded-md border-[1px] border-common-red p-2 text-common-red hover:border-none hover:bg-common-red/70 dark:border-light-primary/20"
           onClick={handleRemoveCoin}
         >
           Delete

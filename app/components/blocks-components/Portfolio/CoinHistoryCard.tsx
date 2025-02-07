@@ -47,9 +47,11 @@ const CoinHistoryCard = ({
   return (
     <>
       <Suspense fallback={<Spinner />}>
-        <div className="flex w-full flex-col justify-between gap-8 p-2">
+        <div className="flex w-full flex-col justify-between gap-4 p-2 md:gap-8">
           <div className="flex items-center justify-between">
-            <p className="text-xl font-medium">Your coin</p>
+            <p className="text-base font-medium opacity-60 lg:text-xl">
+              Your coin
+            </p>
             <div
               className="cursor-pointer rounded border-[1px] border-skeleton100 p-2 hover:border-common-portfolioButton dark:border-0 dark:bg-common-linearGradient dark:hover:border-[1px] dark:hover:border-common-brigthBlue"
               onClick={openEditForm}
@@ -78,7 +80,7 @@ const CoinHistoryCard = ({
                   </p>
                 )}
               </div>
-              <div className="flex flex-col items-center justify-center">
+              <div className="hidden flex-col items-center justify-center sm:flex">
                 <div className="text-sm font-normal">
                   <span
                     className={`${
@@ -115,7 +117,7 @@ const CoinHistoryCard = ({
                   </div>
                 )}
               </div>
-              <div className="flex flex-col items-center">
+              <div className="hidden flex-col items-center md:flex">
                 <p className="text-sm font-normal">Purchase date</p>
                 <p className="text-common-turqoise">{date}</p>
               </div>
