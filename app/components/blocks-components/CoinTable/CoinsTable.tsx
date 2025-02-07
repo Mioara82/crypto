@@ -40,8 +40,9 @@ const CoinsTable = () => {
   const [coins, setCoins] = useState<Coin[] | null>(data || null);
 
   const fetchMoreData = () => {
-    if(!isFetching || !isLoading)
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (!isFetching || !isLoading) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const CoinsTable = () => {
         prevCoins && currentPage > 1 ? [...prevCoins, ...data] : data,
       );
     }
-  }, [data, isSuccess]);
+  }, [data, isSuccess, currentPage]);
 
   const handleSortChange = (value: string) => {
     setSortQuery(value);
@@ -65,15 +66,17 @@ const CoinsTable = () => {
     setCurrentPage(1);
   };
 
+  const hasData = isSuccess && coins && coins?.length > 0;
+
   return (
-    <div className="relative w-full overscroll-none">
+    <div className="relative w-full">
       <div className="flex w-full items-center justify-center">
         <div className="mr-auto flex items-center justify-center gap-5">
           <CirclesIcon />
           <TableTitle value={sortQuery} handleSortChange={handleSortChange} />
         </div>
       </div>
-      {isSuccess && coins && coins?.length > 0 ? (
+      {hasData ? (
         <>
           <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
           <InfiniteCoinScroll

@@ -10,6 +10,7 @@ import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkelet
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
 import SelectedCoins from "./components/blocks-components/SelectedCoins";
 import TableSkeleton from "./components/UI-components/Skeleton/TableSkeleton";
+//import CoinsTable from "./components/blocks-components/CoinTable/CoinsTable";
 
 const CoinCarousel = lazy(
   () => import("./components/blocks-components/CoinCarousel/CoinCarousel"),
@@ -34,7 +35,7 @@ export default function Home() {
     <>
       <main className="flex w-full max-w-screen-2xl flex-col justify-center gap-10 overflow-x-hidden overscroll-none dark:bg-dark-primaryBg md:m-auto xl:mx-[72px]">
         <ButtonGroup />
-        <p className="ml-3 text-light-secondaryTextColor dark:text-dark-chartTextColor">
+        <p className="text-sm md:text-base ml-3 text-light-secondaryTextColor dark:text-dark-chartTextColor">
           Select the currency to view statistics
         </p>
         <Suspense fallback={<CarouselSkeleton />}>

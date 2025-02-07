@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { Coin } from "@/lib/types/types";
-import Spinner from "../../UI-components/Spinner";
+import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 import TableHeaders from "./TableHeaders";
 import CoinDetails from "./CoinDetails";
 import BackToTopButton from "./BackToTopButton";
@@ -23,7 +22,9 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
   isFetching,
   coins,
 }) => {
-  const isInitialLoad = useRef(true);
+  const isInitialLoad = useRef<boolean>(true);
+  const targetRef = useRef<HTMLTableElement>(null);
+  const observerRef = useInfiniteScroll(handleFetchMoreData);
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: string;
@@ -54,37 +55,25 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
         }
       })
     : coins;
-  const handleFetchMoreData = () => {
+
+  function handleFetchMoreData() {
     if (isInitialLoad.current === true) isInitialLoad.current = false;
     fetchMoreData();
-  };
+  }
+
+  const scrollToTop = () =>
+    targetRef.current?.scrollIntoView({ behavior: "smooth" });
+
   return (
-    // <div id="scrollableDiv" className="overflow-y-auto">
-      <InfiniteScroll
-        dataLength={10000}
-        next={handleFetchMoreData}
-        hasMore={true}
-        loader={
-          (isInitialLoad.current || isLoading || isFetching) && <Spinner />
-        }
-        endMessage={<p className="text-center">No more data to show</p>}
-        scrollableTarget="scrollableDiv"
-        scrollThreshold={0.8}
-      >
-        <table className="w-full overflow-y-auto">
+    <>
+      <div>
+        <table className="w-full scroll-mt-24" ref={targetRef}>
           <tbody>
             <TableHeaders
               sortValue={sortConfig.key}
               direction={sortConfig.direction}
               handleSort={handleSort}
             />
-            {isInitialLoad.current && isLoading && (
-              <tr>
-                <td colSpan={9} className="text-center">
-                  <Spinner />
-                </td>
-              </tr>
-            )}
             {isSuccess &&
               sortedData.map((coin: Coin, index: number) => (
                 <CoinDetails
@@ -97,10 +86,15 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
                   isError={isError}
                 />
               ))}
+            <tr ref={observerRef}>
+              <td colSpan={9} className="text-center">
+                {isLoading && <h3>Loading data</h3>}
+              </td>
+            </tr>
           </tbody>
         </table>
-        <BackToTopButton />
-      </InfiniteScroll>
-    // </div>
+        <BackToTopButton handleScroll={scrollToTop} />
+      </div>
+    </>
   );
 };
