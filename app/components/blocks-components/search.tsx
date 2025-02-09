@@ -66,7 +66,7 @@ const Search = () => {
         <Input
           value={`${isMobile ? "" : searchValue}`}
           onInputChange={handleChange}
-          onInputBlur={handleOnBlur}
+          onBlur={handleOnBlur}
           show={show}
           name="searchInput"
           type="text"

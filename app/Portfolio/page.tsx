@@ -29,19 +29,19 @@ const Portfolio = () => {
   };
 
   const handleCalculatorDisplay = () => {
-   setIsCalculatorOpen(prev => !prev);
+    setIsCalculatorOpen((prev) => !prev);
   };
 
   return (
     <div className="relative">
       <main
-        className={`relative flex min-h-screen flex-col p-24 ${
+        className={`relative flex min-h-screen flex-col p-4 sm:p-8 md:p-24 ${
           show || isCalculatorOpen ? "z-0 blur-sm" : "blur-none"
         }`}
       >
-        <div className="mb-6 flex justify-between">
-          <p>Your statistics</p>
-          <div>
+        <p className="mb-6 text-sm lg:text-base">Your statistics</p>
+        <div className="mb-6 flex flex-col items-center justify-between sm:flex-row">
+          <div className="m-auto flex items-center justify-around gap-3">
             <Button
               text="Investments Calculator"
               feature="large"
@@ -65,7 +65,11 @@ const Portfolio = () => {
           editingCoinId={editingCoinId}
         />
       )}
-      {isCalculatorOpen && <InvestmentCalculator handleCalculatorDisplay={handleCalculatorDisplay}/>}
+      {isCalculatorOpen && (
+        <InvestmentCalculator
+          handleCalculatorDisplay={handleCalculatorDisplay}
+        />
+      )}
     </div>
   );
 };

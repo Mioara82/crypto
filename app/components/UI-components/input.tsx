@@ -19,16 +19,19 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="z-1 relative">
       <input value={value} onChange={onInputChange} {...rest} />
-      {isMobile && (feature !== "converter") && (feature !== "portfolio") && (
-        <IconContext.Provider
-          value={{
-            className:
-              "absolute left-1/2 top-1/2  -translate-x-1/2 -translate-y-1/2 transform z-50 md:top-1/2 md:left-5",
-          }}
-        >
-          <GoSearch />
-        </IconContext.Provider>
-      )}
+      {isMobile &&
+        feature !== "converter" &&
+        feature !== "portfolio" &&
+        feature !== "investment" && (
+          <IconContext.Provider
+            value={{
+              className:
+                "absolute left-1/2 top-1/2  -translate-x-1/2 -translate-y-1/2 transform z-50 md:top-1/2 md:left-5",
+            }}
+          >
+            <GoSearch />
+          </IconContext.Provider>
+        )}
     </div>
   );
 };

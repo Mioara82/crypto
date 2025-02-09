@@ -5,6 +5,7 @@ import { IoBarChartOutline } from "react-icons/io5";
 import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useDebounce } from "@/lib/hooks/useDebounce";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useIsShown } from "@/lib/hooks/useIsShown";
 import { RootState } from "@/lib/store";
@@ -42,6 +43,9 @@ const InvestmentCalculator = ({
 }) => {
   const chartRef = useRef(null);
   const listRef = useRef(null);
+  const isMobile = useIsMobile();
+  const chartIcon = isMobile ? 20 : 25;
+  const placeholderValue = isMobile ? "Min 1" : "Minimum 1";
 
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName,
@@ -382,23 +386,23 @@ const InvestmentCalculator = ({
   return (
     <div>
       <div
-        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ${show ? "z-0 blur-sm" : "blur-none"}`}
+        className={`absolute top-1/2 w-full transform md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 ${show ? "z-0 blur-sm" : "blur-none"}`}
       >
         <form onSubmit={handleSubmit}>
-          <div className="absolute left-1/2 top-1/2 z-10 flex w-221 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg">
-            <div className="flex justify-between">
-              <p className="text-2xl font-medium text-light-secondaryTextColor dark:text-dark-text">
+          <div className="absolute left-1/2 top-1/2 z-10 flex w-[80%] -translate-x-1/2 -translate-y-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-3 blur-none dark:bg-dark-darkBg md:p-6 lg:w-221 lg:p-12">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-light-secondaryTextColor dark:text-dark-text md:text-base lg:text-2xl">
                 Investment calculator
               </p>
               <div
                 className="cursor-pointer rounded border-[1px] border-skeleton100 p-2 hover:border-common-portfolioButton dark:border-0 dark:bg-common-linearGradient dark:hover:border-[1px] dark:hover:border-common-brigthBlue"
                 onClick={handleCalculatorDisplay}
               >
-                <FiX />
+                <FiX className="h-4 w-4" />
               </div>
             </div>
-            <div className="relative flex w-full justify-between gap-8">
-              <div className="flex h-11 w-48 items-center gap-2 rounded-lg bg-light-lilac pb-2 pl-2 pr-6 pt-2 text-base font-bold text-light-secondaryTextColor dark:bg-dark-lightBg dark:text-dark-text">
+            <div className="relative flex w-full justify-between gap-2 lg:gap-8">
+              <div className="hidden h-11 w-48 items-center gap-2 rounded-lg bg-light-lilac pb-2 pl-2 pr-6 pt-2 text-base font-bold text-light-secondaryTextColor dark:bg-dark-lightBg dark:text-dark-text md:flex">
                 {isSearchLoading && <Spinner />}
                 {isSearchError && (
                   <p className="absolute -bottom-6 left-0 mt-2 text-xs text-common-red/80">
@@ -422,14 +426,16 @@ const InvestmentCalculator = ({
                     <p>({capitaliseString(displayCoin.symbol)})</p>
                   </div>
                 ) : (
-                  <p>loading</p>
+                  <Spinner />
                 )}
               </div>
               <Input
                 type="text"
                 name="coinName"
                 value={coinName}
+                feature="investment"
                 onInputChange={handleInputChange}
+                onBlur={closeDropdown}
                 placeholder="Select coin"
                 className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
               />
@@ -450,22 +456,22 @@ const InvestmentCalculator = ({
                 </Dropdown>
               )}
             </div>
-            <div className="flex max-w-full gap-3">
+            <div className="flex items-center justify-between md:max-w-full">
               <div
-                className="flex w-24 cursor-pointer justify-center rounded-md bg-light-lilac p-2 text-light-secondaryTextColor hover:scale-125 dark:bg-dark-darkBg dark:text-common-azure"
+                className="flex cursor-pointer justify-start rounded-md bg-light-lilac pl-2 text-light-secondaryTextColor hover:scale-125 dark:bg-dark-darkBg dark:text-common-azure"
                 onClick={handleIsShown}
               >
-                <IoBarChartOutline size="25" />
+                <IoBarChartOutline size={chartIcon} />
               </div>
-              <div className="ml-auto flex justify-around gap-2">
+              <div className="flex max-w-full gap-2">
                 <Button
-                  text="Value Cost Averaging"
+                  text={`${isMobile ? "VCA" : "Value Cost Averaging"}`}
                   feature="xl"
                   isActive={isActive === 0}
                   onButtonClick={() => handleFormFeature("value", "growRate")}
                 />
                 <Button
-                  text="Dollar Cost Averaging"
+                  text={`${isMobile ? "DCA" : "Dollar Cost Averaging"}`}
                   feature="xl"
                   isActive={isActive === 1}
                   onButtonClick={() =>
@@ -474,9 +480,11 @@ const InvestmentCalculator = ({
                 />
               </div>
             </div>
-            <div className="relative flex items-center gap-4">
+            <div className="relative flex flex-col items-center gap-4 md:flex-row">
               <div className="flex flex-col gap-2">
-                <p>Enter investment start date</p>
+                <p className="text-sm md:text-base">
+                  Enter investment start date
+                </p>
                 <div className="relative">
                   <div className="absolute left-2 top-3">
                     <InfoCards
@@ -487,9 +495,10 @@ const InvestmentCalculator = ({
                   <Input
                     type="date"
                     value={startDate}
+                    feature="investment"
                     name="startDate"
                     onInputChange={handleInputChange}
-                    className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-common-azure dark:bg-[#232336]"
+                    className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-sm text-common-azure dark:bg-[#232336] md:text-base"
                   />
                 </div>
               </div>
@@ -500,7 +509,9 @@ const InvestmentCalculator = ({
               )}
               <div className="relative flex items-center gap-4">
                 <div className="flex flex-col gap-2">
-                  <p>Enter investment end date</p>
+                  <p className="text-sm md:text-base">
+                    Enter investment end date
+                  </p>
                   <div className="relative">
                     <div className="absolute left-2 top-3">
                       <InfoCards
@@ -511,78 +522,97 @@ const InvestmentCalculator = ({
                     <Input
                       type="date"
                       value={endDate}
+                      feature="investment"
                       name="endDate"
                       onInputChange={handleInputChange}
-                      className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-common-azure dark:bg-[#232336]"
+                      className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-sm text-common-azure dark:bg-[#232336] md:text-base"
                     />
                   </div>
                 </div>
               </div>
             </div>
             <div className="rounded-xl bg-light-lightBg p-4 dark:bg-dark-darkBg">
-              <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                <p>Contribution interval, days</p>
-                <InfoCards
-                  value="interval"
-                  text={infoCardsDescription.interval.description}
-                />
+              <div className="relative flex items-center justify-between gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                <div className="mr-auto flex items-center gap-2">
+                  <InfoCards
+                    value="interval"
+                    text={infoCardsDescription.interval.description}
+                  />
+                  <p className="text-sm md:text-base">
+                    Contribution interval, days
+                  </p>
+                </div>
                 <Input
                   type="number"
                   onInputChange={handleInputChange}
                   name="interval"
+                  feature="investment"
                   value={interval}
-                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
-                  placeholder="Minimum 1"
+                  className="ml-auto h-10 w-16 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary opacity-55 dark:bg-[#232336] md:w-44"
+                  placeholder={placeholderValue}
                 />
               </div>
               <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                <p>Initial investment, {currencySymbol}</p>
-                <div>
+                <div className="mr-auto flex items-center gap-2">
                   <InfoCards
                     value="initialInvestment"
                     text={infoCardsDescription.initialInvestment.description}
                   />
+                  <p className="text-sm md:text-base">
+                    Initial investment, {currencySymbol}
+                  </p>
                 </div>
                 <Input
                   type="number"
                   onInputChange={handleInputChange}
                   name="initialInvestment"
+                  feature="investment"
                   value={initialInvestment}
-                  className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
-                  placeholder="Minimum 1"
+                  className="ml-auto h-10 w-16 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336] md:w-44"
+                  placeholder={placeholderValue}
                 />
               </div>
               {(isInitialLoad.current || hasGrowFeature) && (
-                <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                  <p>Grow rate per interval, %</p>
-                  <InfoCards
-                    value="growRate"
-                    text={infoCardsDescription.growRate.description}
-                  />
+                <div className="relative flex items-center justify-between gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                  <div className="mr-auto flex items-center gap-2">
+                    <InfoCards
+                      value="growRate"
+                      text={infoCardsDescription.growRate.description}
+                    />
+                    <p className="text-sm md:text-base">
+                      Grow rate per interval, %
+                    </p>
+                  </div>
                   <Input
                     type="number"
                     onInputChange={handleInputChange}
                     name="growRate"
+                    feature="investment"
                     value={growRate || ""}
-                    className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336]"
-                    placeholder="Minimum 1"
+                    className="ml-auto h-10 w-16 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary dark:bg-[#232336] md:w-44"
+                    placeholder={placeholderValue}
                   />
                 </div>
               )}
               {hasIntervalInvestmentFeature && (
-                <div className="relative flex items-center gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
-                  <p>Investment added each interval</p>
-                  <InfoCards
-                    value="intervalInvestment"
-                    text={infoCardsDescription.intervalInvestment.description}
-                  />
+                <div className="relative flex items-center justify-between gap-3 border-b-[1px] border-b-light-primaryBg/10 p-4">
+                  <div className="mr-auto flex items-center gap-2">
+                    <InfoCards
+                      value="intervalInvestment"
+                      text={infoCardsDescription.intervalInvestment.description}
+                    />
+                    <p className="text-sm md:text-base">
+                      Investment added each interval
+                    </p>
+                  </div>
                   <Input
                     type="number"
                     onInputChange={handleInputChange}
                     name="intervalInvestment"
+                    feature="investment"
                     value={intervalInvestment || ""}
-                    className="ml-auto h-10 w-44 rounded-md border-[1px] border-dotted border-common-cyan"
-                    placeholder="Minimum 1"
+                    className="ml-auto h-10 w-16 rounded-md border-[1px] border-dotted border-common-cyan md:w-44"
+                    placeholder={placeholderValue}
                   />
                 </div>
               )}

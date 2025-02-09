@@ -5,15 +5,26 @@ import { RootState } from "@/lib/store";
 import { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import CoinCard from "./CoinCard";
 import CoinHistoryCard from "./CoinHistoryCard";
+import DeleteCoinModal from "./DeleteCoinModal";
 import { formatHistoricDate } from "../../../utils/formatHelpers";
 
 const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const handleDeleteModalDisplay = () => {
-    setIsDeleteModalOpen((prev) => !prev);
-  };
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
   const coins = useAppSelector(
     (state: RootState) => state.portfolioSlice.portfolioCoins,
+  );
+
+  const handleDeleteModalDisplay = (id: string) => {
+    setSelectedId(id);
+  };
+
+  const closeModal = () => {
+    setSelectedId(null);
+  };
+
+  const deletedCoin = coins?.find(
+    (coin: PortfolioCoin) => coin.id === selectedId,
   );
 
   const uniqueCoinsObj = coins.reduce((acc: any, coin: PortfolioCoin) => {
@@ -27,14 +38,16 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
 
   return (
     <div
-      className={`flex w-full max-w-324 flex-col gap-4 ${
-        isDeleteModalOpen ? "blur-md" : "blur-none"
-      } relative`}
+      className={`flex w-full max-w-324 flex-col gap-4 ${deletedCoin ? "blur-md" : "blur-none"} relative`}
     >
       {!hasCoins && (
-        <div className="absolute left-1/2 top-1/2 block -translate-x-1/2 -translate-y-[10%] transform rounded-lg border-[1px] border-skeleton100 border-opacity-40 bg-opacity-45 p-8">
-          <h3>You don&apos;t have any coins in your portfolio</h3>
-          <h2>Press &quot;Add coins&quot; to add purchased coins.</h2>
+        <div className="relative left-1/2 top-1/2 block -translate-x-1/2 -translate-y-[10%] transform rounded-lg border-[1px] border-skeleton100 border-opacity-40 bg-opacity-45 p-8 text-center md:absolute">
+          <h3 className="mb-3 text-sm md:text-base">
+            You don&apos;t have any coins in your portfolio
+          </h3>
+          <h2 className="text-sm md:text-base">
+            Press &quot;Add coins&quot; to add purchased coins.
+          </h2>
         </div>
       )}
       {hasCoins &&
@@ -44,8 +57,8 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
             uniqueCoinsObj[coin.name].currentPrice > coin.currentPrice;
           return (
             <div key={coin.id}>
-              <div className="flex h-72 w-full rounded-xl bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:from-[#43434B] dark:to-[#110744]">
-                <div className="flex w-1/5 flex-col items-center justify-center gap-2 p-6 dark:bg-dark-darkBg">
+              <div className="flex h-auto w-full flex-col rounded-xl bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:from-[#43434B] dark:to-[#110744] lg:h-72 lg:flex-row">
+                <div className="flex w-full flex-row items-center justify-center gap-4 bg-light-lightBg p-6 dark:bg-dark-darkBg lg:w-1/5 lg:flex-col lg:gap-2">
                   <div className="relative h-8 w-8 rounded-md">
                     <Image
                       src={coin.image}
@@ -56,17 +69,18 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
                     />
                   </div>
                   <div className="text-center">
-                    <p className="text-xl font-bold">
+                    <p className="text-base font-bold lg:text-xl">
                       {coin.name}
                       <span className="ml-1">({coin.symbol})</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex w-4/5 flex-col justify-center gap-4 p-6">
+                <div className="flex w-full flex-col justify-center gap-4 p-6 lg:w-4/5">
                   <CoinCard
                     params={{ id: coin.id }}
-                    handleDeleteModalDisplay={handleDeleteModalDisplay}
-                    isDeleteModalOpen={isDeleteModalOpen}
+                    handleDeleteModalDisplay={() =>
+                      handleDeleteModalDisplay(coin.id)
+                    }
                   />
                   <hr className="bg-light-primary/80"></hr>
                   <CoinHistoryCard
@@ -78,6 +92,17 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
                     openEditForm={() => openEditForm(coin.id)}
                   />
                 </div>
+                {deletedCoin && (
+                  <DeleteCoinModal
+                    handleDeleteModalDisplay={() =>
+                      handleDeleteModalDisplay(deletedCoin.id)
+                    }
+                    coinId={deletedCoin.id}
+                    name={deletedCoin.name}
+                    coinImage={deletedCoin.image}
+                    closeModal={closeModal}
+                  />
+                )}
               </div>
             </div>
           );
