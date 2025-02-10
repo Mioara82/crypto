@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useGetCoinsTableDataQuery } from "@/lib/api";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
-import { InfiniteCoinScroll } from "./InfiniteScroll";
+import InfiniteCoinScroll from "./InfiniteScroll";
 import NotificationCard from "../../UI-components/NotificationCard";
 import TableSkeleton from "../../UI-components/Skeleton/TableSkeleton";
 import { TableTitle } from "./TableTitle";

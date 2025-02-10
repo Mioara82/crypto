@@ -14,7 +14,7 @@ interface InfiniteCoinScrollProps {
   coins: any;
 }
 
-export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
+const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
   fetchMoreData,
   isSuccess,
   isLoading,
@@ -98,3 +98,5 @@ export const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
     </>
   );
 };
+
+export default InfiniteCoinScroll;
