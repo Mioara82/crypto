@@ -9,16 +9,15 @@ import ChartsContainer from "./components/blocks-components/Charts/ChartsContain
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
 import ChartFilterTabs from "./components/UI-components/ChartFilterTabs";
 import SelectedCoins from "./components/blocks-components/SelectedCoins";
-//import TableSkeleton from "./components/UI-components/Skeleton/TableSkeleton";
-// import CoinsTable from "./components/blocks-components/CoinTable/CoinsTable";
+import TableSkeleton from "./components/UI-components/Skeleton/TableSkeleton";
 
 const CoinCarousel = lazy(
   () => import("./components/blocks-components/CoinCarousel/CoinCarousel"),
 );
 
-// const CoinsTable = lazy(
-//   () => import("./components/blocks-components/CoinTable/CoinsTable"),
-// );
+const CoinsTable = lazy(
+  () => import("./components/blocks-components/CoinTable/CoinsTable"),
+);
 
 export default function Home() {
   const currency = useAppSelector(
@@ -35,7 +34,7 @@ export default function Home() {
     <>
       <main className="flex w-full max-w-screen-2xl flex-col justify-center gap-10 overflow-x-hidden overscroll-none dark:bg-dark-primaryBg md:m-auto xl:mx-[72px]">
         <ButtonGroup />
-        <p className="text-sm md:text-base ml-3 text-light-secondaryTextColor dark:text-dark-chartTextColor">
+        <p className="ml-3 text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor md:text-base">
           Select the currency to view statistics
         </p>
         <Suspense fallback={<CarouselSkeleton />}>
@@ -50,9 +49,9 @@ export default function Home() {
         <SelectedCoins />
         <ChartsContainer currency={currency} days={selectedFilter.period} />
         <ChartFilterTabs />
-        {/* <Suspense fallback={<TableSkeleton />}>
+        <Suspense fallback={<TableSkeleton />}>
           <CoinsTable />
-        </Suspense> */}
+        </Suspense>
       </main>
     </>
   );
