@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
-import { Space_Grotesk} from "next/font/google";
+import { Space_Grotesk, Inter} from "next/font/google";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const viewport:Viewport = {
   colorScheme:"dark",
@@ -30,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
+        className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
       >
         <ThemeProvider>
           <StoreProvider>
