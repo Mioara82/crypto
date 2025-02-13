@@ -1,31 +1,12 @@
 import React from "react";
-import Link from "next/link";
-import Button from "./Button";
-import { useIsActive } from "@/lib/hooks/useIsActive";
+import CoinsButton from "./CoinsButton";
+import ConverterButton from "./ConverterButton";
 
 const ButtonGroup = React.memo(function ButtonGroup() {
-  const [isActive, setIsActive] = useIsActive(0);
-  const handleActiveButton = (value: number) => {
-    setIsActive((prev) => (prev === value ? null : value));
-  };
   return (
-    <div className="flex justify-center gap-1 md:justify-start md:w-[506px] h-[53px] rounded-md p-1">
-      <Link href="/" passHref>
-        <Button
-          text="Coins"
-          isActive={isActive === 0}
-          onButtonClick={() => handleActiveButton(0)}
-          feature="large"
-        />
-      </Link>
-      <Link href="/Converter" passHref>
-        <Button
-          text="Converter"
-          isActive={isActive === 1}
-          onButtonClick={() => handleActiveButton(1)}
-          feature="large"
-        />
-      </Link>
+    <div className="flex h-[53px] justify-center gap-1 rounded-md p-1 md:w-[506px] md:justify-start">
+      <CoinsButton />
+      <ConverterButton />
     </div>
   );
 });
