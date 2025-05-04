@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
@@ -31,19 +30,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClientClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
-        >
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
+      >
+        <ClientClerkProvider>
           <ThemeProvider>
             <StoreProvider>
               <GlobalNavbar />
               {children}
             </StoreProvider>
           </ThemeProvider>
-        </body>
-      </html>
-    </ClientClerkProvider>
+        </ClientClerkProvider>
+      </body>
+    </html>
   );
 }
