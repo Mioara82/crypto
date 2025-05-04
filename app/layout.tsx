@@ -1,7 +1,8 @@
+
 import type { Metadata } from "next";
 import type { Viewport } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Space_Grotesk, Inter } from "next/font/google";
+import { ClientClerkProvider } from "./ClientClerkProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";
@@ -30,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClientClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
           className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
@@ -43,6 +44,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ClientClerkProvider>
   );
 }
