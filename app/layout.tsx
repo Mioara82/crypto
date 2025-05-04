@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
-import { Space_Grotesk, Inter} from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Space_Grotesk, Inter } from "next/font/google";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";
@@ -9,8 +10,8 @@ import "./globals.css";
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 const inter = Inter({ subsets: ["latin"] });
 
-export const viewport:Viewport = {
-  colorScheme:"dark",
+export const viewport: Viewport = {
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -29,17 +30,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
-      >
-        <ThemeProvider>
-          <StoreProvider>
-            <GlobalNavbar />
-            {children}
-          </StoreProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
+        >
+          <ThemeProvider>
+            <StoreProvider>
+              <GlobalNavbar />
+              {children}
+            </StoreProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
