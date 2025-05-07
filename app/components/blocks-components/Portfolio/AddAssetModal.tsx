@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import type React from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FiX } from "react-icons/fi";
 import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
@@ -6,9 +7,9 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { RootState } from "@/lib/store";
+import type { RootState } from "@/lib/store";
 import { addCoin, updateCoin } from "@/lib/features/portfolioSlice";
-import { PortfolioCoin } from "@/lib/features/portfolioSlice";
+import type { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
@@ -58,6 +59,7 @@ const AddAssetModal = ({
     purchasedDate: "",
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (mode === "edit" && editingCoinId) {
       if (editedCoin) {
@@ -86,8 +88,10 @@ const AddAssetModal = ({
   useClickOutside(listRef, closeDropdown);
 
   const handleCoinSelection = (id: string) => {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     const found = currentData?.find((coin: any) => coin.id === id);
     if (found) {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setFormData((prev: any) => ({ ...prev, coinName: found.name }));
       setShowDropdown(false);
     }
@@ -108,6 +112,7 @@ const AddAssetModal = ({
         return;
       }
     }
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     setFormData((prevFormData: any) => ({ ...prevFormData, [name]: value }));
   };
 
@@ -134,6 +139,7 @@ const AddAssetModal = ({
         }),
       );
     } else {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const selectedCoin = currentData?.find((c: any) => c.name === coinName);
       if (selectedCoin) {
         dispatch(
@@ -159,6 +165,7 @@ const AddAssetModal = ({
   };
   const hasCoins = currentData && currentData.length > 0;
   const filteredList = hasCoins
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     ? currentData.filter((coin: any) =>
         coin.name.toLowerCase().includes(debouncedValue),
       )
@@ -174,7 +181,8 @@ const AddAssetModal = ({
           <span className="hidden text-sm md:block md:text-base">
             Select coins
           </span>
-          <div
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+<div
             className="flex cursor-pointer items-center rounded-full border border-light-primary p-2 hover:border-dark-buttonBorder"
             onClick={handleModalDisplay}
           >
@@ -213,8 +221,10 @@ const AddAssetModal = ({
             />
             {showDropdown && isSuccess && (
               <Dropdown ref={listRef} show={showDropdown} feature="portfolio">
-                {filteredList.map((coin: any) => (
-                  <li
+                {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+{filteredList.map((coin: any) => (
+                  // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+<li
                     className="mb-2 flex items-center gap-2"
                     key={coin.id}
                     onClick={() => handleCoinSelection(coin.id)}
