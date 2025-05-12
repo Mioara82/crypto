@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as functions from "../functions.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,14 +26,13 @@ import type * as functions from "../functions.js";
  */
 declare const fullApi: ApiFromModules<{
   functions: typeof functions;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   FunctionReference<any, "public">
 >;
 export declare const internal: FilterApi<
   typeof fullApi,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   FunctionReference<any, "internal">
 >;
