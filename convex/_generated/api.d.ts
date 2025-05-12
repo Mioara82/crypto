@@ -28,9 +28,11 @@ declare const fullApi: ApiFromModules<{
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   FunctionReference<any, "public">
 >;
 export declare const internal: FilterApi<
   typeof fullApi,
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   FunctionReference<any, "internal">
 >;
