@@ -3,7 +3,7 @@ import { lazy } from "react";
 import { Suspense } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useGetSearchDataQuery } from "@/lib/api";
-import { RootState } from "@/lib/store";
+import type { RootState } from "@/lib/store";
 import ButtonGroup from "./components/UI-components/ButtonGroup";
 import ChartsContainer from "./components/blocks-components/Charts/ChartsContainer";
 import CarouselSkeleton from "./components/UI-components/Skeleton/CarouselSkeleton";
