@@ -1,8 +1,9 @@
 "use client";
 import { lazy } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
-import { RootState } from "@/lib/store";
-import { Currency } from "@/lib/features/currencySlice";
+import type { RootState } from "@/lib/store";
+import type { Currency } from "@/lib/features/currencySlice";
+import type { ChartCoinData } from "@/lib/features/coinSlice";
 
 const Chart = lazy(() => import("./Chart"));
 
@@ -13,12 +14,14 @@ const ChartsContainer = ({
   currency: Currency;
   days: number;
 }) => {
-  const { chartCoins } = useAppSelector((state: RootState) => state.chartCoins);
+  const {chartCoins} = useAppSelector(
+    (state: RootState) => state.chartCoins,
+  );
   const chartCoinKeys = Object.keys(chartCoins);
   const chartCoinsValues = Object.values(chartCoins);
   const [coinOneName, coinTwoName] = chartCoinKeys;
   const [coinOne, coinTwo] = chartCoinsValues;
-  const data = chartCoinsValues.map((coin: any) => coin.currentPrice);
+  const data = (chartCoinsValues as ChartCoinData[]).map((coin) => coin.currentPrice);
   const isLogScale =
     data.length > 1 && Math.max(...data) / Math.min(...data) > 10;
 
@@ -28,7 +31,7 @@ const ChartsContainer = ({
 
   return (
     <>
-      <div className="block h-auto justify-center gap-5 md:flex">
+      <div className="block h-auto justify-center gap-5 md:flex px-10">
         <Chart
           chartType={chartType}
           currency={currency}

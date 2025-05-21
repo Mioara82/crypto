@@ -1,4 +1,4 @@
-import { AppStore } from "../store";
+import type { AppStore } from "../store";
 
 export interface MarketData {
   coinData: number;
@@ -35,7 +35,9 @@ export interface Coin {
   totalSupply:number;
   marketCap:number;
   totalVolume:number;
-  sparkline: any;
+  sparkline: {
+    price:number
+  }
 }
 
 export interface FormProps {
@@ -56,6 +58,13 @@ export interface HistoricData {
 export interface CoinConfigProps {
   id: string;
   historicData: HistoricData[];
+}
+
+export interface ChartCoin {
+  id:string;
+  name:string;
+  currentPrice:number;
+  symbol:string;
 }
 
 export type RootState = ReturnType<AppStore["getState"]>;
