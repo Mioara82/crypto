@@ -29,9 +29,10 @@ import { useChart } from "@/lib/hooks/useChart";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import NotificationCard from "../../UI-components/NotificationCard";
 import ButtonWrapper from "./ButtonWrapper";
-import { RootState } from "@/lib/store";
-import { Currency } from "@/lib/features/currencySlice";
-import { DisplayProps } from "./Chart";
+import type { RootState } from "@/lib/store";
+import type { Currency } from "@/lib/features/currencySlice";
+import type { DisplayProps } from "./Chart";
+import type { ChartCoin } from "@/lib/types/types";
 
 ChartJS.register(
   CategoryScale,
@@ -60,15 +61,15 @@ const LineChart = ({
   showChart,
   handleChartDisplayOnMobile,
 }: {
-  coinOne: any;
-  coinTwo: any | null;
+  coinOne: ChartCoin;
+  coinTwo: ChartCoin | null;
   coinOneName: string;
   coinTwoName: string;
   currency: Currency;
   days: number;
   chartType: "linear" | "logarithmic";
-  isLinear: any;
-  isLogarithmic: any;
+  isLinear: boolean;
+  isLogarithmic: boolean;
   showChart: DisplayProps;
   handleChartDisplayOnMobile: () => void;
 }) => {
@@ -102,16 +103,16 @@ const LineChart = ({
   }, [coinOne]);
 
   const labels =
-    coinOneData?.prices?.map((price: any) =>
+    coinOneData?.prices?.map((price: number[]) =>
       handleCoinDateDisplay(price[0], days),
     ) || [];
 
-  const timestamps = coinOneData?.prices?.map((price: any) => price[0] || []);
+  const timestamps = coinOneData?.prices?.map((price: number[]) => price[0] || []);
 
   const coinOnePrices =
-    coinOneData?.prices?.map((price: any) => price[1]) || [];
+    coinOneData?.prices?.map((price: number[]) => price[1]) || [];
   const coinTwoPrices =
-    coinTwoData?.prices?.map((price: any) => price[1]) || [];
+    coinTwoData?.prices?.map((price: number[]) => price[1]) || [];
 
   const options = useMemo(
     () =>
@@ -135,9 +136,7 @@ const LineChart = ({
       coinTwoName,
       timestamps,
       currencySymbol,
-      setDisplayDate,
-      setDisplayPriceOne,
-      setDisplayPriceTwo,
+      days,
       chartType,
     ],
   );
@@ -172,7 +171,7 @@ const LineChart = ({
                 </p>
                 <p className="text-sm font-bold md:text-xl 2xl:text-2.5xl">
                   {currencySymbol}
-                  {displayPriceOne.toFixed(2) || coinOne.currentPrice}
+                  {displayPriceOne?.toFixed(2) || coinOne.currentPrice}
                 </p>
               </div>
               <p className="hidden font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor sm:text-xs md:text-base">
@@ -217,7 +216,7 @@ const LineChart = ({
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4"></div>
+                  <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4"/>
                   <div className="text-xs md:text-base">{coinOneName}</div>
                 </div>
                 <div className="hidden lg:flex">
@@ -231,7 +230,7 @@ const LineChart = ({
               </div>
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"></div>
+                  <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"/>
                   <div className="text-xs md:text-base">{coinTwoName}</div>
                 </div>
                 <div className="hidden lg:flex">
@@ -239,7 +238,7 @@ const LineChart = ({
                     {currencySymbol}{" "}
                   </span>
                   <span className="text-xs md:text-base">
-                    {(displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
+                    {coinTwo && (displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
                   </span>
                 </div>
               </div>

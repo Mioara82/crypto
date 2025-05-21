@@ -5,7 +5,7 @@ import HomeButton from "../UI-components/homeButton";
 import PortfolioButton from "../UI-components/portfolioButton";
 import Search from "./search";
 import CurrencySelector from "./currencySelector";
-import AuthHeader from "./auth/authHeader";
+import AuthHeader from "../../auth/authHeader";
 
 const Navbar = () => {
   return (
@@ -17,10 +17,12 @@ const Navbar = () => {
           <PortfolioButton />
         </div>
         <div className="flex items-center justify-stretch gap-6">
-          <AuthHeader />
+          
           <Search />
           <CurrencySelector />
+          <AuthHeader />
           <ThemeSwitch />
+
         </div>
       </div>
     </div>

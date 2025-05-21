@@ -3,7 +3,7 @@ import { useVisibility } from "@/lib/hooks/useVisibility";
 
 interface NotificationCardProps {
   text: string;
-  isSuccess: boolean;
+  isSuccess?: boolean;
 }
 
 const NotificationCard: React.FC<NotificationCardProps> = ({
