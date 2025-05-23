@@ -22,15 +22,15 @@ backgroundColor:"bg-light-primary dark:bg-dark-primaryBg"
     },
   },
  formFieldInput: {
-        backgroundColor: '#ffffff',
-        '&:-webkit-autofill': {
-          backgroundColor: '#f8fafc !important',
+        backgroundColor: "#ffffff",
+        "&:-webkit-autofill": {
+          backgroundColor: "#f8fafc !important",
         },
-        '&:-webkit-autofill:hover': {
-          backgroundColor: '#f8fafc !important',
+        "&:-webkit-autofill:hover": {
+          backgroundColor: "#f8fafc !important",
         },
-        '&:-webkit-autofill:focus': {
-          backgroundColor: '#f8fafc !important',
+        "&:-webkit-autofill:focus": {
+          backgroundColor: "#f8fafc !important",
         }
       },
   socialButtonBlockButtonText: {

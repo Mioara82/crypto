@@ -1,14 +1,13 @@
 import {
   SignInButton,
-  SignedIn,
-  SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 const AuthHeader = () => {
   return (
     <div className="flex items-center gap-3">
-      <SignedOut>
+      <Unauthenticated>
         <SignInButton mode="redirect">
           <button
             type="button"
@@ -17,10 +16,10 @@ const AuthHeader = () => {
             Login
           </button>
         </SignInButton>
-      </SignedOut>
-      <SignedIn>
+      </Unauthenticated>
+      <Authenticated>
         <UserButton />
-      </SignedIn>
+      </Authenticated>
     </div>
   );
 };
