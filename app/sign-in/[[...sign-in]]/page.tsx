@@ -19,10 +19,6 @@ export default function LoginPage() {
     }
   }, [isLoaded, user, router]);
 
-  useEffect(() => {
-    console.log("custom sign in page rendered")
-  },[])
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-light-primaryBg dark:bg-dark-primaryBg">
     <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-dark-secondaryBg">
