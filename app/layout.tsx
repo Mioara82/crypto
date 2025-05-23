@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import { ClientClerkProvider } from "./ClientClerkProvider";
-import { ConvexClientProvider } from "./ConvexClientProvider";
+import ConvexClientProvider from "./ConvexClientProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
 import GlobalNavbar from "./components/blocks-components/GlobalNavbar";
@@ -35,16 +35,16 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
       >
-        <ConvexClientProvider>
-          <ClientClerkProvider>
+        <ClientClerkProvider>
+          <ConvexClientProvider>
             <ThemeProvider>
               <StoreProvider>
                 <GlobalNavbar />
                 {children}
               </StoreProvider>
             </ThemeProvider>
-          </ClientClerkProvider>
-        </ConvexClientProvider>
+          </ConvexClientProvider>
+        </ClientClerkProvider>
       </body>
     </html>
   );
