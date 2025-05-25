@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
-import { ClientClerkProvider } from "./ClientClerkProvider";
+//import { ClientClerkProvider } from "./ClientClerkProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "./ConvexClientProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import StoreProvider from "./providers/StoreProvider";
@@ -35,7 +36,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
       >
-        <ClientClerkProvider>
+        <ClerkProvider>
           <ConvexClientProvider>
             <ThemeProvider>
               <StoreProvider>
@@ -44,7 +45,7 @@ export default function RootLayout({
               </StoreProvider>
             </ThemeProvider>
           </ConvexClientProvider>
-        </ClientClerkProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
