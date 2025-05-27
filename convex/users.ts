@@ -8,12 +8,9 @@ export const store = mutation({
       throw new Error("Called storeUser without authentication present");
     }
 
-    const {
-      subject,
-      name = "Anonymous",
-      email = "no-email",
-      tokenIdentifier,
-    } = identity;
+    const subject = identity.subject;
+    const email = identity.email ?? "no-email";
+    const tokenIdentifier = identity.tokenIdentifier;
 
     const username = email.split("@")[0];
 
@@ -25,19 +22,17 @@ export const store = mutation({
       .unique();
     if (existingUser !== null) {
       const shouldUpdateUser =
-        existingUser.name !== name ||
         existingUser.email !== email ||
         existingUser.username !== username;
 
       if (shouldUpdateUser) {
-        await ctx.db.patch(existingUser._id, { name, email, username });
+        await ctx.db.patch(existingUser._id, { email, username });
       }
       return existingUser._id;
     }
     // If it's a new identity, create a new `User`.
     return await ctx.db.insert("users", {
       id: subject,
-      name,
       email,
       username,
       tokenIdentifier,

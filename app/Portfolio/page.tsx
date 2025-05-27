@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { lazy } from "react";
 import { useIsShown } from "@/lib/hooks/useIsShown";
+import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffects";
 import AddAssetModal from "../components/blocks-components/Portfolio/AddAssetModal";
 import Button from "../components/UI-components/Button";
+import Spinner from "../components/UI-components/Spinner";
 import InvestmentCalculator from "../components/blocks-components/Portfolio/InvestmentCalculator";
 
 const AssetCoins = lazy(
@@ -31,6 +33,24 @@ const Portfolio = () => {
   const handleCalculatorDisplay = () => {
     setIsCalculatorOpen((prev) => !prev);
   };
+
+  const {isLoading, isAuthenticated} = useStoreUserEffect();
+
+  if(isLoading){
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if(!isAuthenticated){
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-lg">Please log in to view your portfolio.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">

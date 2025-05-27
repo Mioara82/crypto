@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
-//import { ClientClerkProvider } from "./ClientClerkProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "./ConvexClientProvider";
 import ThemeProvider from "./providers/ThemeProvider";

@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { Provider } from "react-redux";
-import { persistor, makeStore, AppStore } from "../../lib/store";
+import { persistor, makeStore, type AppStore } from "../../lib/store";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCard from "../components/UI-components/Skeleton/Loading";
 
