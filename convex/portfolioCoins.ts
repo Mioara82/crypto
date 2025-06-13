@@ -1,16 +1,11 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { portfolioCoinSchema } from "./schemas/portfolioCoinSchema";
 
 export const addPortfolioCoin = mutation({
   args: {
     userId: v.string(),
-    coinId: v.string(),
-    name: v.string(),
-    symbol: v.string(),
-    image: v.string(),
-    currentPrice: v.number(),
-    purchaseAmount: v.number(),
-    purchasedDate: v.string(),
+    ...portfolioCoinSchema.fields,
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -37,24 +32,11 @@ export const getPortfolioCoins = query({
 export const updatePortfolioCoin = mutation({
   args: {
     id: v.id("portfolioCoins"),
-    name: v.string(),
-    symbol: v.string(),
-    image: v.string(),
-    currentPrice: v.number(),
-    purchaseAmount: v.number(),
-    purchasedDate: v.string(),
+    ...portfolioCoinSchema.fields,
   },
   handler: async (
     ctx,
-    {
-      id,
-      name,
-      symbol,
-      image,
-      currentPrice,
-      purchaseAmount,
-      purchasedDate,
-    },
+    { id, name, symbol, image, currentPrice, purchaseAmount, purchasedDate },
   ) => {
     return await ctx.db.patch(id, {
       name,

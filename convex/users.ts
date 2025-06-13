@@ -1,4 +1,27 @@
-import { mutation } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
+
+export const getUser = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called getUser without authentication present");
+    }
+
+    const subject = identity.subject;
+    const tokenIdentifier = identity.tokenIdentifier;
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", tokenIdentifier))
+      .unique();
+
+    if (!user) {
+      throw new Error(`User with id ${subject} not found`);
+    }
+
+    return user;
+  },
+});
 
 export const store = mutation({
   args: {},
@@ -22,8 +45,7 @@ export const store = mutation({
       .unique();
     if (existingUser !== null) {
       const shouldUpdateUser =
-        existingUser.email !== email ||
-        existingUser.username !== username;
+        existingUser.email !== email || existingUser.username !== username;
 
       if (shouldUpdateUser) {
         await ctx.db.patch(existingUser._id, { email, username });

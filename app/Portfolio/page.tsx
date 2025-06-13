@@ -7,6 +7,7 @@ import AddAssetModal from "../components/blocks-components/Portfolio/AddAssetMod
 import Button from "../components/UI-components/Button";
 import Spinner from "../components/UI-components/Spinner";
 import InvestmentCalculator from "../components/blocks-components/Portfolio/InvestmentCalculator";
+import type { PortfolioCoin } from "@/lib/features/portfolioSlice";
 
 const AssetCoins = lazy(
   () => import("../components/blocks-components/Portfolio/AssetCoins"),
@@ -15,18 +16,18 @@ const AssetCoins = lazy(
 const Portfolio = () => {
   const [show, handleIsShown] = useIsShown();
   const [mode, setMode] = useState<"add" | "edit">("add");
-  const [editingCoinId, setIsEditingCoinId] = useState<string | null>(null);
+  const [editingCoin, setIsEditingCoin] = useState<PortfolioCoin | null>(null);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState<boolean>(false);
 
   const openAddForm = () => {
     setMode("add");
-    setIsEditingCoinId(null);
+    setIsEditingCoin(null);
     handleIsShown();
   };
 
-  const openEditForm = (id: string) => {
+  const openEditForm = (coin:PortfolioCoin) => {
     setMode("edit");
-    setIsEditingCoinId(id);
+    setIsEditingCoin(coin);
     handleIsShown();
   };
 
@@ -82,7 +83,7 @@ const Portfolio = () => {
         <AddAssetModal
           mode={mode}
           handleModalDisplay={handleIsShown}
-          editingCoinId={editingCoinId}
+          editingCoin={editingCoin}
         />
       )}
       {isCalculatorOpen && (
