@@ -4,21 +4,19 @@ import { IconContext } from "react-icons/lib";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 interface InputProps {
-  value: string | number;
-  onInputChange: any;
+  value?: string | number;
+  onInputChange?: any;
   [key: string]: any;
 }
 
 const Input: React.FC<InputProps> = ({
-  value,
-  onInputChange,
   feature,
   ...rest
 }) => {
   const isMobile = useIsMobile();
   return (
     <div className="z-1 relative">
-      <input value={value} onChange={onInputChange} {...rest} />
+      <input {...rest} />
       {isMobile &&
         feature !== "converter" &&
         feature !== "portfolio" &&

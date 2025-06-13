@@ -2,9 +2,12 @@
 import React, { useState } from "react";
 import { lazy } from "react";
 import { useIsShown } from "@/lib/hooks/useIsShown";
+import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffects";
 import AddAssetModal from "../components/blocks-components/Portfolio/AddAssetModal";
 import Button from "../components/UI-components/Button";
+import Spinner from "../components/UI-components/Spinner";
 import InvestmentCalculator from "../components/blocks-components/Portfolio/InvestmentCalculator";
+import type { PortfolioCoin } from "@/lib/features/portfolioSlice";
 
 const AssetCoins = lazy(
   () => import("../components/blocks-components/Portfolio/AssetCoins"),
@@ -13,24 +16,42 @@ const AssetCoins = lazy(
 const Portfolio = () => {
   const [show, handleIsShown] = useIsShown();
   const [mode, setMode] = useState<"add" | "edit">("add");
-  const [editingCoinId, setIsEditingCoinId] = useState<string | null>(null);
+  const [editingCoin, setIsEditingCoin] = useState<PortfolioCoin | null>(null);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState<boolean>(false);
 
   const openAddForm = () => {
     setMode("add");
-    setIsEditingCoinId(null);
+    setIsEditingCoin(null);
     handleIsShown();
   };
 
-  const openEditForm = (id: string) => {
+  const openEditForm = (coin:PortfolioCoin) => {
     setMode("edit");
-    setIsEditingCoinId(id);
+    setIsEditingCoin(coin);
     handleIsShown();
   };
 
   const handleCalculatorDisplay = () => {
     setIsCalculatorOpen((prev) => !prev);
   };
+
+  const {isLoading, isAuthenticated} = useStoreUserEffect();
+
+  if(isLoading){
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if(!isAuthenticated){
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-lg">Please log in to view your portfolio.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -62,7 +83,7 @@ const Portfolio = () => {
         <AddAssetModal
           mode={mode}
           handleModalDisplay={handleIsShown}
-          editingCoinId={editingCoinId}
+          editingCoin={editingCoin}
         />
       )}
       {isCalculatorOpen && (
