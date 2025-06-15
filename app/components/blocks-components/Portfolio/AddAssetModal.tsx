@@ -4,7 +4,7 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FiX } from "react-icons/fi";
 import { useForm } from "react-hook-form";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useGetCoinListWithMarketDataQuery } from "@/lib/api";
@@ -118,8 +118,6 @@ const AddAssetModal = ({
   const updatePortfolioCoin = useMutation(
     api.portfolioCoins.updatePortfolioCoin,
   );
-  const user = useQuery(api.users.getUser);
-  const userId = user?._id || "";
 
   const onSubmit = async (data: PortfolioFormData) => {
     if (mode === "edit" && editingCoin) {
@@ -140,7 +138,6 @@ const AddAssetModal = ({
       );
       if (selectedCoin) {
         await addPortfolioCoin({
-          userId,
           coinId: selectedCoin?.id,
           image: selectedCoin.image || "",
           name: selectedCoin.name || "",
