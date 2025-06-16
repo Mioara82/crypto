@@ -262,7 +262,7 @@ export const getDisplayCoin = (value: string, list: any) => {
     if (value === "") {
       return coin.name.toLowerCase() === "bitcoin";
     } else {
-      return coin.name.toLowerCase() === value.toLowerCase();
+      return coin.name === value;
     }
   });
 };

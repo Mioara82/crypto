@@ -19,7 +19,6 @@ import type { PortfolioFormData } from "./formSchema";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
-import { getCurrentDate, getDisplayCoin } from "@/app/utils/formatHelpers";
 import { findHighlighted } from "@/app/utils/searchFormatter";
 
 const AddAssetModal = ({
@@ -56,11 +55,6 @@ const AddAssetModal = ({
     reset,
   } = useForm<PortfolioFormData>({
     resolver: zodResolver(portfolioFormSchema as any),
-    defaultValues: {
-      coinName: "",
-      purchasedAmount: 0,
-      purchasedDate: getCurrentDate(),
-    },
     mode: "onChange",
   });
 
@@ -101,7 +95,11 @@ const AddAssetModal = ({
     const value = e.target.value;
     setSearchValue(value.trim().toLowerCase());
     setValue("coinName", value, { shouldValidate: true });
-    setShowDropdown(true);
+    if (value.trim().length > 0) {
+      setShowDropdown(true);
+    } else {
+      setShowDropdown(false);
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +132,7 @@ const AddAssetModal = ({
     } else {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const selectedCoin = currentData?.find(
-        (c: PortfolioCoin) => c.name === data.coinName,
+        (coin: PortfolioCoin) => coin.name === data.coinName,
       );
       if (selectedCoin) {
         await addPortfolioCoin({
@@ -161,9 +159,12 @@ const AddAssetModal = ({
         coin.name.toLowerCase().includes(debouncedValue),
       )
     : [];
-
+  const selectedCoin = currentData?.find(
+    (coin: PortfolioCoin) => coin.name === watchedCoinName,
+  );
   const displayCoin =
-    editingCoin && getDisplayCoin(editingCoin.name, filteredList);
+    selectedCoin ??
+    currentData?.find((coin: PortfolioCoin) => coin.name === "Bitcoin");
   const imageSize = isMobile ? 6 : 8;
 
   return (
@@ -204,8 +205,10 @@ const AddAssetModal = ({
                   />
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <h5 className="text-xs opacity-20">Your selected coin</h5>
-                  <h4 className="text-sm md:text-base">{displayCoin.name}</h4>
+                  {/* <h5 className="text-xs opacity-20">Your selected coin</h5> */}
+                  <h4 className="text-center text-sm md:text-base">
+                    {displayCoin.name}
+                  </h4>
                 </div>
               </div>
             )}
@@ -214,7 +217,7 @@ const AddAssetModal = ({
             <legend className="sr-only">Add transaction</legend>
             <div className="z-0 flex h-full w-3/4 flex-col justify-center gap-2 md:w-1/2 lg:w-full lg:gap-4">
               <div>
-                <label htmlFor="coinName" className="font-light">
+                <label htmlFor="coinName" className="text-xs font-light">
                   Select a coin
                 </label>
                 <Input
@@ -274,7 +277,7 @@ const AddAssetModal = ({
                 )}
               </div>
               <div>
-                <label htmlFor="purchasedAmount" className="font-light">
+                <label htmlFor="purchasedAmount" className="text-xs font-light">
                   Purchased amount
                 </label>
                 <Input
@@ -300,7 +303,7 @@ const AddAssetModal = ({
                 )}
               </div>
               <div>
-                <label htmlFor="purchasedDate" className="font-light">
+                <label htmlFor="purchasedDate" className="text-xs font-light">
                   Purchased date
                 </label>
                 <Input
