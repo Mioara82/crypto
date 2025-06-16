@@ -10,7 +10,7 @@ import AuthHeader from "../../auth/authHeader";
 const Navbar = () => {
   return (
     <div className="z-999">
-      <div className="max-w-1296 relative mx-auto flex w-full justify-between gap-2 px-6 py-2 md:gap-6 md:py-4">
+      <nav aria-label="Main site navigation" className="max-w-1296 relative mx-auto flex w-full justify-between gap-2 px-6 py-2 md:gap-6 md:py-4">
         <Logo />
         <div className="flex w-24 gap-2 md:w-[265px] md:gap-6">
           <HomeButton />
@@ -24,7 +24,7 @@ const Navbar = () => {
           <ThemeSwitch />
 
         </div>
-      </div>
+      </nav>
     </div>
   );
 };
