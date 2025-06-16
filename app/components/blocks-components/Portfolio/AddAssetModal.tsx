@@ -169,25 +169,31 @@ const AddAssetModal = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="absolute left-1/2 top-1/4 z-40 flex w-[85%] -translate-x-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg md:w-1/2 md:-translate-y-1/2 lg:h-96 lg:w-221"
+      className="absolute left-1/2 top-10 z-40 flex w-3/4 -translate-x-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg md:top-1/2 md:w-1/2 md:-translate-y-1/2"
     >
       <div className="relative h-full w-full">
-        <div className="mb-4 flex items-center justify-between">
-          <span className="hidden text-sm md:block md:text-base">
-            Select coins
-          </span>
+        <div className="mb-4 flex items-center justify-center">
           {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-          <div
-            className="flex cursor-pointer items-center rounded-full border border-light-primary p-2 hover:border-dark-buttonBorder"
+          <h2>Add transaction</h2>
+          <button
+            type="button"
+            aria-label="Close modal"
+            className="ml-auto flex cursor-pointer items-center rounded-full border border-light-primary p-2 hover:border-dark-buttonBorder"
             onClick={handleModalDisplay}
           >
             <FiX />
-          </div>
+          </button>
         </div>
         <div className="flex h-3/4 flex-col gap-8 lg:flex-row">
-          <div className="hidden w-full rounded-lg bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:bg-dark-lightBg dark:from-[#43434B] dark:to-[#110744] md:relative md:block lg:w-2/5">
+          <aside
+            aria-labelledby="selectedCoin"
+            className="hidden w-full rounded-lg bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:bg-dark-lightBg dark:from-[#43434B] dark:to-[#110744] md:relative md:block lg:w-2/5"
+          >
             {displayCoin && (
-              <div className="flex flex-row items-center justify-center gap-4 p-3 lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:flex-col lg:p-0">
+              <div
+                className="flex flex-row items-center justify-center gap-4 p-3 lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:flex-col lg:p-0"
+                id="selectedCoin"
+              >
                 <div className={`relative h-${imageSize} w-${imageSize}`}>
                   <Image
                     src={displayCoin.image}
@@ -203,100 +209,144 @@ const AddAssetModal = ({
                 </div>
               </div>
             )}
-          </div>
-          <div className="z-0 flex h-full w-full flex-col gap-4">
-            <Input
-              type="text"
-              feature="portfolio"
-              value={watchedCoinName}
-              {...register("coinName", {
-                onChange: handleCoinNameChange,
-              })}
-              placeholder="Select coin"
-              className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
-            />
-            {errors.coinName && <p>{errors.coinName.message}</p>}
-            {showDropdown && isSuccess && (
-              <Dropdown ref={listRef} show={showDropdown} feature="portfolio">
-                {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-                {filteredList.map((coin: any) => (
-                  // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                  <li
-                    className="mb-2 flex items-center gap-2"
-                    key={coin.id}
-                    onClick={() => handleCoinSelection(coin.id)}
+          </aside>
+          <fieldset>
+            <legend className="sr-only">Add transaction</legend>
+            <div className="z-0 flex h-full w-3/4 flex-col justify-center gap-2 md:w-1/2 lg:w-full lg:gap-4">
+              <div>
+                <label htmlFor="coinName" className="font-light">
+                  Select a coin
+                </label>
+                <Input
+                  type="text"
+                  id="coinName"
+                  feature="portfolio"
+                  aria-invalid={errors.coinName ? "true" : "false"}
+                  aria-describedby="coinNameHelp"
+                  value={watchedCoinName}
+                  {...register("coinName", {
+                    onChange: handleCoinNameChange,
+                  })}
+                  className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
+                />
+
+                {errors.coinName && (
+                  <span
+                    id="coinNameHelp"
+                    className="text-xs text-common-red/80"
                   >
-                    <div className="relative h-6 w-6">
-                      <Image
-                        src={coin.image}
-                        alt="coin image"
-                        fill
-                        style={{ objectFit: "contain" }}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                    <p className="text-sm">
-                      {findHighlighted(coin.name, searchValue)}
-                    </p>
-                    <p className="text-xs opacity-40">
-                      <span className="mr-1">{currencySymbol}</span>
-                      {coin.currentPrice.toFixed(3)}
-                    </p>
-                  </li>
-                ))}
-              </Dropdown>
-            )}
-            <Input
-              type="number"
-              feature="portfolio"
-              value={watchedAmount}
-              {...register("purchasedAmount", {
-                valueAsNumber: true,
-                onChange: handleAmountChange,
-              })}
-              placeholder="Purchased amount"
-              className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
-            />
-            {errors.purchasedAmount && <p>{errors.purchasedAmount.message}</p>}
-            <div>
-              <Input
-                type="date"
-                feature="portfolio"
-                value={watchedDate}
-                {...register("purchasedDate", {
-                  onChange: handleDateChange,
-                  validate: (value) => {
-                    const date = new Date(value);
-                    const today = new Date();
-                    if (date > today) {
-                      return "Purchased date cannot be in the future.";
-                    }
-                    return true;
-                  },
-                })}
-                placeholder="Purchased date"
-                className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
-              />
-              {errors.purchasedDate && (
-                <p className="mt-2 text-xs text-common-red/80">
-                  {errors.purchasedDate.message}
-                </p>
-              )}
+                    {errors.coinName.message}
+                  </span>
+                )}
+                {showDropdown && isSuccess && (
+                  <Dropdown
+                    ref={listRef}
+                    show={showDropdown}
+                    feature="portfolio"
+                  >
+                    {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+                    {filteredList.map((coin: any) => (
+                      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                      <li
+                        className="mb-2 flex items-center gap-2"
+                        key={coin.id}
+                        onClick={() => handleCoinSelection(coin.id)}
+                      >
+                        <div className="relative h-6 w-6">
+                          <Image
+                            src={coin.image}
+                            alt="coin image"
+                            fill
+                            style={{ objectFit: "contain" }}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        <p className="text-sm">
+                          {findHighlighted(coin.name, searchValue)}
+                        </p>
+                        <p className="text-xs opacity-40">
+                          <span className="mr-1">{currencySymbol}</span>
+                          {coin.currentPrice.toFixed(3)}
+                        </p>
+                      </li>
+                    ))}
+                  </Dropdown>
+                )}
+              </div>
+              <div>
+                <label htmlFor="purchasedAmount" className="font-light">
+                  Purchased amount
+                </label>
+                <Input
+                  type="number"
+                  id="purchasedAmount"
+                  aria-invalid={errors.purchasedAmount ? "true" : "false"}
+                  aria-describedby="purchasedAmountHelp"
+                  feature="portfolio"
+                  value={watchedAmount}
+                  {...register("purchasedAmount", {
+                    valueAsNumber: true,
+                    onChange: handleAmountChange,
+                  })}
+                  className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
+                />
+                {errors.purchasedAmount && (
+                  <span
+                    id="purchasedAmountHelp"
+                    className="text-xs text-common-red/80"
+                  >
+                    {errors.purchasedAmount.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label htmlFor="purchasedDate" className="font-light">
+                  Purchased date
+                </label>
+                <Input
+                  type="date"
+                  id="purchasedDate"
+                  aria-invalid={errors.purchasedDate ? "true" : "false"}
+                  aria-describedby="purchasedDateHelp"
+                  feature="portfolio"
+                  value={watchedDate}
+                  {...register("purchasedDate", {
+                    onChange: handleDateChange,
+                    validate: (value) => {
+                      const date = new Date(value);
+                      const today = new Date();
+                      if (date > today) {
+                        return "Purchased date cannot be in the future.";
+                      }
+                      return true;
+                    },
+                  })}
+                  className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
+                />
+                {errors.purchasedDate && (
+                  <span
+                    id="purchasedDateHelp"
+                    className="mt-2 text-xs text-common-red/80"
+                  >
+                    {errors.purchasedDate.message}
+                  </span>
+                )}
+              </div>
+              <div className="z-50 flex gap-2">
+                <Button
+                  feature="large"
+                  text="Cancel"
+                  onButtonClick={handleModalDisplay}
+                />
+                <Button
+                  feature="large"
+                  text="Add transaction"
+                  onButtonClick={handleSubmit(onSubmit)}
+                  disabled={!isValid}
+                />
+              </div>
             </div>
-            <div className="z-50 flex gap-2">
-              <Button
-                feature="large"
-                text="Cancel"
-                onButtonClick={handleModalDisplay}
-              />
-              <Button
-                feature="large"
-                text="Save coin"
-                onButtonClick={handleSubmit(onSubmit)}
-                disabled={!isValid}
-              />
-            </div>
-          </div>
+          </fieldset>
         </div>
       </div>
     </form>
