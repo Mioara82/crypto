@@ -91,7 +91,7 @@ export const api = createApi({
         `/coins/${id}/market_chart/?vs_currency=${currency}&days=${days}`,
       keepUnusedDataFor:180,
        providesTags: (result, error, { id, currency, days }) => [
-        { type: 'ChartData', id: `${id}-${currency}-${days}` }
+        { type: "ChartData", id: `${id}-${currency}-${days}` }
       ],
       transformResponse: (response: ChartDetails) => {
         if (!response) {
@@ -109,7 +109,7 @@ export const api = createApi({
         `/coins/markets?vs_currency=${currency}&order=${sortQuery}&per_page=${coinsPerPage}&page=${currentPage}&market_data=true&price_change_percentage=1h%2C24h%2C7d&sparkline=true`,
       keepUnusedDataFor:600,
        providesTags: (result, error, { currency, currentPage, sortQuery }) => [
-        { type: 'CoinsTableDetails', id: `${currency}-${currentPage}-${sortQuery}` }
+        { type: "CoinsTableDetails", id: `${currency}-${currentPage}-${sortQuery}` }
       ],
       transformResponse: (response: CoinsTableDetails[]) => {
         if (!response) {
@@ -155,7 +155,7 @@ export const api = createApi({
         `coins/${id}/history?date=${date}&localization=true`,
       keepUnusedDataFor:3600,
        providesTags: (result, error, { id, date }) => [
-        { type: 'CoinDetails', id: `${id}-${date}` }
+        { type: "CoinDetails", id: `${id}-${date}` }
       ],
       transformResponse: (response: CoinHistoryData) => {
         if (!response) {
