@@ -177,7 +177,7 @@ export const createBarChartOptions = (
     tooltip: {
       enabled: true,
       usePointStyle: true,
-      backgroundColor: "rgba(0, 0, 0, 0)",
+      backgroundColor: "rgba(19,18,26,1)",
       caretSize: 5,
       caretPadding: 1,
       mode: "index",
@@ -190,16 +190,17 @@ export const createBarChartOptions = (
           const currentLabel = timestamps[dataIndex];
           const formattedDate = formatTimestampToDate(Number(currentLabel));
           if (datasetIndex === 0) {
-            volume = formatMarketCap(coinOneVolumes[dataIndex]);
+            volume = coinOneVolumes[dataIndex];
             name = coinOneName;
             setDisplayVolumeOne(volume);
           } else if (datasetIndex === 1 && coinTwoVolumes && coinTwoName) {
-            volume = formatMarketCap(coinTwoVolumes[dataIndex]);
+            volume = coinTwoVolumes[dataIndex];
             name = coinTwoName;
             setDisplayVolumeTwo(volume);
           }
           setDisplayDate(formattedDate);
-          return `${name}: ${currencySymbol}${volume}`;
+          const formattedVolume = volume && formatMarketCap(volume);
+          return `${name}: ${currencySymbol}${formattedVolume}`;
         },
         title: (tooltipItems) => tooltipItems[0].label,
       },
