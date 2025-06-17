@@ -23,13 +23,21 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails", "CoinsTableDetails"],
+  tagTypes: ["MarketDataApi", "CoinSearch", "CoinDetails", "CoinsTableDetails", "ChartData"],
+  keepUnusedDataFor:300,
+  refetchOnMountOrArgChange:300,
+  refetchOnFocus:false,
+  refetchOnReconnect:true,
   endpoints: (builder) => ({
     getSearchData: builder.query({
       query: (currency) => `/coins/markets/?vs_currency=${currency}`,
+      keepUnusedDataFor:300,
+      providesTags:["CoinSearch"],
     }),
     getMarketData: builder.query({
       query: () => "global",
+      keepUnusedDataFor:300,
+      providesTags: ["MarketDataApi"],
       transformResponse: (response: { data: MarketDataApi }) => {
         return {
           coinData: response.data.active_cryptocurrencies,
@@ -44,6 +52,10 @@ export const api = createApi({
     getCoinData: builder.query({
       query: (id) =>
         `/coins/${id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`,
+      keepUnusedDataFor:600,
+      providesTags: (result, error, id) => [
+        { type: "CoinDetails", id },
+      ],
       transformResponse: (response: CoinDetailsProps) => {
         return {
           id: response.id,
@@ -77,6 +89,10 @@ export const api = createApi({
     getChartData: builder.query({
       query: ({ id, currency, days }) =>
         `/coins/${id}/market_chart/?vs_currency=${currency}&days=${days}`,
+      keepUnusedDataFor:180,
+       providesTags: (result, error, { id, currency, days }) => [
+        { type: "ChartData", id: `${id}-${currency}-${days}` }
+      ],
       transformResponse: (response: ChartDetails) => {
         if (!response) {
           throw new Error("No data received");
@@ -91,6 +107,10 @@ export const api = createApi({
     getCoinsTableData: builder.query({
       query: ({ currency, coinsPerPage, currentPage, sortQuery }) =>
         `/coins/markets?vs_currency=${currency}&order=${sortQuery}&per_page=${coinsPerPage}&page=${currentPage}&market_data=true&price_change_percentage=1h%2C24h%2C7d&sparkline=true`,
+      keepUnusedDataFor:600,
+       providesTags: (result, error, { currency, currentPage, sortQuery }) => [
+        { type: "CoinsTableDetails", id: `${currency}-${currentPage}-${sortQuery}` }
+      ],
       transformResponse: (response: CoinsTableDetails[]) => {
         if (!response) {
           throw new Error("No data received");
@@ -115,6 +135,8 @@ export const api = createApi({
     }),
     getCoinListWithMarketData: builder.query({
       query: ({ currency }) => `coins/markets?vs_currency=${currency}`,
+      keepUnusedDataFor:300,
+      providesTags: ["CoinSearch"],
       transformResponse: (response: PortfolioCoinProps[]) => {
         if (!response) {
           throw new Error("No data received");
@@ -131,6 +153,10 @@ export const api = createApi({
     getHistoricalCoinsData: builder.query({
       query: ({ id, date }) =>
         `coins/${id}/history?date=${date}&localization=true`,
+      keepUnusedDataFor:3600,
+       providesTags: (result, error, { id, date }) => [
+        { type: "CoinDetails", id: `${id}-${date}` }
+      ],
       transformResponse: (response: CoinHistoryData) => {
         if (!response) {
           throw new Error("No data received");
