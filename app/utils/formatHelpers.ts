@@ -267,10 +267,10 @@ export const getDisplayCoin = (value: string, list: any) => {
   });
 };
 
-export function getMostRecentPrice(data: number[][]) {
+export function getMostRecentCoinData(data: number[][]) {
   if (!data || data.length === 0) return 0;
-  const mostRecentPrice = data[data.length - 1][1];
-  return mostRecentPrice;
+  const mostRecentCoinData = data[data.length - 1][1];
+  return mostRecentCoinData;
 }
 
 export function calculateTotalInvestmentPerGrowth(

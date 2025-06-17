@@ -33,7 +33,7 @@ import type { RootState } from "@/lib/store";
 import type { Currency } from "@/lib/features/currencySlice";
 import type { DisplayProps } from "./Chart";
 import type { ChartCoin } from "@/lib/types/types";
-import { getMostRecentPrice } from "@/app/utils/formatHelpers";
+import { getMostRecentCoinData } from "@/app/utils/formatHelpers";
 
 ChartJS.register(
   CategoryScale,
@@ -114,13 +114,13 @@ const LineChart = ({
 
   useEffect(() => {
     if (coinOne) {
-      setDisplayPriceOne(getMostRecentPrice(coinOneData?.prices || []));
+      setDisplayPriceOne(getMostRecentCoinData(coinOneData?.prices || []));
     }
   }, [coinOne, coinOneData]);
 
   useEffect(() => {
     if (coinTwo) {
-      setDisplayPriceTwo(getMostRecentPrice(coinTwoData?.prices || []));
+      setDisplayPriceTwo(getMostRecentCoinData(coinTwoData?.prices || []));
     }
   }, [coinTwo, coinTwoData]);
 
