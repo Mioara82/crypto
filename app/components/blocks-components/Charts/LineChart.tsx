@@ -33,6 +33,7 @@ import type { RootState } from "@/lib/store";
 import type { Currency } from "@/lib/features/currencySlice";
 import type { DisplayProps } from "./Chart";
 import type { ChartCoin } from "@/lib/types/types";
+import { getMostRecentPrice } from "@/app/utils/formatHelpers";
 
 ChartJS.register(
   CategoryScale,
@@ -97,22 +98,31 @@ const LineChart = ({
   const [displayPriceOne, setDisplayPriceOne] = useState<number>(0);
   const [displayPriceTwo, setDisplayPriceTwo] = useState<number>(0);
 
-  useEffect(() => {
-    if (!coinOne) return;
-    setDisplayPriceOne(coinOne.currentPrice);
-  }, [coinOne]);
-
   const labels =
     coinOneData?.prices?.map((price: number[]) =>
       handleCoinDateDisplay(price[0], days),
     ) || [];
 
-  const timestamps = coinOneData?.prices?.map((price: number[]) => price[0] || []);
+  const timestamps = coinOneData?.prices?.map(
+    (price: number[]) => price[0] || [],
+  );
 
   const coinOnePrices =
     coinOneData?.prices?.map((price: number[]) => price[1]) || [];
   const coinTwoPrices =
     coinTwoData?.prices?.map((price: number[]) => price[1]) || [];
+
+  useEffect(() => {
+    if (coinOne) {
+      setDisplayPriceOne(getMostRecentPrice(coinOneData?.prices || []));
+    }
+  }, [coinOne, coinOneData]);
+
+  useEffect(() => {
+    if (coinTwo) {
+      setDisplayPriceTwo(getMostRecentPrice(coinTwoData?.prices || []));
+    }
+  }, [coinTwo, coinTwoData]);
 
   const options = useMemo(
     () =>
@@ -216,7 +226,7 @@ const LineChart = ({
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4"/>
+                  <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4" />
                   <div className="text-xs md:text-base">{coinOneName}</div>
                 </div>
                 <div className="hidden lg:flex">
@@ -230,7 +240,7 @@ const LineChart = ({
               </div>
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4"/>
+                  <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4" />
                   <div className="text-xs md:text-base">{coinTwoName}</div>
                 </div>
                 <div className="hidden lg:flex">
@@ -238,7 +248,8 @@ const LineChart = ({
                     {currencySymbol}{" "}
                   </span>
                   <span className="text-xs md:text-base">
-                    {coinTwo && (displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
+                    {coinTwo &&
+                      (displayPriceTwo || coinTwo.currentPrice).toFixed(2)}
                   </span>
                 </div>
               </div>
