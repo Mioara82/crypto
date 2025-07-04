@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { RootState } from "@/lib/store";
-import { PortfolioCoin } from "@/lib/features/portfolioSlice";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 import CoinCard from "./CoinCard";
 import CoinHistoryCard from "./CoinHistoryCard";
 import DeleteCoinModal from "./DeleteCoinModal";
 import { formatHistoricDate } from "../../../utils/formatHelpers";
+import type { Id } from "@/convex/_generated/dataModel";
+import type { Doc } from "@/convex/_generated/dataModel";
 
-const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
+const AssetCoins = ({
+  openEditForm,
+  userId,
+}: {
+  openEditForm: any;
+  userId: Id<"users">;
+}) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const coins = useAppSelector(
-    (state: RootState) => state.portfolioSlice.portfolioCoins,
+  const coins = useQuery(
+    api.portfolioCoins.getPortfolioCoins,
+    userId ? { userId } : "skip",
   );
 
   const handleDeleteModalDisplay = (id: string) => {
@@ -22,17 +30,19 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
   const closeModal = () => {
     setSelectedId(null);
   };
+  type PortfolioCoin = Doc<"portfolioCoins">;
 
-  const deletedCoin = coins?.find(
-    (coin: PortfolioCoin) => coin.id === selectedId,
+  const deletedCoin = coins?.find((coin) => coin.coinId === selectedId);
+
+  const uniqueCoinsObj = (coins ?? []).reduce<Record<string, PortfolioCoin>>(
+    (acc, coin) => {
+      if (!acc[coin.coinId]) {
+        acc[coin.name] = coin;
+      }
+      return acc;
+    },
+    {},
   );
-
-  const uniqueCoinsObj = coins.reduce((acc: any, coin: PortfolioCoin) => {
-    if (!acc[coin.id]) {
-      acc[coin.name] = coin;
-    }
-    return acc;
-  }, {});
 
   const hasCoins = coins && coins.length > 0;
 
@@ -53,15 +63,20 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
       {hasCoins &&
         coins.map((coin: PortfolioCoin) => {
           const date = formatHistoricDate(coin.purchasedDate);
+          const currentPrice = uniqueCoinsObj[coin.name]?.currentPrice;
+          const purchasePrice = coin.currentPrice;
           const hasProfit =
-            uniqueCoinsObj[coin.name].currentPrice > coin.currentPrice;
+            currentPrice !== undefined &&
+            purchasePrice !== undefined &&
+            currentPrice > purchasePrice;
+            
           return (
-            <div key={coin.id}>
+            <div key={coin.coinId}>
               <div className="flex h-auto w-full flex-col rounded-xl bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] dark:from-[#43434B] dark:to-[#110744] lg:h-72 lg:flex-row">
                 <div className="flex w-full flex-row items-center justify-center gap-4 bg-light-lightBg p-6 dark:bg-dark-darkBg lg:w-1/5 lg:flex-col lg:gap-2">
                   <div className="relative h-8 w-8 rounded-md">
                     <Image
-                      src={coin.image}
+                      src={coin.image || "/images/coin-placeholder.png"}
                       alt="coin icon"
                       fill
                       style={{ objectFit: "contain" }}
@@ -77,29 +92,31 @@ const AssetCoins = ({ openEditForm }: { openEditForm: any }) => {
                 </div>
                 <div className="flex w-full flex-col justify-center gap-4 p-6 lg:w-4/5">
                   <CoinCard
-                    params={{ id: coin.id }}
+                    params={{ id: coin.coinId }}
                     handleDeleteModalDisplay={() =>
-                      handleDeleteModalDisplay(coin.id)
+                      handleDeleteModalDisplay(coin.coinId)
                     }
                   />
                   <hr className="bg-light-primary/80"></hr>
                   <CoinHistoryCard
                     date={date}
                     amount={coin.purchaseAmount}
-                    params={{ id: coin.id }}
-                    currentPrice={coin.currentPrice}
-                    hasProfit={hasProfit}
-                    openEditForm={() => openEditForm(coin.id)}
+                    params={{ id: coin.coinId }}
+                    currentPrice={coin.currentPrice ?? 0}
+                    hasProfit={hasProfit || false}
+                    openEditForm={() => openEditForm(coin)}
                   />
                 </div>
                 {deletedCoin && (
                   <DeleteCoinModal
                     handleDeleteModalDisplay={() =>
-                      handleDeleteModalDisplay(deletedCoin.id)
+                      handleDeleteModalDisplay(deletedCoin.coinId)
                     }
-                    coinId={deletedCoin.id}
+                    coinId={deletedCoin.coinId}
                     name={deletedCoin.name}
-                    coinImage={deletedCoin.image}
+                    coinImage={
+                      deletedCoin.image ?? "/images/coin-placeholder.png"
+                    }
                     closeModal={closeModal}
                   />
                 )}

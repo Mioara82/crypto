@@ -7,11 +7,13 @@ import AddAssetModal from "../components/blocks-components/Portfolio/AddAssetMod
 import Button from "../components/UI-components/Button";
 import Spinner from "../components/UI-components/Spinner";
 import InvestmentCalculator from "../components/blocks-components/Portfolio/InvestmentCalculator";
-import type { PortfolioCoin } from "@/lib/features/portfolioSlice";
+import type { Doc } from "@/convex/_generated/dataModel";
 
 const AssetCoins = lazy(
   () => import("../components/blocks-components/Portfolio/AssetCoins"),
 );
+
+type PortfolioCoin = Doc<"portfolioCoins">;
 
 const Portfolio = () => {
   const [show, handleIsShown] = useIsShown();
@@ -35,7 +37,7 @@ const Portfolio = () => {
     setIsCalculatorOpen((prev) => !prev);
   };
 
-  const {isLoading, isAuthenticated} = useStoreUserEffect();
+  const {isLoading, isAuthenticated, userId} = useStoreUserEffect();
 
   if(isLoading){
     return (
@@ -76,7 +78,9 @@ const Portfolio = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <AssetCoins openEditForm={openEditForm} />
+          {userId && (
+            <AssetCoins openEditForm={openEditForm} userId={userId} />
+          )}
         </div>
       </main>
       {show && (

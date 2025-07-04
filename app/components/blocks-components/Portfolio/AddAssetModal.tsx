@@ -2,6 +2,7 @@ import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Doc } from "@/convex/_generated/dataModel";
 import { FiX } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { useMutation } from "convex/react";
@@ -13,13 +14,15 @@ import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { RootState } from "@/lib/store";
-import type { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import { portfolioFormSchema } from "./formSchema";
 import type { PortfolioFormData } from "./formSchema";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
 import { findHighlighted } from "@/app/utils/searchFormatter";
+import { getDisplayCoin } from "@/app/utils/formatHelpers";
+
+type PortfolioCoin = Doc<"portfolioCoins">;
 
 const AddAssetModal = ({
   handleModalDisplay,
@@ -80,9 +83,9 @@ const AddAssetModal = ({
 
   useClickOutside(listRef, closeDropdown);
 
-  const handleCoinSelection = (id: string) => {
+  const handleCoinSelection = (coinId: string) => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const found = currentData?.find((coin: PortfolioCoin) => coin.id === id);
+    const found = currentData?.find((coin) => coin.id === coinId);
     if (found) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setValue("coinName", found.name, { shouldValidate: true });
@@ -118,21 +121,17 @@ const AddAssetModal = ({
   );
 
   const onSubmit = async (data: PortfolioFormData) => {
-    if (mode === "edit" && editingCoin) {
+    if (mode === "edit" && editingCoin?._id) {
       await updatePortfolioCoin({
-        id: editingCoin.id as Id<"portfolioCoins">,
-        coinId: editingCoin?.id,
-        name: editingCoin?.name || "",
-        symbol: editingCoin?.symbol,
-        image: editingCoin.image,
-        currentPrice: editingCoin.currentPrice,
-        purchaseAmount: editingCoin.purchaseAmount || 0,
-        purchasedDate: editingCoin.purchasedDate || "",
+        id: editingCoin._id as Id<"portfolioCoins">,
+        name: data.coinName,
+        purchaseAmount: data.purchasedAmount,
+        purchasedDate: data.purchasedDate,
       });
     } else {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const selectedCoin = currentData?.find(
-        (coin: PortfolioCoin) => coin.name === data.coinName,
+        (coin) => coin.name === data.coinName,
       );
       if (selectedCoin) {
         await addPortfolioCoin({
@@ -155,16 +154,21 @@ const AddAssetModal = ({
   const hasCoins = currentData && currentData.length > 0;
   const filteredList = hasCoins
     ? // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      currentData.filter((coin: PortfolioCoin) =>
+      currentData.filter((coin) =>
         coin.name.toLowerCase().includes(debouncedValue),
       )
     : [];
   const selectedCoin = currentData?.find(
-    (coin: PortfolioCoin) => coin.name === watchedCoinName,
+    (coin) => coin.name === watchedCoinName,
   );
-  const displayCoin =
-    selectedCoin ??
-    currentData?.find((coin: PortfolioCoin) => coin.name === "Bitcoin");
+
+  const displayCoin = getDisplayCoin(
+    currentData,
+    "edit",
+    editingCoin,
+    selectedCoin,
+  );
+
   const imageSize = isMobile ? 6 : 8;
 
   return (
@@ -343,7 +347,7 @@ const AddAssetModal = ({
                 />
                 <Button
                   feature="large"
-                  text="Add transaction"
+                  text={mode === "edit" ? "Update asset" : "Add asset"}
                   onButtonClick={handleSubmit(onSubmit)}
                   disabled={!isValid}
                 />
