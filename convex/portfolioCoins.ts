@@ -1,9 +1,16 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { portfolioCoinSchema } from "./schemas/portfolioCoinSchema";
 
 export const addPortfolioCoin = mutation({
-  args: portfolioCoinSchema,
+  args: {
+    name: v.string(),
+    coinId: v.string(),
+    symbol: v.optional(v.string()),
+    image: v.optional(v.string()),
+    currentPrice: v.optional(v.float64()),
+    purchaseAmount: v.float64(),
+    purchasedDate: v.string(),
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
@@ -40,19 +47,18 @@ export const getPortfolioCoins = query({
 export const updatePortfolioCoin = mutation({
   args: {
     id: v.id("portfolioCoins"),
-    ...portfolioCoinSchema.fields,
+    name: v.optional(v.string()),
+    purchaseAmount: v.optional(v.number()),
+    purchasedDate: v.optional(v.string()),
   },
-  handler: async (
-    ctx,
-    { id, name, symbol, image, currentPrice, purchaseAmount, purchasedDate },
-  ) => {
-    return await ctx.db.patch(id, {
-      name,
-      symbol,
-      image,
-      currentPrice,
-      purchaseAmount,
-      purchasedDate,
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.get(args.id);
+    if (!existing) throw new Error("Coin not found");
+    
+    await ctx.db.patch(args.id, {
+      name: args.name ?? existing.name,
+      purchaseAmount: args.purchaseAmount ?? existing.purchaseAmount,
+      purchasedDate: args.purchasedDate ?? existing.purchasedDate,
     });
   },
 });
