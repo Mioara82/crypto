@@ -1,4 +1,4 @@
-export interface MarketData {
+export interface MarketDataAPI {
   active_cryptocurrencies: number;
   markets: number;
   total_market_cap: { [key: string]: number };

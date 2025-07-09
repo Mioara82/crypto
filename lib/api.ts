@@ -8,7 +8,7 @@ import type {
   SearchDataArgs,
 } from "./createConvexEndpoint";
 import type {
-  MarketData,
+  MarketDataAPI,
   CoinDetailsProps,
   ChartDetails,
   CoinsTableDetails,
@@ -42,16 +42,10 @@ export const api: any = createApi({
     getMarketData: builder.query<any, ConvexQueryArgs>({
       ...createConvexEndpoint("MarketData", {
         keepUnusedDataFor: 300,
-        transformResponse: (response: MarketData) => {
+        transformResponse: (response: MarketDataAPI) => {
           if (!response || typeof response !== "object") {
             throw new Error("Invalid response structure from CoinGecko API");
           }
-
-          // const data = response.data;
-
-          // if (!data) {
-          //   throw new Error("No data property found in response");
-          // }
 
           return {
             coinData: response.active_cryptocurrencies || 0,
