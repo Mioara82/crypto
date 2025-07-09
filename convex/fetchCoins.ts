@@ -16,7 +16,7 @@ const buildCoinGeckoUrl = (endpoint: string, query: any): string => {
     case "CoinsTableDetails":
       return `${baseUrl}/coins/markets?vs_currency=${query.currency}&order=${query.sortQuery}&per_page=${query.coinsPerPage}&page=${query.currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
 
-    case "MarketData":
+    case "MarketDataAPI":
       return `${baseUrl}/global`;
 
     case "CoinSearch":
@@ -76,12 +76,7 @@ export const fetchCoins = action({
       throw new Error(`CoinGecko fetch failed: ${response.statusText}`);
     }
     const jsonResponse = await response.json();
-    // if (args.endpoint === "MarketData") {
-    //   console.log(
-    //     "MarketData API Response:",
-    //     JSON.stringify(jsonResponse, null, 2),
-    //   );
-    // }
+  
     return await jsonResponse;
   },
 });
