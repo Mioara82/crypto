@@ -35,8 +35,8 @@ export const createConvexEndpoint = <TArgs extends ConvexQueryArgs = ConvexQuery
     refetchOnMountOrArgChange?: boolean | number;
     refetchOnFocus?: boolean;
     refetchOnReconnect?: boolean;
-     providesTags?: (result: TTransformed | undefined, error: any, arg: TArgs) => any[];
-    transformResponse?: (response: TResult, arg: TArgs) => TTransformed;
+     providesTags?: (_result: TTransformed | undefined, _error: any, _arg: TArgs) => any[];
+    transformResponse?: (_response: TResult, _arg: TArgs) => TTransformed;
   }
 ) => ({
   async queryFn(args: TArgs) {
