@@ -1,4 +1,3 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { convex } from "@/convex/client";
 import { api as convexApi } from "@/convex/_generated/api";
 
@@ -15,6 +14,7 @@ export interface ChartDataArgs extends ConvexQueryArgs {
 
 export interface CoinsTableDetailsArgs extends ConvexQueryArgs {
   currency:string;
+  coinsPerPage:number;
   currentPage:number;
   sortQuery:string;
 }
@@ -22,6 +22,10 @@ export interface CoinsTableDetailsArgs extends ConvexQueryArgs {
 export interface HistoricalCoinDataArgs extends ConvexQueryArgs {
   id:string;
   date:string;
+}
+
+export interface SearchDataArgs extends ConvexQueryArgs {
+  currency: string;
 }
 
 export const createConvexEndpoint = <TArgs extends ConvexQueryArgs = ConvexQueryArgs, TResult = any, TTransformed = any>(
@@ -37,15 +41,14 @@ export const createConvexEndpoint = <TArgs extends ConvexQueryArgs = ConvexQuery
 ) => ({
   async queryFn(args: TArgs) {
     try {
-      const rawData = await convex.query(
-        convexApi.fetchCoins.fetchCoins, // or just convexApi.fetchCoins if that works
+      const rawData = await convex.action(
+        convexApi.fetchCoins.fetchCoins,
         {
           endpoint: args.endpoint,
           query: args.query,
         }
       );
       
-      // Apply transformation if provided
       const data = options?.transformResponse ? options.transformResponse(rawData, args) : rawData;
       
       return { data };

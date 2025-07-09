@@ -26,8 +26,12 @@ const ConverterBox = () => {
     (state: RootState) => state.currency.symbol,
   );
   const dispatch = useAppDispatch();
-  const { currentData } = useGetSearchDataQuery(currency);
-  const coinsList = currentData?.slice(0, 30);
+  const { data, isLoading} = useGetSearchDataQuery({
+    endpoint: "SearchData",
+    query: { currency },
+  });
+
+  const coinsList = !isLoading && data?.slice(0, 30);
 
   const exchangeValue =
     parseFloat(
@@ -64,6 +68,7 @@ const ConverterBox = () => {
   return (
     <>
       <div className="relative flex w-full flex-col items-center justify-center gap-6 md:flex-row">
+        {isLoading && <p>Loading data</p>}
         <div className="flex min-w-full flex-col justify-center gap-10 rounded-2xl bg-light-primary p-6 shadow-2xl dark:bg-dark-lightBg md:min-w-[50%] md:basis-2/4">
           <h5 className="font-light">You sell</h5>
           <div className="flex h-6 items-center justify-between gap-5">

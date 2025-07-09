@@ -27,7 +27,10 @@ export default function Home() {
     (state: RootState) => state.converter.selectedFilter,
   );
 
-  const { data, isSuccess } = useGetSearchDataQuery(currency);
+  const { data, isSuccess } = useGetSearchDataQuery({
+    endpoint: "SearchData",
+    query: { currency: currency.toLowerCase() },
+  });
   const coinList = data?.slice(0, 20);
 
   return (

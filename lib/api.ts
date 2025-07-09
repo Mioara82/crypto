@@ -1,60 +1,65 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { convex } from "@/convex/client";
-import { api as convexApi } from "@/convex/_generated/api";
 import { createConvexEndpoint } from "./createConvexEndpoint";
 import type {
   ConvexQueryArgs,
   ChartDataArgs,
   CoinsTableDetailsArgs,
   HistoricalCoinDataArgs,
+  SearchDataArgs,
 } from "./createConvexEndpoint";
 import type {
-  MarketDataApi,
+  MarketData,
   CoinDetailsProps,
   ChartDetails,
   CoinsTableDetails,
   CoinHistoryData,
   PortfolioCoinProps,
 } from "./types/apiInterfaces";
-import { create } from "domain";
-
-// const apiKey: string = process.env.COINGECKO_API_KEY || "";
-// const url = "https://api.coingecko.com/api/v3";
 
 export const api: any = createApi({
   reducerPath: "api",
   baseQuery: fakeBaseQuery(),
   tagTypes: [
-    "MarketDataApi",
+    "MarketData",
     "CoinSearch",
     "CoinDetails",
     "CoinsTableDetails",
     "ChartData",
   ],
-  keepUnusedDataFor: 300,
-  refetchOnMountOrArgChange: 300,
+  keepUnusedDataFor: 600,
+  refetchOnMountOrArgChange: 600,
   refetchOnFocus: false,
-  refetchOnReconnect: true,
+  refetchOnReconnect: false,
   endpoints: (builder) => ({
-    getSearchData: builder.query<any, ConvexQueryArgs>({
+    getSearchData: builder.query<any, SearchDataArgs>({
       ...createConvexEndpoint("CoinSearch", {
         keepUnusedDataFor: 300,
-        providesTags: (result, error, arg) => [
-          { type: "CoinSearch", id: arg.query.id },
+        providesTags: (result, error, { currency }) => [
+          { type: "SearchData", id: `${currency}` },
         ],
       }),
     }),
     getMarketData: builder.query<any, ConvexQueryArgs>({
-      ...createConvexEndpoint("MarketDataApi", {
+      ...createConvexEndpoint("MarketData", {
         keepUnusedDataFor: 300,
-        transformResponse: (response: MarketDataApi) => {
+        transformResponse: (response: MarketData) => {
+          if (!response || typeof response !== "object") {
+            throw new Error("Invalid response structure from CoinGecko API");
+          }
+
+          // const data = response.data;
+
+          // if (!data) {
+          //   throw new Error("No data property found in response");
+          // }
+
           return {
-            coinData: response.active_cryptocurrencies,
-            exchange: response.markets,
-            totalMarketCap: response.total_market_cap,
-            totalVolumePerCurrency: response.total_volume,
-            btcMarketCapPercentage: response.market_cap_percentage.btc,
-            ethMarketCapPercentage: response.market_cap_percentage.eth,
+            coinData: response.active_cryptocurrencies || 0,
+            exchange: response.markets || 0,
+            totalMarketCap:  response.total_market_cap || {},
+            totalVolumePerCurrency:  response.total_volume || {},
+            btcMarketCapPercentage: response.market_cap_percentage?.btc || 0,
+            ethMarketCapPercentage: response.market_cap_percentage?.eth || 0,
           };
         },
       }),
@@ -116,10 +121,14 @@ export const api: any = createApi({
     getCoinsTableData: builder.query<any, CoinsTableDetailsArgs>({
       ...createConvexEndpoint("CoinsTableDetails", {
         keepUnusedDataFor: 600,
-        providesTags: (result, error, { currency, currentPage, sortQuery }) => [
+        providesTags: (
+          result,
+          error,
+          { currency, currentPage, coinsPerPage, sortQuery },
+        ) => [
           {
             type: "CoinsTableDetails",
-            id: `${currency}-${currentPage}-${sortQuery}`,
+            id: `${currency}-${currentPage}-${coinsPerPage}-${sortQuery}`,
           },
         ],
         transformResponse: (response: CoinsTableDetails[]) => {

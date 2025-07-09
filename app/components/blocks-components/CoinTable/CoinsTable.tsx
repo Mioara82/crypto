@@ -29,12 +29,15 @@ const CoinsTable = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const coinsPerPage = 20;
 
-  const { data, isSuccess, isLoading, isError, refetch, isFetching } =
+  const { data, isSuccess, isLoading, isError, refetch, isFetching} =
     useGetCoinsTableDataQuery({
-      currency,
-      coinsPerPage: coinsPerPage,
-      currentPage,
-      sortQuery: sortQuery,
+      endpoint: "CoinsTableDetails",
+      query: {
+        currency,
+        coinsPerPage: coinsPerPage,
+        currentPage,
+        sortQuery: sortQuery,
+      },
     });
 
   const [coins, setCoins] = useState<Coin[] | null>(data || null);
