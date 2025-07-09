@@ -16,13 +16,14 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { RootState } from "@/lib/store";
 import { portfolioFormSchema } from "./formSchema";
 import type { PortfolioFormData } from "./formSchema";
+import { PortfolioCoin } from "@/lib/features/portfolioSlice";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
 import { findHighlighted } from "@/app/utils/searchFormatter";
 import { getDisplayCoin } from "@/app/utils/formatHelpers";
 
-type PortfolioCoin = Doc<"portfolioCoins">;
+type PortfolioCoinFromConvex = Doc<"portfolioCoins">;
 
 const AddAssetModal = ({
   handleModalDisplay,
@@ -31,7 +32,7 @@ const AddAssetModal = ({
 }: {
   handleModalDisplay: () => void;
   mode: string;
-  editingCoin: PortfolioCoin | null;
+  editingCoin: PortfolioCoinFromConvex | null;
 }) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -85,7 +86,7 @@ const AddAssetModal = ({
 
   const handleCoinSelection = (coinId: string) => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const found = currentData?.find((coin) => coin.id === coinId);
+    const found = currentData?.find((coin:PortfolioCoin) => coin.id === coinId);
     if (found) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setValue("coinName", found.name, { shouldValidate: true });
@@ -131,7 +132,7 @@ const AddAssetModal = ({
     } else {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const selectedCoin = currentData?.find(
-        (coin) => coin.name === data.coinName,
+        (coin:PortfolioCoin) => coin.name === data.coinName,
       );
       if (selectedCoin) {
         await addPortfolioCoin({
@@ -154,12 +155,12 @@ const AddAssetModal = ({
   const hasCoins = currentData && currentData.length > 0;
   const filteredList = hasCoins
     ? // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      currentData.filter((coin) =>
+      currentData.filter((coin:PortfolioCoin) =>
         coin.name.toLowerCase().includes(debouncedValue),
       )
     : [];
   const selectedCoin = currentData?.find(
-    (coin) => coin.name === watchedCoinName,
+    (coin:PortfolioCoin) => coin.name === watchedCoinName,
   );
 
   const displayCoin = getDisplayCoin(

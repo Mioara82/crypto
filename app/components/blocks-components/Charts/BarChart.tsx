@@ -74,15 +74,21 @@ const BarChart = ({
   const defaultCoinOne = { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
 
   const { data: coinOneData, isError: isErrorOne } = useGetChartDataQuery({
-    id: coinOne?.id || defaultCoinOne.id,
-    currency,
-    days,
+    endpoint: "ChartData",
+    query: {
+      id: coinOne?.id || defaultCoinOne.id,
+      currency,
+      days,
+    },
   });
 
   const { data: coinTwoData, isError: isErrorTwo } = useGetChartDataQuery({
-    id: coinTwo?.id,
-    currency,
-    days,
+    endpoint: "ChartData",
+    query: {
+      id: coinTwo?.id,
+      currency,
+      days,
+    },
   });
 
   const currencySymbol = useAppSelector(

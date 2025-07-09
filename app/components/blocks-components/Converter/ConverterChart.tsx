@@ -45,14 +45,20 @@ const ConverterChart = () => {
   );
   const days = selectedFilter.period;
   const { data: dataOne } = useGetChartDataQuery({
-    id: coinOne.id,
-    currency,
-    days,
+    endpoint: "ChartData",
+    query: {
+      id: coinOne.id,
+      currency,
+      days,
+    },
   });
   const { data: dataTwo } = useGetChartDataQuery({
-    id: coinTwo.id,
-    currency,
-    days,
+    endpoint: "ChartData",
+    query: {
+      id: coinTwo.id,
+      currency,
+      days,
+    },
   });
 
   const [displayRate, setDisplayRate] = useState<number>(0);
@@ -61,12 +67,14 @@ const ConverterChart = () => {
     if (dataOne && dataTwo) {
       const pricesOne = dataOne.prices;
       const pricesTwo = dataTwo.prices;
-      const rates = pricesOne.map(([_, priceOne], index) => {
-        const priceTwo = pricesTwo[index]?.[1] ?? 1;
-        return priceOne / priceTwo;
-      });
+      const rates = pricesOne.map(
+        ([_, priceOne]: [number, number], index: number) => {
+          const priceTwo = pricesTwo[index]?.[1] ?? 1;
+          return priceOne / priceTwo;
+        },
+      );
 
-      const timestamps = pricesOne.map(([timestamp]) => timestamp);
+      const timestamps = pricesOne.map(([timestamp]: [number]) => timestamp);
 
       return { labels: timestamps, conversionRates: rates };
     }

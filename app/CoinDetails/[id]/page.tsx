@@ -45,7 +45,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
             <div>
               <div className="mb-4 flex flex-wrap items-center gap-4">
                 <Link href="/">
-                  <ArrowLeft/>
+                  <ArrowLeft />
                 </Link>
                 <p className="text-xs sm:text-sm md:text-base">
                   Portfolio / Your {data.name} summary
@@ -113,7 +113,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                       </div>
                     </div>
                   </div>
-                  <hr className="opacity-10"/>
+                  <hr className="opacity-10" />
                   <div className="flex flex-col gap-6">
                     <div className="flex items-start gap-3">
                       <div className="justify-self-start pt-2">
@@ -188,7 +188,7 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 </div>
               </div>
             </div>
-            <hr className="opacity-10"/>
+            <hr className="opacity-10" />
             <div className="flex w-full flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-stretch sm:justify-between">
               <div className="flex w-full shrink-0 grow basis-auto flex-col gap-8 rounded-md px-8 py-10 dark:bg-dark-darkBg sm:w-1/3">
                 <div className="flex items-start gap-3">
@@ -244,11 +244,11 @@ const CoinDetails = ({ params }: { params: { id: string } }) => {
                 <div className="flex flex-col gap-2">
                   <div className="flex">
                     <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full dark:bg-common-orange"/>
+                      <div className="h-2 w-2 rounded-full dark:bg-common-orange" />
                       <div className="text-xs">{circulatingFromMax}%</div>
                     </div>
                     <div className="ml-auto flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full dark:bg-[#f8d2a6]"/>
+                      <div className="h-2 w-2 rounded-full dark:bg-[#f8d2a6]" />
                       <div className="text-xs">{100 - circulatingFromMax}%</div>
                     </div>
                   </div>
