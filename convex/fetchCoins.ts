@@ -16,7 +16,7 @@ const buildCoinGeckoUrl = (endpoint: string, query: any): string => {
     case "CoinsTableDetails":
       return `${baseUrl}/coins/markets?vs_currency=${query.currency}&order=${query.sortQuery}&per_page=${query.coinsPerPage}&page=${query.currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
 
-    case "MarketDataAPI":
+    case "MarketData":
       return `${baseUrl}/global`;
 
     case "CoinSearch":
