@@ -20,7 +20,7 @@ export const api: any = createApi({
   reducerPath: "api",
   baseQuery: fakeBaseQuery(),
   tagTypes: [
-    "MarketDataAPI",
+    "MarketData",
     "CoinSearch",
     "CoinDetails",
     "CoinsTableDetails",
@@ -40,7 +40,7 @@ export const api: any = createApi({
       }),
     }),
     getMarketData: builder.query<any, ConvexQueryArgs>({
-      ...createConvexEndpoint("MarketDataAPI", {
+      ...createConvexEndpoint("MarketData", {
         keepUnusedDataFor: 300,
         transformResponse: (response: MarketDataAPI) => {
           if (!response || typeof response !== "object") {
