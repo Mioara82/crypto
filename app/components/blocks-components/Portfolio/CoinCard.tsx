@@ -16,7 +16,10 @@ const CoinCard = ({
   //used any type as it throws type error when i pass id as string;
   handleDeleteModalDisplay: any;
 }) => {
-  const { data, isSuccess, isError } = useGetCoinDataQuery(params.id);
+  const { data, isSuccess, isError } = useGetCoinDataQuery({
+    endpoint: "CoinDetails",
+    query: { id: params.id },
+  });
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName,
   );

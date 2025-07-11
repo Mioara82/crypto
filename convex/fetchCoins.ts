@@ -11,7 +11,7 @@ const buildCoinGeckoUrl = (endpoint: string, query: any): string => {
       return `${baseUrl}/coins/${query.id}/market_chart?vs_currency=${query.currency}&days=${query.days}`;
 
     case "CoinDetails":
-      return `${baseUrl}/coins/${query.id}`;
+      return `${baseUrl}/coins/${query.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`;
 
     case "CoinsTableDetails":
       return `${baseUrl}/coins/markets?vs_currency=${query.currency}&order=${query.sortQuery}&per_page=${query.coinsPerPage}&page=${query.currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
@@ -19,12 +19,11 @@ const buildCoinGeckoUrl = (endpoint: string, query: any): string => {
     case "MarketData":
       return `${baseUrl}/global`;
 
-    case "CoinSearch":
-      queryString = new URLSearchParams(query).toString();
-      return `${baseUrl}/coins/markets?${queryString}`;
-
     case "SearchData":
       return `${baseUrl}/coins/markets/?vs_currency=${query.currency}`;
+
+    case "HistoricalCoinData":
+      return  `${baseUrl}/coins/${query.id}/history?date=${query.date}&localization=true`
 
     default:
       queryString = new URLSearchParams(query).toString();

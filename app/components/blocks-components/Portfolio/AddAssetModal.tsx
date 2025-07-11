@@ -47,7 +47,8 @@ const AddAssetModal = ({
   );
 
   const { currentData, isSuccess } = useGetCoinListWithMarketDataQuery({
-    currency,
+    endpoint:"SearchData",
+    query: { currency },
   });
 
   const {
@@ -86,7 +87,7 @@ const AddAssetModal = ({
 
   const handleCoinSelection = (coinId: string) => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const found = currentData?.find((coin:PortfolioCoin) => coin.id === coinId);
+    const found = currentData?.find((coin:any) => coin.id === coinId);
     if (found) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setValue("coinName", found.name, { shouldValidate: true });

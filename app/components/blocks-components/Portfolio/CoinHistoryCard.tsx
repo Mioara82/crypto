@@ -23,8 +23,11 @@ const CoinHistoryCard = ({
   openEditForm: any;
 }) => {
   const { data: historicData, isError } = useGetHistoricalCoinsDataQuery({
-    id: params.id,
-    date,
+    endpoint: "HistoricalCoinData",
+    query: {
+      id: params.id,
+      date,
+    },
   });
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName,
