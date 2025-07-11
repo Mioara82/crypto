@@ -59,7 +59,8 @@ const InvestmentCalculator = ({
     isLoading: isSearchLoading,
     isError: isSearchError,
   } = useGetCoinListWithMarketDataQuery({
-    currency,
+    endpoint: "SearchData",
+    query: { currency },
   });
   const [show, handleIsShown] = useIsShown();
   const [formFeature, setFormFeature] = useState<string>("valueCost");

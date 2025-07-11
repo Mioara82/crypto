@@ -21,10 +21,11 @@ export const api: any = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [
     "MarketData",
-    "CoinSearch",
+    "SearchData",
     "CoinDetails",
     "CoinsTableDetails",
     "ChartData",
+    "HistoricalCoinData"
   ],
   keepUnusedDataFor: 600,
   refetchOnMountOrArgChange: 600,
@@ -32,7 +33,7 @@ export const api: any = createApi({
   refetchOnReconnect: false,
   endpoints: (builder) => ({
     getSearchData: builder.query<any, SearchDataArgs>({
-      ...createConvexEndpoint("CoinSearch", {
+      ...createConvexEndpoint("SearchData", {
         keepUnusedDataFor: 300,
         providesTags: (result, error, { currency }) => [
           { type: "SearchData", id: `${currency}` },
@@ -150,11 +151,11 @@ export const api: any = createApi({
         },
       }),
     }),
-    getCoinListWithMarketData: builder.query<any, ConvexQueryArgs>({
-      ...createConvexEndpoint("CoinSearch", {
+    getCoinListWithMarketData: builder.query<any, SearchDataArgs>({
+      ...createConvexEndpoint("SearchData", {
         keepUnusedDataFor: 300,
-        providesTags: (result, error, arg) => [
-          { type: "CoinSearch", id: arg.query.id },
+        providesTags: (result, error, {currency}) => [
+          { type: "SearchData", id: `${currency}` },
         ],
         transformResponse: (response: PortfolioCoinProps[]) => {
           if (!response) {
@@ -171,10 +172,10 @@ export const api: any = createApi({
       }),
     }),
     getHistoricalCoinsData: builder.query<any, HistoricalCoinDataArgs>({
-      ...createConvexEndpoint("CoinDetails", {
+      ...createConvexEndpoint("HistoricalCoinData", {
         keepUnusedDataFor: 3600,
         providesTags: (result, error, { id, date }) => [
-          { type: "CoinDetails", id: `${id}-${date}` },
+          { type: "HistoricalCoinData", id: `${id}-${date}` },
         ],
         transformResponse: (response: CoinHistoryData) => {
           if (!response) {
