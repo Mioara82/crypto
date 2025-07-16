@@ -1,14 +1,14 @@
 import type { AppStore } from "../store";
 
-// export interface MarketDataApi {
-//   coinData: number;
-//   btcMarketCapPercentage: string;
-//   ethMarketCapPercentage: string;
-//   totalMarketCap: string;
-//   totalVolume: number;
-//   totalVolumePerCurrency: number;
-//   exchange: number;
-// }
+export interface PortfolioCoin {
+id: string;
+image: string;
+name: string;
+symbol: string;
+currentPrice: number;
+purchasedDate?: string;
+purchaseAmount?: number;
+}
 
 export interface CoinData {
   id: string;
