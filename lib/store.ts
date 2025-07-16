@@ -19,7 +19,6 @@ import {
 import converterReducer from "./features/converterSlice";
 import currencyReducer from "./features/currencySlice";
 import chartCoinsReducer from "./features/coinSlice";
-import portfolioSliceReducer from "./features/portfolioSlice";
 
 const reduxLogger = require("redux-logger");
 const logger = reduxLogger.createLogger();
@@ -35,7 +34,6 @@ export const rootReducer: any = combineReducers({
   currency: currencyReducer,
   converter: converterReducer,
   chartCoins: chartCoinsReducer,
-  portfolioSlice: portfolioSliceReducer,
 });
 
 export const makeStore = () => {
