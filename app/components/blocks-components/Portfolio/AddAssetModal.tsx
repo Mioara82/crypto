@@ -21,7 +21,6 @@ import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
 import { findHighlighted } from "@/app/utils/searchFormatter";
-import { getDisplayCoin } from "@/app/utils/formatHelpers";
 
 type PortfolioCoinFromConvex = Doc<"portfolioCoins">;
 
@@ -47,7 +46,7 @@ const AddAssetModal = ({
   );
 
   const { currentData, isSuccess } = useGetCoinListWithMarketDataQuery({
-    endpoint:"SearchData",
+    endpoint: "SearchData",
     query: { currency },
   });
 
@@ -87,7 +86,7 @@ const AddAssetModal = ({
 
   const handleCoinSelection = (coinId: string) => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const found = currentData?.find((coin:any) => coin.id === coinId);
+    const found = currentData?.find((coin: any) => coin.id === coinId);
     if (found) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setValue("coinName", found.name, { shouldValidate: true });
@@ -133,7 +132,7 @@ const AddAssetModal = ({
     } else {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const selectedCoin = currentData?.find(
-        (coin:PortfolioCoin) => coin.name === data.coinName,
+        (coin: PortfolioCoin) => coin.name === data.coinName,
       );
       if (selectedCoin) {
         await addPortfolioCoin({
@@ -156,27 +155,34 @@ const AddAssetModal = ({
   const hasCoins = currentData && currentData.length > 0;
   const filteredList = hasCoins
     ? // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      currentData.filter((coin:PortfolioCoin) =>
+      currentData.filter((coin: PortfolioCoin) =>
         coin.name.toLowerCase().includes(debouncedValue),
       )
     : [];
   const selectedCoin = currentData?.find(
-    (coin:PortfolioCoin) => coin.name === watchedCoinName,
+    (coin: PortfolioCoin) => coin.name === watchedCoinName,
   );
 
-  const displayCoin = getDisplayCoin(
-    currentData,
-    "edit",
-    editingCoin,
-    selectedCoin,
-  );
+  let displayCoin: PortfolioCoin | undefined;
+
+  if (mode === "edit" && editingCoin?.coinId) {
+    displayCoin = currentData?.find(
+      (coin: PortfolioCoin) => coin.id === editingCoin.coinId,
+    );
+  } else if (selectedCoin) {
+    displayCoin = selectedCoin;
+  } else {
+    displayCoin = currentData?.find(
+      (coin: PortfolioCoin) => coin.name === "Bitcoin",
+    );
+  }
 
   const imageSize = isMobile ? 6 : 8;
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="absolute left-1/2 top-10 z-40 flex w-3/4 -translate-x-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg md:top-1/2 md:w-1/2 md:-translate-y-1/2"
+      className="absolute left-1/2 top-1 z-40 flex w-3/4 -translate-x-1/2 transform flex-col gap-8 rounded-2xl border border-light-primary bg-light-lilac p-12 blur-none dark:bg-dark-darkBg md:top-1/2 md:w-1/2 md:-translate-y-1/2"
     >
       <div className="relative h-full w-full">
         <div className="mb-4 flex items-center justify-center">
