@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom";
 import Image from "next/image";
-import { useAppDispatch } from "@/lib/hooks/hooks";
-import { removeCoin } from "@/lib/features/portfolioSlice";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 const DeleteCoinModal = ({
   handleDeleteModalDisplay,
@@ -10,20 +11,22 @@ const DeleteCoinModal = ({
   coinImage,
   closeModal,
 }: {
-  //used any type as it throws type error when i pass id as string;
   handleDeleteModalDisplay: any;
-  coinId: string;
+  coinId: Id<"portfolioCoins">;
   name: string;
   coinImage: string;
   closeModal: () => void;
 }) => {
-  const dispatch = useAppDispatch();
-  const handleRemoveCoin = () => {
-    dispatch(removeCoin(coinId));
-    handleDeleteModalDisplay(coinId);
+  const removeCoinMutation = useMutation(
+    api.portfolioCoins.deletePortfolioCoin,
+  );
+  const removeCoin = async () => {
+    await removeCoinMutation({ id: coinId });
+    handleDeleteModalDisplay(null);
+    closeModal();
   };
   return ReactDOM.createPortal(
-    <div className="absolute left-1/2 top-1/2 z-40 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/60 bg-portfolioGradientLight p-12 filter-none dark:border-light-primary dark:bg-portfolioGradientDark">
+    <div className="absolute left-1/2 top-2/3 z-99 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/60 bg-portfolioGradientLight p-12 filter-none dark:border-light-primary dark:bg-portfolioGradientDark">
       <div className="self-center">
         <div className="relative h-12 w-12">
           <Image
@@ -51,7 +54,7 @@ const DeleteCoinModal = ({
         </button>
         <button
           className="rounded-md border-[1px] border-common-red p-2 text-common-red hover:border-none hover:bg-common-red/70 dark:border-light-primary/20"
-          onClick={handleRemoveCoin}
+          onClick={removeCoin}
         >
           Delete
         </button>

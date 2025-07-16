@@ -32,7 +32,7 @@ const AssetCoins = ({
   };
   type PortfolioCoin = Doc<"portfolioCoins">;
 
-  const deletedCoin = coins?.find((coin) => coin.coinId === selectedId);
+  const deletedCoin = coins?.find((coin:PortfolioCoin) => coin._id === selectedId);
 
   const uniqueCoinsObj = (coins ?? []).reduce<Record<string, PortfolioCoin>>(
     (acc, coin) => {
@@ -94,7 +94,7 @@ const AssetCoins = ({
                   <CoinCard
                     params={{ id: coin.coinId }}
                     handleDeleteModalDisplay={() =>
-                      handleDeleteModalDisplay(coin.coinId)
+                      handleDeleteModalDisplay(coin._id)
                     }
                   />
                   <hr className="bg-light-primary/80"></hr>
@@ -112,7 +112,7 @@ const AssetCoins = ({
                     handleDeleteModalDisplay={() =>
                       handleDeleteModalDisplay(deletedCoin.coinId)
                     }
-                    coinId={deletedCoin.coinId}
+                    coinId={deletedCoin._id}
                     name={deletedCoin.name}
                     coinImage={
                       deletedCoin.image ?? "/images/coin-placeholder.png"
