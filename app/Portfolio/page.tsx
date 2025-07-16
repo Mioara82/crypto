@@ -27,7 +27,7 @@ const Portfolio = () => {
     handleIsShown();
   };
 
-  const openEditForm = (coin:PortfolioCoin) => {
+  const openEditForm = (coin: PortfolioCoin) => {
     setMode("edit");
     setIsEditingCoin(coin);
     handleIsShown();
@@ -37,9 +37,9 @@ const Portfolio = () => {
     setIsCalculatorOpen((prev) => !prev);
   };
 
-  const {isLoading, isAuthenticated, userId} = useStoreUserEffect();
+  const { isLoading, isAuthenticated, userId } = useStoreUserEffect();
 
-  if(isLoading){
+  if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Spinner />
@@ -47,7 +47,7 @@ const Portfolio = () => {
     );
   }
 
-  if(!isAuthenticated){
+  if (!isAuthenticated) {
     return (
       <div className="flex h-screen items-center justify-center">
         <p className="text-lg">Please log in to view your portfolio.</p>
@@ -78,17 +78,17 @@ const Portfolio = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          {userId && (
-            <AssetCoins openEditForm={openEditForm} userId={userId} />
-          )}
+          {userId && <AssetCoins openEditForm={openEditForm} userId={userId} />}
         </div>
       </main>
       {show && (
-        <AddAssetModal
-          mode={mode}
-          handleModalDisplay={handleIsShown}
-          editingCoin={editingCoin}
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <AddAssetModal
+            mode={mode}
+            handleModalDisplay={handleIsShown}
+            editingCoin={editingCoin}
+          />
+        </div>
       )}
       {isCalculatorOpen && (
         <InvestmentCalculator

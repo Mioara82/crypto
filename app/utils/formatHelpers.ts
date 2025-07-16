@@ -1,5 +1,3 @@
-import { PortfolioCoin } from "@/lib/features/portfolioSlice";
-
 export function formatMarketCap(marketCap: number) {
   const trillion = 1e12;
   const billion = 1e9;
@@ -255,22 +253,6 @@ export function formatInvestmentChartDate(date: Date | number) {
     month: "short",
   }).format(date);
 }
-
-export const getDisplayCoin = (
-  list: any,
-  mode: string,
-  editingCoin: any,
-  selectedCoin: any,
-) => {
-  if (mode === "edit" && editingCoin) {
-    return list?.find((coin:any) => coin.id === editingCoin.coinId);
-  }
-  if (selectedCoin) {
-    return list?.find((coin: PortfolioCoin) => coin.id === selectedCoin.coinId);
-  } else {
-    return list?.find((coin: PortfolioCoin) => coin.name === "Bitcoin");
-  }
-};
 
 export function getMostRecentCoinData(data: number[][]) {
   if (!data || data.length === 0) return 0;
