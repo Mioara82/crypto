@@ -16,7 +16,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { RootState } from "@/lib/store";
 import { portfolioFormSchema } from "./formSchema";
 import type { PortfolioFormData } from "./formSchema";
-import { PortfolioCoin } from "@/lib/features/portfolioSlice";
+import { PortfolioCoin } from "@/lib/types/types";
 import Input from "../../UI-components/input";
 import Button from "../../UI-components/Button";
 import Dropdown from "../../UI-components/Dropdown";
