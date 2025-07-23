@@ -11,12 +11,13 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   feature,
+  onInputChange,
   ...rest
 }) => {
   const isMobile = useIsMobile();
   return (
     <div className="z-1 relative">
-      <input {...rest} />
+      <input {...rest} onChange={onInputChange} />
       {isMobile &&
         feature !== "converter" &&
         feature !== "portfolio" &&
