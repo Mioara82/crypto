@@ -21,7 +21,10 @@ import {
 import Spinner from "@/app/components/UI-components/Spinner";
 
 const CoinDetails = ({ params }: { params: { id: string } }) => {
-  const { data, isSuccess } = useGetCoinDataQuery(params.id);
+  const { data, isSuccess } = useGetCoinDataQuery({
+    endpoint: "CoinDetails",
+    query: { id: params.id.trim().toLowerCase() },
+  });
 
   const currency = useAppSelector(
     (state: RootState) => state.currency.currencyName,

@@ -25,7 +25,11 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [show, setShow] = useState(false);
   const debouncedSearchValue = useDebounce(searchValue, 700);
-  const { currentData, isSuccess, isLoading } = useGetSearchDataQuery(currency);
+  const { currentData, isSuccess, isLoading } =
+    useGetSearchDataQuery({
+      endpoint: "SearchData",
+      query: { currency },
+    });
   const coinsList = currentData?.slice(0, 30);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +75,7 @@ const Search = () => {
           name="searchInput"
           type="text"
           placeholder={`${isMobile ? "" : "Search coins"}`}
-          className={`border-1 font-[Inter] placeholder-font-[Inter] relative z-50 w-8 rounded-md bg-light-lightBg py-1 pl-4 text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor md:w-60 md:py-2 md:pl-9 md:pr-4 lg:w-[356px] ${show ? "rounded-b-none" : "rounded-xl"}`}
+          className={`border-1 placeholder-font-[Inter] relative z-50 w-8 rounded-md bg-light-lightBg py-1 pl-4 font-[Inter] text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor md:w-60 md:py-2 md:pl-9 md:pr-4 lg:w-[356px] ${show ? "rounded-b-none" : "rounded-xl"}`}
         />
         <Dropdown ref={ref} show={show} feature="search">
           {isLoading && <Spinner />}
