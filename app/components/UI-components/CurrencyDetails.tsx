@@ -15,7 +15,7 @@ const CurrencyDetails: React.FC<CurrencyDetailsProps> = ({
 }) => {
   const isMobile = useIsMobile();
   return (
-    <div
+    <div data-testid="currency-button"
       className={`border-1 border-white/[.05] flex w-20 items-center gap-2 ${
         show ? "rounded-t-xl" : "rounded-xl"
       } bg-light-lightBg px-4 py-2 dark:bg-dark-191`}

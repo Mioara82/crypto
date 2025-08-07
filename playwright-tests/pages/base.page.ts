@@ -1,4 +1,4 @@
-import type { Page, Locator } from "@playwright/test";
+import { type Page, type Locator, expect } from "@playwright/test";
 
 export class BasePage {
   readonly page: Page;
@@ -7,6 +7,7 @@ export class BasePage {
   readonly portfolioLink: Locator;
   readonly searchInput: Locator;
   readonly loginLink: Locator;
+  readonly currencyDropdownButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,5 +18,10 @@ export class BasePage {
     this.portfolioLink = page.getByRole("link", { name: "Portfolio" });
     this.searchInput = page.getByRole("textbox", { name: "Search coins" });
     this.loginLink = page.getByRole("button", { name: "Login" });
+    this.currencyDropdownButton = page.getByTestId("currency-button");
+  }
+
+  async openCurrencyDropdown() {
+    await this.currencyDropdownButton.click();
   }
 }
