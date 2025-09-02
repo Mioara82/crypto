@@ -64,7 +64,8 @@ export const fetchCoins = action({
 
     const response = await fetch(url, {
       headers: {
-        "x-cg-demo-api-key": process.env.COINGECKO_API_KEY || "",
+        "x-cg-demo-api-key": apiKey || "",
+        accept: "application/json",
       },
     });
 
