@@ -1,3 +1,3 @@
 import {ConvexHttpClient} from "convex/browser";
 
-export const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL || "https://convex-crypto.ggmi.io");
+export const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_SITE_URL || "https://convex-crypto.ggmi.io");
