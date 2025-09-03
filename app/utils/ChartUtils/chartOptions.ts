@@ -70,9 +70,9 @@ export const createChartOptions = (
     responsive: true,
     maintainAspectRatio: false,
 
-    layout: {
-      padding: 20,
-    },
+    // layout: {
+    //   padding: 20,
+    // },
     plugins: {
       legend: {
         display: false,
@@ -158,9 +158,9 @@ export const createBarChartOptions = (
   responsive: true,
   maintainAspectRatio: false,
 
-  layout: {
-    padding: 20,
-  },
+  // layout: {
+  //   padding: 20,
+  // },
   elements: {
     point: {
       pointStyle: "circle",

@@ -84,6 +84,7 @@ const config: Config = {
       width: {
         "63": "253px",
         "221": "884px",
+        "324": "1300px",
       },
       height: {
         "15": "60px",
