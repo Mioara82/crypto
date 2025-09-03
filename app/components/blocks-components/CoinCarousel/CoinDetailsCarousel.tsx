@@ -29,12 +29,12 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
   const isMobile = useIsMobile();
   return (
     <div
-      className={`m-auto flex w-60 cursor-pointer justify-center rounded-md py-2 sm:m-0 sm:w-48 lg:w-52 2xl:w-60 ${
+      className={`m-auto flex w-60 cursor-pointer justify-center rounded-md py-2 sm:m-0 sm:w-48 ${
         isActive ? "bg-common-purple" : "bg-light-primary dark:bg-dark-191"
       }`}
       onClick={handleSelectedCoin}
     >
-      <div className="relative m-auto h-7 w-7">
+      <div className="relative m-auto h-6 w-6">
         <Image
           fill
           style={{ objectFit: "contain" }}
@@ -45,7 +45,7 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
       </div>
       <div className="w-5/6 flex-col">
         <div
-          className={`mb-2 flex gap-2 text-sm xs:text-xs sm:text-sm md:text-base lg:m-0 ${
+          className={`mb-2 flex gap-2 text-sm xs:text-xs lg:m-0 ${
             isActive
               ? "text-light-primary dark:text-dark-text"
               : "text-light-primaryTextColor dark:text-dark-text"
@@ -69,14 +69,14 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
         <div className="flex flex-row items-center gap-2 xs:flex-col lg:flex-row">
           <div className="flex gap-1">
             <span
-              className={`flex gap-1 text-base xs:text-xs sm:text-sm lg:text-base ${
+              className={`flex gap-1 text-base xs:text-xs sm:text-sm ${
                 isActive ? "text-[#FFFFFF70]" : "text-common-purple"
               }`}
             >
               {roundTo4Decimals(coin.current_price)}
             </span>
             <span
-              className={`text-base xs:text-xs sm:text-sm lg:text-base ${isActive ? "text-[#FFFFFF70]" : "text-common-purple"}`}
+              className={`text-base xs:text-xs sm:text-sm ${isActive ? "text-[#FFFFFF70]" : "text-common-purple"}`}
             >
               {currency}
             </span>
@@ -84,7 +84,7 @@ const CoinDetail: React.FC<CoinDetailProps> = ({
           <div className="flex gap-1">
             <ArrowIconCarousel isPositive={isPositive} />
             <div
-              className={`text-xs sm:text-sm lg:text-base ${isPositive ? "text-[#077E77]" : "text-[#FE2264]"}`}
+              className={`text-xs sm:text-sm ${isPositive ? "text-[#077E77]" : "text-[#FE2264]"}`}
             >
               {coin.price_change_percentage_24h.toFixed(2)}%
             </div>

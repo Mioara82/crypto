@@ -20,9 +20,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Crypto App",
+  title: "CryptoLens",
   description:
-    "cryptocurrency exchange to securely buy, sell, trade, store, and stake crypto",
+    "CryptoLensStay Ahead of the Market.Your all-in-one crypto tracker for real-time prices, charts, and portfolio management",
 };
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} ${inter.className} rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
+        className={`${spaceGrotesk.className} ${inter.className} flex flex-col rounded-[20px] bg-light-primaryBg dark:bg-dark-primaryBg`}
       >
         <ClerkProvider>
           <ConvexClientProvider>

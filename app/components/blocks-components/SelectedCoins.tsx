@@ -41,7 +41,7 @@ const SelectedCoins = () => {
     dispatch(deleteChartCoin({ name: coinName }));
 
   return (
-    <div className="ml-4">
+    <div className="w-full">
       <h4 className="mb-4 text-sm md:text-base">Your selected coins</h4>
       <div className="flex items-center justify-start gap-4">
         {(coinOne as ChartCoinData) && (

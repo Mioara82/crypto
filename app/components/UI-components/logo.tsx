@@ -4,10 +4,10 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 const Logo = () => {
   const isMobile = useIsMobile();
   return (
-    <div className="hidden md:flex md:w-[171px] md:items-center md:gap-2">
-      <div className={`relative ${isMobile ? "h-3 w-7" : "h-5 w-8"}`}>
+    <div className="hidden md:flex md:w-[171px] md:items-center">
+      <div className={`relative ${isMobile ? "h-3 w-7" : "h-16 w-16"}`}>
         <Image
-          src="/logo.svg"
+          src="/crypto-logo.png"
           alt="a symbol of a chain link"
           fill
           style={{ objectFit: "contain" }}
@@ -15,7 +15,7 @@ const Logo = () => {
         />
       </div>
       <div className="hidden font-[Inter] lg:block lg:text-lg lg:font-bold lg:leading-[1.6rem]">
-        Coin Base
+        CryptoLens
       </div>
     </div>
   );

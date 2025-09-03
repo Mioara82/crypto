@@ -29,13 +29,11 @@ const Arrow: React.FC<ArrowProps> = (props) => {
         alignItems: "center",
         justifyContent: "center",
         background: "#6161D680",
-        width: "44px",
-        height: "44px",
+        width: "40px",
+        height: "40px",
         borderRadius: "50%",
         textAlign: "center",
         zIndex: 99,
-        marginLeft: "28px",
-        marginRight: "28px",
       }}
       onClick={onClick}
     >

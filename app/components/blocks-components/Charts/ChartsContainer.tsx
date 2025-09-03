@@ -31,7 +31,7 @@ const ChartsContainer = ({
 
   return (
     <>
-      <div className="block h-auto justify-center gap-5 md:flex px-10">
+      <div className="block w-full justify-center gap-5 md:flex">
         <Chart
           chartType={chartType}
           currency={currency}
