@@ -5,20 +5,16 @@ import { FiChevronDown } from "react-icons/fi";
 interface CurrencyDetailsProps {
   currency: string;
   currencySymbol: string;
-  show: boolean;
 }
 
 const CurrencyDetails: React.FC<CurrencyDetailsProps> = ({
   currency,
   currencySymbol,
-  show,
 }) => {
   const isMobile = useIsMobile();
   return (
     <div data-testid="currency-button"
-      className={`border-1 border-white/[.05] flex w-20 items-center gap-2 ${
-        show ? "rounded-t-xl" : "rounded-xl"
-      } bg-light-lightBg px-4 py-2 dark:bg-dark-191`}
+      className="border-1 border-white/[.05] flex w-full items-center gap-2 bg-light-lightBg px-4 py-2 dark:bg-dark-191 rounded-2xl"
     >
       {isMobile ? null : (
         <span className="m-0 flex h-6 w-6 items-center justify-center rounded-full bg-light-secondaryTextColor p-1 dark:bg-dark-text">

@@ -42,12 +42,11 @@ const CurrencySelector = () => {
   return (
     <div
     ref={ref}
-      className="w-20 flex-col relative md:w-[108px] gap-2 z-40"
+      className="w-20 flex-col relative md:w-[108px] z-40 rounded-2xl"
       onClick={handleDropdownDisplay}
     >
       {currencyList && (
         <CurrencyDetails
-          show={show}
           currency={currency}
           currencySymbol={currencySymbol}
         />
