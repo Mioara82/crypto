@@ -10,8 +10,7 @@ const AuthHeader = () => {
       <Unauthenticated>
         <SignInButton mode="redirect">
           <button
-            type="button"
-            className="rounded-lg bg-light-lilac px-4 py-2 text-sm hover:bg-common-cyan dark:bg-dark-lightBg"
+            className="rounded-2xl bg-light-lilac px-4 py-2 text-sm hover:bg-common-cyan dark:bg-dark-lightBg"
           >
             Login
           </button>
