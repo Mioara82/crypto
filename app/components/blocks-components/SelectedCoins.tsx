@@ -42,7 +42,7 @@ const SelectedCoins = () => {
 
   return (
     <div className="w-full">
-      <h4 className="mb-4 text-sm md:text-base">Your selected coins</h4>
+      <h4 className="mb-4 text-sm opacity-35">Your selected coins</h4>
       <div className="flex items-center justify-start gap-4">
         {(coinOne as ChartCoinData) && (
           <CoinUI name={coinOneName} handleDeleteCoin={handleDeleteCoin} />

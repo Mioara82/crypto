@@ -36,11 +36,8 @@ export default function Home() {
   return (
     <>
     <div className="w-full min-h-screen flex justify-center items-center">
-      <main className="flex w-full max-w-324 flex-col justify-center gap-10 px-7 md:px-16 overscroll-none dark:bg-dark-primaryBg md:m-aut0 xl:mx-4">
+      <main className="flex w-full max-w-324 flex-col justify-center gap-6 px-7 md:px-16 overscroll-none dark:bg-dark-primaryBg md:m-aut0 xl:mx-4">
         <ButtonGroup />
-        <p className="ml-3 text-sm text-light-secondaryTextColor dark:text-dark-chartTextColor md:text-base">
-          Select the currency to view statistics
-        </p>
         <Suspense fallback={<CarouselSkeleton />}>
           <div>
             {isSuccess ? (
