@@ -179,7 +179,11 @@ export function calculateProgress(unitOne: any, unitTwo: any) {
   return Math.floor((unitOne / unitTwo) * 100);
 }
 
-function uppercaseLetter(letter: string) {
+export function uppercaseFirstLetter(string:string){
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+ function uppercaseLetter(letter: string) {
   return letter.toUpperCase();
 }
 
