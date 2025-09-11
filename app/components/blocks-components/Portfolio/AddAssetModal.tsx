@@ -99,11 +99,7 @@ const AddAssetModal = ({
     const value = e.target.value;
     setSearchValue(value.trim().toLowerCase());
     setValue("coinName", value, { shouldValidate: true });
-    if (value.trim().length > 0) {
-      setShowDropdown(true);
-    } else {
-      setShowDropdown(false);
-    }
+    setShowDropdown(value.trim().length > 0);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -254,6 +250,7 @@ const AddAssetModal = ({
                   </span>
                 )}
                 {showDropdown && isSuccess && (
+                 
                   <Dropdown
                     ref={listRef}
                     show={showDropdown}

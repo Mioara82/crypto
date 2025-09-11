@@ -84,9 +84,9 @@ const ConverterBox = () => {
               <Input
                 className="box-border w-24 rounded-md bg-light-primary dark:bg-dark-lightBg"
                 type="number"
-                placeholder={quantityValue}
+                placeholder="Enter amount"
                 value={quantityValue}
-                onInputChange={handleInputChange}
+                onChange={handleInputChange}
                 onBlur={handleInputChange}
                 feature="converter"
               />
