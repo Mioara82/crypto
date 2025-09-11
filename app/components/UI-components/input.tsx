@@ -3,21 +3,20 @@ import { GoSearch } from "react-icons/go";
 import { IconContext } from "react-icons/lib";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
-interface InputProps {
-  value?: string | number;
-  onInputChange?: any;
-  [key: string]: any;
-}
+type NativeProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  feature?: "converter" | "portfolio" | "investment" | string;
+  show?:boolean;
+  placeholder?: string;
+};
 
-const Input: React.FC<InputProps> = ({
-  feature,
-  onInputChange,
-  ...rest
-}) => {
+const Input = React.forwardRef<HTMLInputElement, NativeProps>(function Input(
+  { feature, onChange, ...rest },
+  ref,
+) {
   const isMobile = useIsMobile();
   return (
     <div className="z-1 relative">
-      <input {...rest} onChange={onInputChange} />
+      <input ref={ref} {...rest} onChange={onChange} />
       {isMobile &&
         feature !== "converter" &&
         feature !== "portfolio" &&
@@ -33,6 +32,6 @@ const Input: React.FC<InputProps> = ({
         )}
     </div>
   );
-};
+});
 
 export default Input;

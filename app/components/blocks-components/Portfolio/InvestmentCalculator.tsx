@@ -435,7 +435,7 @@ const InvestmentCalculator = ({
                 name="coinName"
                 value={coinName}
                 feature="investment"
-                onInputChange={handleInputChange}
+                onChange={handleInputChange}
                 onBlur={closeDropdown}
                 placeholder="Select coin"
                 className="w-full rounded p-2 dark:bg-dark-191 dark:text-light-primary/70"
@@ -498,7 +498,7 @@ const InvestmentCalculator = ({
                     value={startDate}
                     feature="investment"
                     name="startDate"
-                    onInputChange={handleInputChange}
+                    onChange={handleInputChange}
                     className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-sm text-common-azure dark:bg-[#232336] md:text-base"
                   />
                 </div>
@@ -525,7 +525,7 @@ const InvestmentCalculator = ({
                       value={endDate}
                       feature="investment"
                       name="endDate"
-                      onInputChange={handleInputChange}
+                      onChange={handleInputChange}
                       className="h-10 w-60 rounded-md border-[1px] border-dotted border-common-cyan bg-light-primary pl-7 text-sm text-common-azure dark:bg-[#232336] md:text-base"
                     />
                   </div>
@@ -545,7 +545,7 @@ const InvestmentCalculator = ({
                 </div>
                 <Input
                   type="number"
-                  onInputChange={handleInputChange}
+                  onChange={handleInputChange}
                   name="interval"
                   feature="investment"
                   value={interval}
@@ -565,7 +565,7 @@ const InvestmentCalculator = ({
                 </div>
                 <Input
                   type="number"
-                  onInputChange={handleInputChange}
+                  onChange={handleInputChange}
                   name="initialInvestment"
                   feature="investment"
                   value={initialInvestment}
@@ -586,7 +586,7 @@ const InvestmentCalculator = ({
                   </div>
                   <Input
                     type="number"
-                    onInputChange={handleInputChange}
+                    onChange={handleInputChange}
                     name="growRate"
                     feature="investment"
                     value={growRate || ""}
@@ -608,7 +608,7 @@ const InvestmentCalculator = ({
                   </div>
                   <Input
                     type="number"
-                    onInputChange={handleInputChange}
+                    onChange={handleInputChange}
                     name="intervalInvestment"
                     feature="investment"
                     value={intervalInvestment || ""}
