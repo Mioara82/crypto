@@ -172,14 +172,14 @@ const BarChart = ({
           {isErrorOne && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
+          <div className="flex flex-col justify-start rounded-2xl bg-light-primary py-6 dark:bg-dark-darkBg ">
             <div>
               <div className="flex flex-col justify-start gap-6">
-                <p className="text-xs leading-6 text-light-darkText dark:text-dark-chartTextColor md:text-xl">
+                <p className="text-xs leading-6 ml-4 text-light-darkText dark:text-dark-chartTextColor md:text-xl">
                   Volume 24h
                 </p>
                 {coinOneVolumes && coinOneVolumes.length > 0 && (
-                  <p className="font-bold sm:text-sm md:text-xl 2xl:text-2.5xl">
+                  <p className="font-bold sm:text-sm md:text-xl 2xl:text-2.5xl ml-4 opacity-30">
                     {currencySymbol}
                     {formatMarketCap(displayVolumeOne || coinOneVolumes[1])}
                   </p>
@@ -190,7 +190,7 @@ const BarChart = ({
               </p>
             </div>
             <div>
-              <div className="h-56 sm:h-64 md:h-72 lg:h-96">
+              <div className="h-56 md:h-64">
                 <Bar options={options} data={chartData} />
               </div>
               {isMobile && showChart.next && (
@@ -208,14 +208,15 @@ const BarChart = ({
           {(isErrorOne || isErrorTwo) && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="flex flex-col justify-start rounded-md bg-light-primary p-6 dark:bg-dark-darkBg">
-            <h2 className="text-sm font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
+          <div className="flex flex-col gap-4 justify-start rounded-2xl h-full bg-light-primary p-6 dark:bg-dark-darkBg">
+            {/* <h2 className="text-sm font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
               Volume 24h
-            </h2>
+            </h2> */}
+            
             <p className="text-base font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
               {displayDate || today}
             </p>
-            <div className="h-56 sm:h-64 md:h-72 lg:h-96">
+            <div className="h-56 sm:h-64 md:h-72">
               <Bar options={options} data={chartData} />
             </div>
             {isMobile && showChart.next && (
@@ -227,7 +228,7 @@ const BarChart = ({
             <div className="flex gap-3">
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 bg-common-linearGradient"></div>
-                <div className="text-xs md:text-base">{coinOneName}</div>
+                <div className="text-xs md:text-base opacity-50">{coinOneName}</div>
                 <div className="hidden lg:flex">
                   {currencySymbol}{" "}
                   {formatMarketCap(displayVolumeOne || coinOneVolumes[0])}
@@ -235,7 +236,7 @@ const BarChart = ({
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 bg-common-chart-graph-100"></div>
-                <div className="text-xs md:text-base">{coinTwoName}</div>
+                <div className="text-xs md:text-base opacity-50">{coinTwoName}</div>
                 <div className="hidden lg:flex">
                   {currencySymbol}{" "}
                   {formatMarketCap(displayVolumeTwo || coinTwoVolumes[0])}

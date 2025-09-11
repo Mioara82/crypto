@@ -69,10 +69,9 @@ export const createChartOptions = (
   return {
     responsive: true,
     maintainAspectRatio: false,
-
-    // layout: {
-    //   padding: 20,
-    // },
+    layout: {
+      padding: 20,
+    },
     plugins: {
       legend: {
         display: false,
@@ -119,9 +118,13 @@ export const createChartOptions = (
         grid: {
           display: false,
         },
+        border:{
+          display:false
+        },
         ticks: {
           autoSkip: true,
           maxTicksLimit: 10,
+          padding:2,
           callback: (value) => {
             const date = new Date(value);
             return handleCoinDateDisplay(date, days);
@@ -133,6 +136,9 @@ export const createChartOptions = (
         display: true,
         grid: {
           display: false,
+        },
+        border:{
+          display:false
         },
         ticks: {
           display: false,
@@ -157,15 +163,14 @@ export const createBarChartOptions = (
 ): ChartOptions<"bar"> => ({
   responsive: true,
   maintainAspectRatio: false,
-
-  // layout: {
-  //   padding: 20,
-  // },
   elements: {
     point: {
       pointStyle: "circle",
     },
     bar: {},
+  },
+  layout:{
+    padding:20
   },
   plugins: {
     legend: {
@@ -214,6 +219,9 @@ export const createBarChartOptions = (
     x: {
       type: "category",
       offset: true,
+      border:{
+        display:false
+      },
       grid: {
         display: true,
         color: "rgba(0, 0, 0, 0)",
@@ -239,6 +247,9 @@ export const createBarChartOptions = (
       beginAtZero: true,
       grid: {
         display: false,
+      },
+      border:{
+        display:false
       },
       ticks: {
         display: false,
