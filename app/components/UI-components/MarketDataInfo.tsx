@@ -6,8 +6,8 @@ import { formatMarketCap, roundNumber } from "@/app/utils/formatHelpers";
 interface Data {
   coinData: number;
   exchange: number;
-  totalMarketCap: any;
-  totalVolumePerCurrency: any;
+  totalMarketCap: { [key: string]: number };
+  totalVolumePerCurrency: { [key: string]: number };
   btcMarketCapPercentage: number;
   ethMarketCapPercentage: number;
 }

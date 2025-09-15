@@ -1,14 +1,13 @@
 "use-client";
 import React from "react";
-import { Suspense } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useGetMarketDataQuery } from "@/lib/api";
 import MarketDataInfo from "../UI-components/MarketDataInfo";
-import NotificationCard from "../UI-components/NotificationCard";
 import { RootState } from "@/lib/store";
+import Spinner from "../UI-components/Spinner";
 
 const MarketData = () => {
-  const { data, isSuccess } = useGetMarketDataQuery({
+  const { data, isSuccess, isLoading} = useGetMarketDataQuery({
     endpoint: "MarketData",
   });
   
@@ -19,14 +18,14 @@ const MarketData = () => {
     (state: RootState) => state.currency.symbol,
   );
 
+  if(isLoading){
+    return <Spinner />;
+  }
+
   return (
     <div className="relative">
-      <Suspense
-        fallback={<NotificationCard text="Loading data" isSuccess={false} />}
-      >
         {isSuccess && (
           <div>
-            <NotificationCard text="Market data loaded" isSuccess={isSuccess} />
             <MarketDataInfo
               data={data}
               currency={currency}
@@ -34,7 +33,6 @@ const MarketData = () => {
             />
           </div>
         )}
-      </Suspense>
     </div>
   );
 };
