@@ -75,7 +75,7 @@ const Search = () => {
           name="searchInput"
           type="text"
           placeholder={`${isMobile ? "" : "Search coins"}`}
-          className="border-1 placeholder-font-[Inter] relative z-50 w-8 rounded-2xl bg-light-lightBg py-1 pl-4 font-[Inter] text-sm text-light-secondaryTextColor/80 focus:outline-none dark:bg-dark-191 dark:text-dark-chartTextColor md:w-60 md:py-2 md:pl-9 md:pr-4 lg:w-[356px]"
+          className="border-1 relative z-50 w-8 rounded-2xl bg-light-lightBg py-1 pl-4 text-sm text-light-secondaryTextColor/80 placeholder:text-light-secondaryTextColor/60 focus:outline-none placeholder:font-sans dark:bg-dark-191 dark:text-dark-chartTextColor dark:placeholder:text-dark-chartTextColor/60 md:w-60 md:py-2 md:pl-9 md:pr-4 lg:w-[356px]"
         />
         <Dropdown ref={ref} show={show} feature="search">
           {isLoading && <Spinner />}

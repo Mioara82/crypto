@@ -26,8 +26,13 @@ const DeleteCoinModal = ({
     closeModal();
   };
   return ReactDOM.createPortal(
-    <div className="absolute left-1/2 top-2/3 z-99 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/60 bg-portfolioGradientLight p-12 filter-none dark:border-light-primary dark:bg-portfolioGradientDark">
-      <div className="self-center">
+    <>
+      <div 
+        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+        onClick={closeModal}
+      />
+      <div className="fixed left-1/2 top-1/2 z-[51] flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-2xl border-[1px] border-dark-darkBg/20 bg-gradient-to-r from-[#F2F3E2] to-[#B9E0EE] p-12 shadow-2xl dark:border-light-primary/30 dark:bg-gradient-to-r dark:from-[#43434B] dark:to-[#110744]">
+        <div className="self-center">
         <div className="relative h-12 w-12">
           <Image
             src={coinImage}
@@ -59,7 +64,8 @@ const DeleteCoinModal = ({
           Delete
         </button>
       </div>
-    </div>,
+    </div>
+    </>,
     document.body,
   );
 };

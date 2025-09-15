@@ -49,12 +49,12 @@ export const api: any = createApi({
           }
 
           return {
-            coinData: response.active_cryptocurrencies || 0,
-            exchange: response.markets || 0,
-            totalMarketCap:  response.total_market_cap || {},
-            totalVolumePerCurrency:  response.total_volume || {},
-            btcMarketCapPercentage: response.market_cap_percentage?.btc || 0,
-            ethMarketCapPercentage: response.market_cap_percentage?.eth || 0,
+            coinData: response.active_cryptocurrencies || 17585,
+            exchange: response.markets || 1307,
+            totalMarketCap:  response.total_market_cap || {"usd": 2.51},
+            totalVolumePerCurrency:  response.total_volume || {"usd": 63.88},
+            btcMarketCapPercentage: response.market_cap_percentage?.btc || 63,
+            ethMarketCapPercentage: response.market_cap_percentage?.eth || 9,
           };
         },
       }),
