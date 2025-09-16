@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { RootState } from "@/lib/store";
 import { ChartCoinData } from "@/lib/features/coinSlice";
 import { deleteChartCoin } from "@/lib/features/coinSlice";
-import { capitaliseString } from "@/app/utils/formatHelpers";
+import{uppercaseFirstLetter } from "@/app/utils/formatHelpers";
 
 const CoinUI = ({
   name,
@@ -17,13 +17,13 @@ const CoinUI = ({
 }) => {
   return (
     <>
-      <div className="flex items-center justify-between gap-2 rounded-md bg-common-linearGradient px-4 py-2 text-sm dark:bg-dark-darkBg md:text-base">
-        <h4 className="text-xs md:text-sm">{capitaliseString(name)}</h4>
+      <div className="flex items-center justify-between gap-2 rounded-xl bg-gradient-to-r from-[#7878FA40] to-[#4dffdf40] px-2 py-0.5 text-sm dark:bg-dark-darkBg md:text-base">
+        <h4 className="text-xs">{uppercaseFirstLetter(name)}</h4>
         <div
           className="cursor-pointer rounded-full p-1 text-common-indigo hover:border-[1px] hover:border-dotted hover:border-light-tableTextColor dark:text-common-brigthBlue hover:dark:border-dark-chartDateColor"
           onClick={() => handleDeleteCoin(name)}
         >
-          <RiDeleteBin5Line />
+          <RiDeleteBin5Line size="14"/>
         </div>
       </div>
     </>

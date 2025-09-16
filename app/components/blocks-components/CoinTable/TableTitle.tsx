@@ -27,13 +27,13 @@ export const TableTitle = ({
       <div className="hover:cursor-pointer" onClick={handleIsShown}>
         {capitaliseString(selectedQuery)}
       </div>
-      <Dropdown ref={listRef} show={show} feature="table dropdown">
+      <Dropdown ref={listRef} show={show} feature="dropdown table">
         {show &&
           filteredQueries.map((q: string) => (
             <li
               key={q}
               onClick={() => handleQueryChange(q)}
-              className="text-base hover:cursor-pointer hover:text-common-cyan lg:text-lg 2xl:text-2xl"
+              className="text-base hover:cursor-pointer hover:text-common-cyan sm:text-sm md:text-md"
             >
               {capitaliseString(q)}
             </li>

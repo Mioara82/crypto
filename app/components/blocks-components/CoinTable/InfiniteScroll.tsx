@@ -81,7 +81,6 @@ const InfiniteCoinScroll: React.FC<InfiniteCoinScrollProps> = ({
                   isFetching={isFetching}
                   coin={coin}
                   index={index}
-                  isSuccess={isSuccess}
                   isLoading={isLoading}
                   isError={isError}
                 />

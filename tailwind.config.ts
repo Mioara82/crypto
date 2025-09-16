@@ -120,22 +120,22 @@ const config: Config = {
         fadeInRight: "fadeInRight 1s ease-in-out",
         fadeOutLeft: "fadeOutLeft 1s ease-in-out",
       },
-      backgroundColor: {
-        portfolioGradientLight: "linear-gradient(to right, #F2F3E2,#B9E0EE)",
-        portfolioGradientDark: "linear-gradient(to right, #43434B,#110744)",
-        customGradient:
-          "linear-gradient(180deg, rgba(116, 116, 250, 0.6) 0%, rgba(116, 116, 250, 0.01) 100%)",
-        customGradientP3:
-          "linear-gradient(180deg, color(display-p3 0.455 0.455 0.949 / 0.6) 0%, color(display-p3 0.455 0.455 0.949 / 0.01) 100%)",
-        customGradientP4:
-          "linear-gradient(180deg, #7878FF 0%, rgba(120, 120, 255, 0) 100%)",
-        customGradientP5:
-          "linear-gradient(180deg, color(display-p3 0.471 0.471 0.980) 0%, color(display-p3 0.471 0.471 0.980 / 0) 100%)",
-        customeGradientP6:
-          "linear-gradient(180deg, #A75EE0 0%, rgba(190, 113, 250, 0.01) 100%)",
-        customGradientP7:
-          "linear-gradient(180deg, color(display-p3 0.616 0.384 0.851) 0%, color(display-p3 0.702 0.455 0.949 / 0.01) 100%)",
-      },
+      // backgroundColor: {
+      //   portfolioGradientLight: "linear-gradient(to right, #F2F3E2,#B9E0EE)",
+      //   portfolioGradientDark: "linear-gradient(to right, #43434B,#110744)",
+      //   customGradient:
+      //     "linear-gradient(180deg, rgba(116, 116, 250, 0.6) 0%, rgba(116, 116, 250, 0.01) 100%)",
+      //   customGradientP3:
+      //     "linear-gradient(180deg, color(display-p3 0.455 0.455 0.949 / 0.6) 0%, color(display-p3 0.455 0.455 0.949 / 0.01) 100%)",
+      //   customGradientP4:
+      //     "linear-gradient(180deg, #7878FF 0%, rgba(120, 120, 255, 0) 100%)",
+      //   customGradientP5:
+      //     "linear-gradient(180deg, color(display-p3 0.471 0.471 0.980) 0%, color(display-p3 0.471 0.471 0.980 / 0) 100%)",
+      //   customeGradientP6:
+      //     "linear-gradient(180deg, #A75EE0 0%, rgba(190, 113, 250, 0.01) 100%)",
+      //   customGradientP7:
+      //     "linear-gradient(180deg, color(display-p3 0.616 0.384 0.851) 0%, color(display-p3 0.702 0.455 0.949 / 0.01) 100%)",
+      // },
       fontSize: {
         "2.5xl": [
           "28px",
