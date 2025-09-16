@@ -22,21 +22,18 @@ const CoinDetails = ({
   isFetching,
   isLoading,
   isError,
-  isSuccess,
 }: {
   coin: Coin;
   index: number;
   isFetching: boolean;
   isLoading: boolean;
   isError: boolean;
-  isSuccess: boolean;
 }) => {
   const currencySymbol = useAppSelector(
     (state: RootState) => state.currency.symbol,
   );
   return (
     <>
-      <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
       <tr
         key={coin.id}
         className="mb-2 flex h-[77px] w-full min-w-full items-center justify-around rounded-lg border-[1px] border-light-lightBg from-dark-darkBg via-dark-lightBg to-dark-hover px-2 duration-200 hover:scale-102 hover:transform hover:cursor-pointer hover:shadow-2xl dark:border-none dark:bg-gradient-to-r md:justify-between"

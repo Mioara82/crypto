@@ -81,7 +81,6 @@ const CoinsTable = () => {
       </div>
       {hasData ? (
         <>
-          <NotificationCard isSuccess={isSuccess} text="Coin data loaded" />
           <InfiniteCoinScroll
             fetchMoreData={fetchMoreData}
             isSuccess={isSuccess}

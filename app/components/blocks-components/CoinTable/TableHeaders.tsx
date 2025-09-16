@@ -40,14 +40,14 @@ const TableHeaders = ({
 
   return (
     <tr className="mb-2 flex h-[77px] w-full items-center justify-around rounded-md px-2 text-sm md:justify-between">
-      <th className="w-[20%] sm:w-[5%]">#</th>
+      <th className="w-[20%] sm:w-[5%] rounded-lg px-2 py-1 hover:bg-common-linearGradient">#</th>
       {headers.map((header) => (
         <th
           key={header.key}
           onClick={() => handleSort(header.key)}
           className={(classObj as Key)[header.key] || "w-[30%] sm:w-[8%]"}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-around rounded-lg px-2 py-1 hover:bg-common-linearGradient">
             <div>{header.label}</div>
             <span className="cursor-pointer">
               {sortValue === header.key ? (
