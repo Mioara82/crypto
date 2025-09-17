@@ -6,7 +6,7 @@ interface ArrowIconProps {
 
 const ArrowIconCarousel: React.FC<ArrowIconProps> = ({ isPositive }) => (
   <svg
-    className={`w-3 self-center md:w-4 ${
+    className={`w-3 self-center lg:w-4 ${
       isPositive ? "rotate-0 fill-[#077E77]" : "rotate-180 fill-[#FE2264]"
     }`}
     width="16"

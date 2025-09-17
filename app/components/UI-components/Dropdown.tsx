@@ -34,7 +34,7 @@ const Dropdown = React.forwardRef<
        ${feature === "dropdown table" ? "p-4" : ""} 
        ${feature === "investment" ? "left-0 top-[20%] mt-2 h-52 py-2 pl-2 pr-0 md:left-[25%] md:w-3/4 md:pl-9 md:pr-4" : "w-60"} 
        ${feature === "search" ? "left-0 top-[40px] max-h-40 min-w-40 md:h-96 md:w-full" : ""} 
-       ${feature === "converter" ? "left-0 top-[40px] h-52 w-full p-4" : ""} overflow-auto rounded-2xl mt-1 bg-[#ccccfa] dark:bg-dark-191 ${
+       ${feature === "converter" ? "left-0 top-[40px] h-52 w-full p-4" : ""} overflow-auto rounded-md mt-1 bg-[#ccccfa] dark:bg-dark-191 ${
         show ? "opacity-100" : "opacity-0"
       }`}
     >

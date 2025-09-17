@@ -31,29 +31,29 @@ export default function Home() {
     endpoint: "SearchData",
     query: { currency: currency.toLowerCase() },
   });
-  const coinList = data?.slice(0, 20);
+  const coinList = data?.slice(0, 30);
 
   return (
     <>
-    <div className="w-full min-h-screen flex justify-center items-center">
-      <main className="flex w-full max-w-324 flex-col justify-center gap-6 px-7 md:px-16 overscroll-none dark:bg-dark-primaryBg md:m-aut0 xl:mx-4">
-        <ButtonGroup />
-        <Suspense fallback={<CarouselSkeleton />}>
-          <div>
-            {isSuccess ? (
-              <div>
-                <CoinCarousel list={coinList} currency={currency} />
-              </div>
-            ) : null}
-          </div>
-        </Suspense>
-        <SelectedCoins />
-        <ChartsContainer currency={currency} days={selectedFilter.period} />
-        <ChartFilterTabs />
-        <Suspense fallback={<TableSkeleton />}>
-          <CoinsTable />
-        </Suspense>
-      </main>
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <main className="md:m-aut0 flex w-full max-w-324 flex-col justify-center gap-6 overscroll-none px-6 lg:px-7 dark:bg-dark-primaryBg md:px-16 xl:mx-4">
+          <ButtonGroup />
+          <Suspense fallback={<CarouselSkeleton />}>
+            <div>
+              {isSuccess ? (
+                <div>
+                  <CoinCarousel list={coinList} currency={currency} />
+                </div>
+              ) : null}
+            </div>
+          </Suspense>
+          <SelectedCoins />
+          <ChartsContainer currency={currency} days={selectedFilter.period} />
+          <ChartFilterTabs />
+          <Suspense fallback={<TableSkeleton />}>
+            <CoinsTable />
+          </Suspense>
+        </main>
       </div>
     </>
   );
