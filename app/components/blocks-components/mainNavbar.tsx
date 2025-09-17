@@ -6,8 +6,22 @@ import PortfolioButton from "../UI-components/portfolioButton";
 import Search from "./search";
 import CurrencySelector from "./currencySelector";
 import AuthHeader from "../../auth/authHeader";
+import { MobileTop } from "./MobileNavigation/MobileTop";
+import { BottomNav } from "./MobileNavigation/BottomNav";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 const Navbar = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <nav className="flex flex-col sticky top-0 z-10 px-6 mb-4 w-full backdrop-blur-md">
+        <MobileTop />
+        <BottomNav />
+      </nav>
+    );
+  }
+
   return (
     <div className="z-999 flex justify-center">
       <nav

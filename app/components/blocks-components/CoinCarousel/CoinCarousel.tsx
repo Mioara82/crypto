@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { RootState } from "@/lib/store";
 import { handleChartCoin } from "@/lib/features/coinSlice";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 interface ArrowProps {
   className?: string;
@@ -34,6 +35,7 @@ const Arrow: React.FC<ArrowProps> = (props) => {
         borderRadius: "50%",
         textAlign: "center",
         zIndex: 99,
+        cursor: "pointer",
       }}
       onClick={onClick}
     >
@@ -55,6 +57,7 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
   const selectedCoins = useAppSelector(
     (state: RootState) => state.chartCoins.chartCoins,
   );
+  const isMobile = useIsMobile();
 
   const dispatch = useAppDispatch();
   const handleSelected = (
@@ -72,8 +75,8 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
     speed: 500,
     slidesToShow: Math.min(list.length, 6),
     slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    nextArrow: isMobile ? <></> : <SampleNextArrow />,
+    prevArrow: isMobile ? <></> : <SamplePrevArrow />,
     responsive: [
       {
         breakpoint: 1300,
@@ -81,46 +84,67 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
           slidesToShow: Math.min(list.length, 5),
           slidesToScroll: 2,
           infinite: list.length > 5,
-          dots: true,
+          dots: false,
         },
       },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: Math.min(list.length, 4),
-          slidesToScroll: 3,
+          slidesToShow: Math.min(list.length, 3),
+          slidesToScroll: 1,
           infinite: list.length > 4,
-          dots: true,
+          dots: false,
+        },
+      },
+      {breakpoint:768, 
+        settings: { 
+          slidesToShow: Math.min(list.length, 3),
+          slidesToScroll: 1,
+          infinite: list.length > 4,
+          dots: false,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: Math.min(list.length, 2),
+          slidesToShow: Math.min(list.length, 3),
           slidesToScroll: 1,
           initialSlide: 1,
+          nextArrow: <></>,
+          prevArrow: <></>,
+        },
+      },
+         {
+        breakpoint: 475,
+        settings: {
+          slidesToShow: Math.min(list.length, 4),
+          slidesToScroll: 1,
+          nextArrow: <></>,
+          prevArrow: <></>,
         },
       },
       {
         breakpoint: 400,
         settings: {
-          slidesToShow: Math.min(list.length, 1),
+          slidesToShow: Math.min(list.length, 3),
           slidesToScroll: 1,
+          nextArrow: <></>,
+          prevArrow: <></>,
         },
       },
     ],
   };
 
-  const hasSingleSlide = list.length === 1;
+  const [sliderRef, setSliderRef] = React.useState<Slider | null>(null);
 
   return (
     <div
-      className={`z-99 relative w-full ${hasSingleSlide ? "single-slide-wrapper" : ""}`}
+      className={"z-99 relative w-full"}
     >
       <Suspense fallback={<CarouselSkeleton />}>
-        <div className="relative z-0">
+        <div className="relative z-0 ">
           <Slider
-            className={`${hasSingleSlide ? "single-slide" : ""}`}
+            ref={setSliderRef}
             {...settings}
           >
             {list.map((coin: CoinProps) => {
@@ -143,6 +167,18 @@ const CoinCarousel: React.FC<CoinCarouselProps> = ({ list, currency }) => {
             })}
           </Slider>
         </div>
+        
+        {/* Mobile Navigation Arrows */}
+        {isMobile && list.length > 3 && (
+          <div className="flex justify-center gap-4 mt-4">
+            <Arrow onClick={() => sliderRef?.slickPrev()}>
+              ←
+            </Arrow>
+            <Arrow onClick={() => sliderRef?.slickNext()}>
+              →
+            </Arrow>
+          </div>
+        )}
       </Suspense>
     </div>
   );

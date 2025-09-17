@@ -77,10 +77,7 @@ const LineChart = ({
   const isMobile = useIsMobile();
   const defaultCoinOne = { id: "bitcoin", symbol: "btc", currentPrice: 45000 };
 
-  const {
-    data: coinOneData,
-    isError: isErrorOne,
-  } = useGetChartDataQuery({
+  const { data: coinOneData, isError: isErrorOne } = useGetChartDataQuery({
     endpoint: "ChartData",
     query: {
       id: coinOne?.id || defaultCoinOne.id,
@@ -182,13 +179,13 @@ const LineChart = ({
           {isErrorOne && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="relative flex flex-col justify-start rounded-2xl bg-light-primary py-6 dark:bg-dark-darkBg">
+          <div className="relative flex flex-col justify-start rounded-2xl bg-light-primary pt-4 dark:bg-dark-darkBg md:py-6">
             <div>
-              <div className="flex flex-col justify-start gap-6 ml-4">
+              <div className="ml-4 flex flex-col justify-start gap-2">
                 <p className="text-base leading-6 text-light-darkText dark:text-dark-chartTextColor md:text-xl">
-                  {uppercaseFirstLetter(coinOneName)} ({coinOne.symbol})
+                  {uppercaseFirstLetter(coinOneName)}
                 </p>
-                <p className="text-sm font-bold md:text-xl 2xl:text-2.5xl opacity-30">
+                <p className="text-sm font-bold opacity-30 md:text-xl 2xl:text-2.5xl">
                   {currencySymbol}
                   {displayPriceOne?.toFixed(2) || coinOne.currentPrice}
                 </p>
@@ -199,7 +196,7 @@ const LineChart = ({
             </div>
 
             <div>
-              <div className="h-56 md:h-64 overflow-hidden sm:min-w-80">
+              <div className="h-56 overflow-hidden sm:min-w-80 md:h-64">
                 <Line options={options} data={chartData} />
               </div>
               {isMobile && showChart.prev && (
@@ -217,26 +214,17 @@ const LineChart = ({
           {(isErrorOne || isErrorTwo) && (
             <NotificationCard text="Error loading data" isSuccess={false} />
           )}
-          <div className="relative flex flex-col gap-4 justify-start rounded-2xl bg-light-primary p-6 dark:bg-dark-darkBg">
-            
-              <p className="text-sm font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
-                {displayDate || today}
-              </p>
-            
-            <div className="h-56 sm:h-64 md:h-72 ">
-              <Line options={options} data={chartData} />
-            </div>
-            {isMobile && showChart.prev && (
-              <ButtonWrapper
-                handleChartDisplayOnMobile={handleChartDisplayOnMobile}
-                showChart={showChart}
-              />
-            )}
+          <div className="relative flex flex-col justify-start gap-4 rounded-2xl bg-light-primary px-2 pt-4 dark:bg-dark-darkBg md:py-6">
+            <p className="text-sm font-normal text-light-secondaryTextColor dark:text-dark-chartDateColor md:text-xl">
+              {displayDate || today}
+            </p>
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
                   <div className="h-3 w-3 rounded-full bg-common-linearGradient md:h-4 md:w-4" />
-                  <div className="text-xs md:text-base opacity-50">{coinOneName}</div>
+                  <div className="text-xs opacity-50 md:text-base">
+                    {coinOneName}
+                  </div>
                 </div>
                 <div className="hidden lg:flex">
                   <span className="text-xs md:text-base">
@@ -250,7 +238,9 @@ const LineChart = ({
               <div className="flex flex-col items-center md:flex-row md:gap-2">
                 <div className="flex items-center gap-1">
                   <div className="h-3 w-3 rounded-full bg-common-chart-graph-100 md:h-4 md:w-4" />
-                  <div className="text-xs md:text-base opacity-50">{coinTwoName}</div>
+                  <div className="text-xs opacity-50 md:text-base">
+                    {coinTwoName}
+                  </div>
                 </div>
                 <div className="hidden lg:flex">
                   <span className="text-xs md:text-base">
@@ -263,6 +253,15 @@ const LineChart = ({
                 </div>
               </div>
             </div>
+            <div className="h-56 sm:h-64 md:h-72">
+              <Line options={options} data={chartData} />
+            </div>
+            {isMobile && showChart.prev && (
+              <ButtonWrapper
+                handleChartDisplayOnMobile={handleChartDisplayOnMobile}
+                showChart={showChart}
+              />
+            )}
           </div>
         </>
       )}

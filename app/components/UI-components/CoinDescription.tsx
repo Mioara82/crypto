@@ -32,7 +32,7 @@ const CoinDescription: React.FC<CoinDescriptionProps> = ({
       onClick={onCoinClick}
       className="hover:shadow-gray-400 mb-0.5 flex justify-stretch p-2 font-Inter text-sm transition-all hover:cursor-pointer hover:rounded-md hover:bg-[#CCCCFA] hover:opacity-50 hover:dark:bg-dark-hover"
     >
-      <p className="basis-1/6 text-light-secondaryTextColor/80 dark:text-dark-chartTextColor">
+      <p className="hidden md:block basis-1/6 text-light-secondaryTextColor/80 dark:text-dark-chartTextColor">
         {coin.symbol}
       </p>
       <p className="basis-1/2 text-light-secondaryTextColor/80 dark:text-dark-chartTextColor">
