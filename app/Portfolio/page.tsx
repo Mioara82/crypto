@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { useIsShown } from "@/lib/hooks/useIsShown";
 import { useStoreUserEffect } from "@/lib/hooks/useStoreUserEffects";
 import AddAssetModal from "../components/blocks-components/Portfolio/AddAssetModal";
 import Button from "../components/UI-components/Button";
-import Spinner from "../components/UI-components/Spinner";
+import AssetCoinsSkeleton from "../components/blocks-components/Portfolio/AssetCoinsSkeleton";
 //import InvestmentCalculator from "../components/blocks-components/Portfolio/InvestmentCalculator";
 import type { Doc } from "@/convex/_generated/dataModel";
 
@@ -41,8 +41,24 @@ const Portfolio = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <Spinner />
+      <div className="relative">
+        <main className="relative flex min-h-screen flex-col p-4 sm:p-8 md:p-24">
+          {/* Statistics header skeleton */}
+          <div className="mb-6 h-4 w-32 animate-pulse rounded bg-skeleton100 lg:h-5 lg:w-36"></div>
+          
+          {/* Button section skeleton */}
+          <div className="mb-6 flex flex-col items-center justify-between sm:flex-row">
+            <div className="m-auto flex items-center justify-around gap-3">
+              {/* Add asset button skeleton */}
+              <div className="h-10 w-24 animate-pulse rounded bg-skeleton100 lg:h-12 lg:w-28"></div>
+            </div>
+          </div>
+          
+          {/* Asset coins skeleton */}
+          <div className="flex justify-center">
+            <AssetCoinsSkeleton />
+          </div>
+        </main>
       </div>
     );
   }
@@ -78,7 +94,11 @@ const Portfolio = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          {userId && <AssetCoins openEditForm={openEditForm} userId={userId} />}
+          {userId && (
+            <Suspense fallback={<AssetCoinsSkeleton />}>
+              <AssetCoins openEditForm={openEditForm} userId={userId} />
+            </Suspense>
+          )}
         </div>
       </main>
       {show && (
